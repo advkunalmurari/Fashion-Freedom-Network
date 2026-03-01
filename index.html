@@ -37,10 +37,42 @@
   <link rel="stylesheet" href="/index.css">
 </head>
 
-<body>
-  <div class="mesh-bg"></div>
-  <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
+<div class="mesh-bg"></div>
+<div id="root">
+  <style>
+    .ffn-initial-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #0a0a0a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .ffn-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+  <div class="ffn-initial-loader">
+    <div class="ffn-spinner"></div>
+  </div>
+</div>
+<script type="module" src="/index.tsx"></script>
 </body>
 
 </html>

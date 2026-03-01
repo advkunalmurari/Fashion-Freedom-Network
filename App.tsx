@@ -102,38 +102,40 @@ const Application: React.FC = () => {
         isDarkMode={isDarkMode}
         onToggleDarkMode={toggleDarkMode}
       >
-        <Routes>
-          <Route path="/" element={user ? <Home onApply={() => navigate('/register-professional')} onDirectory={() => navigate('/directory')} onRegisterProfessional={() => navigate('/register-professional')} /> : <Navigate to="/login" replace />} />
-          <Route path="/home" element={<Navigate to="/" replace />} />
-          <Route path="/feed" element={<Feed onSelectPost={() => { }} />} />
-          <Route path="/explore" element={<Explore />} />
-          <Route path="/motion" element={<Motion />} />
-          <Route path="/trend-lab" element={<TrendLab />} />
-          <Route path="/directory" element={<Directory onSelectTalent={(id) => navigate('/profile-view/' + id)} onRegisterProfessional={() => navigate('/register-professional')} />} />
-          <Route path="/shoots" element={<Photoshoots />} />
-          <Route path="/brands" element={<Brands />} />
-          <Route path="/castings" element={<Castings />} />
-          <Route path="/marketplace" element={<Marketplace />} />
-          <Route path="/network" element={<Network />} />
-          <Route path="/editorial" element={<Editorial />} />
-          <Route path="/settings" element={<Settings user={user} onLogout={handleLogout} />} />
-          <Route path="/messages" element={<Messaging />} />
-          <Route path="/login" element={<LoginPage onLogin={(userData) => { setUser(userData); navigate('/'); }} />} />
-          <Route path="/my-profile" element={<MyProfile user={user} onLogout={handleLogout} />} />
-          <Route path="/register-professional" element={<RegisterProfessional onSuccess={(userData) => { setUser(userData); navigate('/'); }} />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-          <Route path="/refund-policy" element={<RefundPolicy />} />
-          <Route path="/cookie-policy" element={<CookiePolicy />} />
-          <Route path="/faq" element={<FAQPage />} />
-          <Route path="/community-guidelines" element={<CommunityGuidelines />} />
-          <Route path="/pricing" element={<PricingPage onRegister={() => navigate('/register-professional')} />} />
-          <Route path="/verification" element={<VerificationPage />} />
-          <Route path="/profile-view/:id" element={<ProfilePage user={MOCK_TALENT_POOL[0]} onBack={() => navigate('/directory')} />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={user ? <Home onApply={() => navigate('/register-professional')} onDirectory={() => navigate('/directory')} onRegisterProfessional={() => navigate('/register-professional')} /> : <Navigate to="/login" replace />} />
+            <Route path="/home" element={<Navigate to="/" replace />} />
+            <Route path="/feed" element={<Feed onSelectPost={() => { }} />} />
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/motion" element={<Motion />} />
+            <Route path="/trend-lab" element={<TrendLab />} />
+            <Route path="/directory" element={<Directory onSelectTalent={(id) => navigate('/profile-view/' + id)} onRegisterProfessional={() => navigate('/register-professional')} />} />
+            <Route path="/shoots" element={<Photoshoots />} />
+            <Route path="/brands" element={<Brands />} />
+            <Route path="/castings" element={<Castings />} />
+            <Route path="/marketplace" element={<Marketplace />} />
+            <Route path="/network" element={<Network />} />
+            <Route path="/editorial" element={<Editorial />} />
+            <Route path="/settings" element={<Settings user={user} onLogout={handleLogout} />} />
+            <Route path="/messages" element={<Messaging />} />
+            <Route path="/login" element={<LoginPage onLogin={(userData) => { setUser(userData); navigate('/'); }} />} />
+            <Route path="/my-profile" element={<MyProfile user={user} onLogout={handleLogout} />} />
+            <Route path="/register-professional" element={<RegisterProfessional onSuccess={(userData) => { setUser(userData); navigate('/'); }} />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+            <Route path="/refund-policy" element={<RefundPolicy />} />
+            <Route path="/cookie-policy" element={<CookiePolicy />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/community-guidelines" element={<CommunityGuidelines />} />
+            <Route path="/pricing" element={<PricingPage onRegister={() => navigate('/register-professional')} />} />
+            <Route path="/verification" element={<VerificationPage />} />
+            <Route path="/profile-view/:id" element={<ProfilePage user={MOCK_TALENT_POOL[0]} onBack={() => navigate('/directory')} />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
       </Layout>
     </div>
   );
