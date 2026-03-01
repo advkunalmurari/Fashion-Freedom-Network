@@ -42,6 +42,10 @@ export const Layout: React.FC<LayoutProps> = ({
     return () => { document.body.style.overflow = ''; };
   }, [isMobileMenuOpen]);
 
+  if (pathname === 'login' || pathname === 'register-professional') {
+    return <>{children}</>;
+  }
+
   const navItems = [
     { id: 'home', icon: Home, label: 'Discover' },
     { id: 'feed', icon: Search, label: 'Feed' },
@@ -291,8 +295,8 @@ export const Layout: React.FC<LayoutProps> = ({
                     key={item.id}
                     onClick={() => { navigate('/' + item.id); setIsMobileMenuOpen(false); }}
                     className={`flex items-center w-full p-4 rounded-xl transition-all ${activeTab === item.id
-                        ? (isDarkMode ? 'bg-white/10 text-white font-bold' : 'bg-gray-100 text-ffn-black font-bold')
-                        : (isDarkMode ? 'text-white/60 hover:text-white' : 'text-gray-500 hover:text-ffn-black')
+                      ? (isDarkMode ? 'bg-white/10 text-white font-bold' : 'bg-gray-100 text-ffn-black font-bold')
+                      : (isDarkMode ? 'text-white/60 hover:text-white' : 'text-gray-500 hover:text-ffn-black')
                       }`}
                   >
                     <item.icon className={`w-5 h-5 mr-4 ${activeTab === item.id ? 'text-ffn-primary' : ''}`} />

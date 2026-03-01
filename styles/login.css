@@ -32,7 +32,12 @@
     /* High-Fashion Vibrant Palette: Magenta, Purple, Deep Blue, Neon Accents */
     background: linear-gradient(-45deg, #050505, #120025, #4a0033, #001220, #000000);
     background-size: 400% 400%;
-    animation: gradientShift 18s ease-in-out infinite;
+}
+
+@media (min-width: 768px) {
+    .login-bg-container {
+        animation: gradientShift 18s ease-in-out infinite;
+    }
 }
 
 .login-overlay {
@@ -85,7 +90,7 @@
     align-items: center;
     text-align: center;
     color: white;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
+    background: #000;
     position: relative;
     box-shadow: inset -20px 0 50px rgba(0, 0, 0, 0.5);
 }
@@ -101,6 +106,7 @@
 @media (min-width: 1024px) {
     .left-panel {
         display: flex;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
     }
 
     .right-panel {
@@ -111,8 +117,9 @@
 .login-card {
     width: 100%;
     max-width: 420px;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(40px);
+    background: rgba(0, 0, 0, 0.6);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.05);
     padding: 2.5rem;
     border-radius: 20px;
