@@ -23,9 +23,9 @@ const LegalContainer: React.FC<{ title: string; subtitle: string; icon: React.Re
 );
 
 export const PrivacyPolicy: React.FC = () => (
-  <LegalContainer 
-    title="Privacy Protocol" 
-    subtitle="User Data Protection Policy" 
+  <LegalContainer
+    title="Privacy Protocol"
+    subtitle="User Data Protection Policy"
     icon={<Lock className="w-8 h-8" />}
   >
     <section className="space-y-4">
@@ -38,7 +38,7 @@ export const PrivacyPolicy: React.FC = () => (
     </section>
     <section className="space-y-4">
       <h3 className="text-2xl font-serif italic text-ffn-black">3. Data Protection Protocol</h3>
-      <p className="text-sm text-gray-500 leading-relaxed">We employ enterprise-grade encryption for all stored assets. Payment data is never stored on our local servers and is handled exclusively by encrypted providers like Razorpay and Stripe.</p>
+      <p className="text-sm text-gray-500 leading-relaxed">We employ enterprise-grade encryption for all stored assets. Payment data is never stored on our local servers and is handled exclusively by encrypted providers like PayPal and Stripe.</p>
     </section>
     <section className="space-y-4 border-t border-gray-50 pt-8">
       <p className="text-[10px] uppercase tracking-widest font-black text-gray-300 text-center">Last Updated: May 2025 &bull; FFN Compliance Hub</p>
@@ -47,9 +47,9 @@ export const PrivacyPolicy: React.FC = () => (
 );
 
 export const TermsAndConditions: React.FC = () => (
-  <LegalContainer 
-    title="Master Agreement" 
-    subtitle="Platform Terms and Conditions" 
+  <LegalContainer
+    title="Master Agreement"
+    subtitle="Platform Terms and Conditions"
     icon={<FileText className="w-8 h-8" />}
   >
     <section className="space-y-4">
@@ -68,9 +68,9 @@ export const TermsAndConditions: React.FC = () => (
 );
 
 export const RefundPolicy: React.FC = () => (
-  <LegalContainer 
-    title="Refund Policy" 
-    subtitle="Financial Transaction Protocols" 
+  <LegalContainer
+    title="Refund Policy"
+    subtitle="Financial Transaction Protocols"
     icon={<ShieldCheck className="w-8 h-8" />}
   >
     <section className="space-y-4">
@@ -85,9 +85,9 @@ export const RefundPolicy: React.FC = () => (
 );
 
 export const CookiePolicy: React.FC = () => (
-  <LegalContainer 
-    title="Cookie Protocol" 
-    subtitle="Tracking and Analytics Transparency" 
+  <LegalContainer
+    title="Cookie Protocol"
+    subtitle="Tracking and Analytics Transparency"
     icon={<Info className="w-8 h-8" />}
   >
     <p className="text-sm text-gray-500 leading-relaxed">FFN uses minimal, essential cookies to maintain your session security and remember your professional preferences. We utilize anonymized analytics to improve the global creative graph's efficiency.</p>
