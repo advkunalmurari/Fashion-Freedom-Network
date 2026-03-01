@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /settings
+Disallow: /messages
+Disallow: /my-profile
+
+Sitemap: https://fashion-freedom-network.vercel.app/sitemap.xml
