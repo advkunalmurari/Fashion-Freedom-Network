@@ -91,9 +91,10 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
         ))}
       </section>
 
-      <div className="flex space-x-12 border-b border-gray-100 pb-4">
+      <div className="flex space-x-12 border-b border-gray-100 pb-4 overflow-x-auto scrollbar-hide">
         {[
           { id: 'overview', label: 'Overview', icon: Grid },
+          { id: 'business', label: 'Professional Profile', icon: Briefcase },
           { id: 'analytics', label: 'Analytics Dashboard', icon: BarChart3 },
           { id: 'marketing', label: 'Monetization & Subs', icon: Zap },
         ].map(tab => (
@@ -113,6 +114,79 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
         {activeTab === 'overview' && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-16">
             <div className="bg-white rounded-[4rem] p-12 border border-gray-100 shadow-xl relative overflow-hidden"><ProfileHero user={user} /></div>
+          </motion.div>
+        )}
+
+        {activeTab === 'business' && (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              <div className="bg-white p-12 rounded-[3.5rem] border border-gray-100 shadow-xl space-y-8">
+                <div className="flex items-center space-x-4 mb-4">
+                  <div className="w-12 h-12 bg-ffn-primary/10 rounded-2xl flex items-center justify-center text-ffn-primary">
+                    <Award className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-3xl font-serif italic text-ffn-black">Skills & Specialties</h3>
+                </div>
+                <div className="flex flex-wrap gap-4">
+                  {(user.skills && user.skills.length > 0) ? (
+                    user.skills.map((skill: string, idx: number) => (
+                      <span key={idx} className="px-6 py-3 bg-gray-50 text-ffn-black rounded-full text-xs font-black uppercase tracking-widest border border-gray-200">
+                        {skill}
+                      </span>
+                    ))
+                  ) : (
+                    <p className="text-sm text-gray-400 italic font-light">No specialties configured yet.</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="bg-white p-12 rounded-[3.5rem] border border-gray-100 shadow-xl space-y-8">
+                <div className="flex items-center space-x-4 mb-4">
+                  <div className="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-500">
+                    <DollarSign className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-3xl font-serif italic text-ffn-black">Booking Rates</h3>
+                </div>
+                <div className="space-y-6">
+                  <div className="flex justify-between items-center bg-gray-50 p-6 rounded-3xl border border-gray-100">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">Daily Rate</span>
+                    <span className="text-2xl font-serif italic font-bold text-emerald-600">{user.currency || 'INR'} {user.dailyRate || '15,000'}</span>
+                  </div>
+                  <div className="flex justify-between items-center bg-gray-50 p-6 rounded-3xl border border-gray-100">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">Hourly Rate</span>
+                    <span className="text-2xl font-serif italic font-bold text-emerald-600">{user.currency || 'INR'} {user.hourlyRate || '2,500'}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white p-12 rounded-[3.5rem] border border-gray-100 shadow-xl space-y-8">
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-500">
+                    <ShieldCheck className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-3xl font-serif italic text-ffn-black">Verified Work Credits</h3>
+                </div>
+                <button className="flex items-center space-x-2 text-[10px] uppercase font-black tracking-widest text-ffn-primary hover:text-ffn-black transition-colors">
+                  <Plus className="w-4 h-4" /> <span>Add Credit</span>
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                {[1, 2, 3].map((_, i) => (
+                  <div key={i} className="flex flex-col md:flex-row md:items-center justify-between p-6 bg-gray-50 border border-gray-100 rounded-3xl group hover:bg-white hover:shadow-lg transition-all">
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-bold text-ffn-black">Vogue India Summer Editorial</h4>
+                      <p className="text-[10px] uppercase tracking-widest text-gray-400">Lead Model • Condé Nast • 2024</p>
+                    </div>
+                    <div className="mt-4 md:mt-0 flex items-center space-x-3">
+                      <span className="flex items-center text-[9px] uppercase tracking-widest font-black text-blue-500 bg-blue-50 px-4 py-2 rounded-full border border-blue-100"><CheckCircle className="w-3 h-3 mr-1.5" /> Verified</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </motion.div>
         )}
 

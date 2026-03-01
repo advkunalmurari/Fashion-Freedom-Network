@@ -224,6 +224,16 @@ export const ProfileHero: React.FC<{ user: User }> = ({ user }) => {
                 <DollarSign className="w-4 h-4 mr-1.5" /> From ${user.hourlyRate}/hr
               </div>
             )}
+            {user.experienceLevel && (
+              <div className="flex items-center text-[10px] text-purple-600 font-black uppercase tracking-widest bg-purple-50 px-6 py-3 rounded-full border border-purple-100 shadow-sm">
+                <Briefcase className="w-4 h-4 mr-2" /> {user.experienceLevel}
+              </div>
+            )}
+            {user.agencyAffiliation && (
+              <div className="flex items-center text-[10px] text-blue-600 font-black uppercase tracking-widest bg-blue-50 px-6 py-3 rounded-full border border-blue-100 shadow-sm">
+                <Grid className="w-4 h-4 mr-2" /> {user.agencyAffiliation}
+              </div>
+            )}
             <div className="flex items-center text-[10px] text-ffn-primary font-black uppercase tracking-widest bg-ffn-primary/5 px-6 py-3 rounded-full border border-ffn-primary/10 shadow-sm">
               <Sparkles className="w-4 h-4 mr-3" /> Identity Score: {user.completionScore || 85}%
             </div>
@@ -231,22 +241,27 @@ export const ProfileHero: React.FC<{ user: User }> = ({ user }) => {
 
           <div className="bg-gray-50/50 border border-gray-100 rounded-3xl p-6 mt-6 max-w-2xl grid grid-cols-2 lg:grid-cols-4 gap-6 content-center text-center">
             <div>
-              <p className="text-[9px] uppercase tracking-widest font-black text-gray-400 mb-1">Response</p>
-              <p className="text-sm font-bold text-emerald-500">&lt; 1 hr</p>
+              <p className="text-[9px] uppercase tracking-widest font-black text-gray-400 mb-1">Rating</p>
+              <p className="text-sm font-bold text-emerald-500 flex items-center justify-center space-x-1">
+                <Sparkles className="w-3 h-3" />
+                <span>{user.avgRating ? user.avgRating.toFixed(1) : '5.0'}</span>
+              </p>
             </div>
             <div>
-              <p className="text-[9px] uppercase tracking-widest font-black text-gray-400 mb-1">Booked Shoots</p>
-              <p className="text-sm font-bold text-ffn-black">42</p>
+              <p className="text-[9px] uppercase tracking-widest font-black text-gray-400 mb-1">Work Credits</p>
+              <p className="text-sm font-bold text-ffn-black">{user.workHistoryCount || 0}</p>
             </div>
             <div>
-              <p className="text-[9px] uppercase tracking-widest font-black text-gray-400 mb-1">Success Rate</p>
-              <p className="text-sm font-bold text-ffn-black">98%</p>
+              <p className="text-[9px] uppercase tracking-widest font-black text-gray-400 mb-1">Reliability</p>
+              <p className="text-sm font-bold text-ffn-black">{user.reliabilityScore ? user.reliabilityScore + '%' : '100%'}</p>
             </div>
             <div>
-              <p className="text-[9px] uppercase tracking-widest font-black text-gray-400 mb-1">Availability</p>
+              <p className="text-[9px] uppercase tracking-widest font-black text-gray-400 mb-1">Status</p>
               <div className="flex items-center justify-center space-x-1.5 mt-1">
-                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                <p className="text-[10px] font-bold text-emerald-500 uppercase">Available</p>
+                <div className={`w-2 h-2 rounded-full ${user.availabilityStatus === 'busy' ? 'bg-rose-500' : 'bg-emerald-500 animate-pulse'}`}></div>
+                <p className={`text-[10px] font-bold uppercase ${user.availabilityStatus === 'busy' ? 'text-rose-500' : 'text-emerald-500'}`}>
+                  {user.availabilityStatus === 'busy' ? 'Busy' : 'Available'}
+                </p>
               </div>
             </div>
           </div>

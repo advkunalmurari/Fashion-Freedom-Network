@@ -22,6 +22,7 @@ const publicProfileController = require('./profiles/publicProfileController');
 const socialController = require('./social/socialController');
 const postsController = require('./posts/postsController');
 const feedController = require('./feed/feedController');
+const aiController = require('./ai/aiController');
 
 const app = express();
 app.use(cors());
@@ -109,10 +110,15 @@ app.post('/api/posts/:postId/save', authMiddleware, socialController.toggleSave)
 // Analytics
 app.post('/api/analytics/track-view', analyticsController.trackView);
 app.get('/api/analytics/profile/:userId/stats', analyticsController.getProfileStats);
+app.get('/api/analytics/platform-stats', analyticsController.getPlatformStats);
+app.post('/api/admin/compute-metrics', authMiddleware, analyticsController.computeDailyMetrics);
 
 // Admin (Restricted)
 app.post('/api/admin/verify-user', authMiddleware, adminController.verifyUser);
 app.get('/api/admin/dashboard-stats', authMiddleware, adminController.getStats);
+
+// AI Talent Match Engine
+app.post('/api/ai/match-talent', authMiddleware, aiController.matchTalent);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

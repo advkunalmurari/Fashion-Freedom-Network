@@ -10,6 +10,7 @@ import { VerificationLevel } from '../types';
 
 import { StoriesRail, Story } from './StoriesRail';
 import { StoryViewer } from './StoryViewer';
+import { PublicStats } from './PublicStats';
 
 const HubGraphic: React.FC<{ type: string }> = ({ type }) => {
   switch (type) {
@@ -70,6 +71,11 @@ export const Home: React.FC<{ onApply: () => void; onDirectory: () => void; onRe
             <motion.button whileHover={{ scale: 1.05, backgroundColor: "#fff" }} whileTap={{ scale: 0.98 }} onClick={onDirectory} className="w-full sm:w-auto bg-white/50 backdrop-blur-md border border-gray-100 text-ffn-black px-16 py-8 rounded-[2.5rem] text-xs font-bold uppercase tracking-[0.4em] shadow-sm hover:shadow-xl transition-all">Hire Mastery</motion.button>
           </motion.div>
         </div>
+      </section>
+
+      {/* Platform Liquidity Metrics */}
+      <section className="px-4">
+        <PublicStats />
       </section>
 
       {/* NEW Section: Featured Talent Homepage Placement (SECTION 2) */}

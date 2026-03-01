@@ -48,6 +48,19 @@ export interface User {
   completionScore?: number;
   rankingScore?: number;
   rankPosition?: number;
+  // Professional & Booking Fields
+  experienceLevel?: 'beginner' | 'intermediate' | 'pro';
+  yearsExperience?: number;
+  agencyAffiliation?: string;
+  workHistoryCount?: number;
+  brandCollaborationsCount?: number;
+  portfolioQualityScore?: number;
+  availabilityStatus?: 'available' | 'busy';
+  dailyRate?: number;
+  currency?: string;
+  reliabilityScore?: number;
+  avgRating?: number;
+  completedJobs?: number;
   subscription?: {
     type: SubscriptionType;
     endDate: string;
@@ -125,5 +138,16 @@ export interface ProfileView {
   id: string;
   user_id: string;
   viewer_id: string;
+  created_at: string;
+}
+
+export interface WorkCredit {
+  id: string;
+  user_id: string;
+  project_name: string;
+  role: string;
+  brand_name: string;
+  year: number;
+  is_verified: boolean;
   created_at: string;
 }

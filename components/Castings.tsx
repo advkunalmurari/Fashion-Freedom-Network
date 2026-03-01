@@ -1,9 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Clock, DollarSign, ArrowRight, ShieldCheck, Briefcase, X, CheckCircle, Award, Sparkles, FileText, Send, User, Loader2, Plus, Building2, Mail, Calendar, Zap } from 'lucide-react';
+import { MapPin, Clock, DollarSign, ArrowRight, ShieldCheck, Briefcase, X, CheckCircle, Award, Sparkles, FileText, Send, User, Loader2, Plus, Building2, Mail, Calendar, Zap, BrainCircuit } from 'lucide-react';
 import { UserRole } from '../types';
-import { PRICING } from '../constants';
+import { PRICING, MOCK_TALENT_POOL } from '../constants';
 import { castingService } from '../services/castingService';
 
 interface CastingItem {
@@ -245,6 +245,29 @@ export const Castings: React.FC = () => {
                       </div>
                     </div>
                     <p className="text-lg text-gray-500 font-light leading-relaxed italic">"{selectedCasting.description}"</p>
+
+                    {/* AI Match Engine UI snippet */}
+                    <div className="pt-8 border-t border-gray-100 space-y-6">
+                      <div className="flex items-center space-x-3 text-ffn-primary">
+                        <BrainCircuit className="w-5 h-5 animate-pulse" />
+                        <span className="text-[10px] font-black uppercase tracking-[0.4em]">Antigravity Match Engine</span>
+                      </div>
+                      <h3 className="text-2xl font-serif italic text-ffn-black">Recommended Talent</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {MOCK_TALENT_POOL.slice(0, 2).map(talent => (
+                          <div key={talent.id} className="p-6 rounded-3xl border border-ffn-primary/20 bg-ffn-primary/5 flex items-center space-x-6">
+                            <img src={talent.avatarUrl} className="w-16 h-16 rounded-2xl object-cover" alt="" />
+                            <div className="space-y-1 flex-1">
+                              <p className="text-sm font-bold font-serif italic">{talent.displayName}</p>
+                              <p className="text-[9px] uppercase tracking-widest text-gray-500">{talent.role} • 98% Match</p>
+                            </div>
+                            <button className="p-3 bg-white rounded-xl text-ffn-primary hover:bg-ffn-black hover:text-white transition-all shadow-sm">
+                              <ArrowRight className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                   <div className="lg:col-span-5 space-y-12">
                     <div className="bg-gray-50 p-12 rounded-[3.5rem] space-y-12 shadow-inner border border-gray-100">

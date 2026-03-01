@@ -22,6 +22,7 @@ const MyProfile = React.lazy(() => import('./components/MyProfile').then(m => ({
 const PostDetail = React.lazy(() => import('./components/PostDetail').then(m => ({ default: m.PostDetail })));
 const Photoshoots = React.lazy(() => import('./components/Photoshoots').then(m => ({ default: m.Photoshoots })));
 const Brands = React.lazy(() => import('./components/Brands').then(m => ({ default: m.Brands })));
+const BrandDashboard = React.lazy(() => import('./components/BrandDashboard').then(m => ({ default: m.BrandDashboard })));
 const RegisterProfessional = React.lazy(() => import('./components/RegisterProfessional').then(m => ({ default: m.RegisterProfessional })));
 const PrivacyPolicy = React.lazy(() => import('./components/LegalPages').then(m => ({ default: m.PrivacyPolicy })));
 const TermsAndConditions = React.lazy(() => import('./components/LegalPages').then(m => ({ default: m.TermsAndConditions })));
@@ -114,6 +115,7 @@ const Application: React.FC = () => {
             <Route path="/directory" element={<Directory onSelectTalent={(id) => navigate('/profile-view/' + id)} onRegisterProfessional={() => navigate('/register-professional')} />} />
             <Route path="/shoots" element={<Photoshoots />} />
             <Route path="/brands" element={<Brands />} />
+            <Route path="/brand-dashboard" element={<BrandDashboard user={user} onLogout={handleLogout} />} />
             <Route path="/castings" element={<Castings />} />
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/network" element={<Network />} />
