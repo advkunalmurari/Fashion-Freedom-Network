@@ -5,15 +5,16 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
 
 export const postService = {
     // Fetch a feed of posts
-    async getFeed(): Promise<{ success: boolean; data?: Post[]; error?: string }> {
+    async getFeed(page: number = 1, limit: number = 20): Promise<{ success: boolean; data?: Post[]; error?: string }> {
         try {
+            const offset = (page - 1) * limit;
             const { data: { session } } = await supabase.auth.getSession();
             const headers: any = { 'Content-Type': 'application/json' };
             if (session?.access_token) {
                 headers['Authorization'] = `Bearer ${session.access_token}`;
             }
 
-            const response = await fetch(`${API_URL}/feed/home`, { headers });
+            const response = await fetch(`${API_URL}/feed/home?limit=${limit}&offset=${offset}`, { headers });
             const res = await response.json();
 
             if (!res.success) throw new Error(res.message);
@@ -205,15 +206,16 @@ export const postService = {
     },
 
     // Fetch explore feed (ranked discovery)
-    async getExploreFeed(): Promise<{ success: boolean; data?: Post[]; error?: string }> {
+    async getExploreFeed(page: number = 1, limit: number = 20): Promise<{ success: boolean; data?: Post[]; error?: string }> {
         try {
+            const offset = (page - 1) * limit;
             const { data: { session } } = await supabase.auth.getSession();
             const headers: any = { 'Content-Type': 'application/json' };
             if (session?.access_token) {
                 headers['Authorization'] = `Bearer ${session.access_token}`;
             }
 
-            const response = await fetch(`${API_URL}/feed/explore`, { headers });
+            const response = await fetch(`${API_URL}/feed/explore?limit=${limit}&offset=${offset}`, { headers });
             const res = await response.json();
 
             if (!res.success) throw new Error(res.message);

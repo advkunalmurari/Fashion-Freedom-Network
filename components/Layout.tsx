@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -32,6 +32,15 @@ export const Layout: React.FC<LayoutProps> = ({
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isMobileMenuOpen]);
 
   const navItems = [
     { id: 'home', icon: Home, label: 'Discover' },
@@ -256,6 +265,79 @@ export const Layout: React.FC<LayoutProps> = ({
           <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className={`p-3.5 rounded-2xl transition-colors focus:outline-none ${isDarkMode ? 'text-white bg-white/5' : 'text-ffn-black bg-gray-50'}`}>{isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}</button>
         </div>
       </header>
+
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className={`fixed inset-0 z-[150] pt-28 pb-10 overflow-y-auto lg:hidden ${isDarkMode ? 'bg-[#0A0A0A]' : 'bg-white'}`}
+          >
+            <div className="px-8 space-y-6">
+              {currentUser && (
+                <button
+                  onClick={() => { setIsCreateModalOpen(true); setIsMobileMenuOpen(false); }}
+                  className={`w-full py-4 rounded-xl flex items-center justify-center space-x-3 shadow-lg ${isDarkMode ? 'bg-white text-black' : 'bg-ffn-black text-white'}`}
+                >
+                  <PlusCircle className="w-5 h-5" />
+                  <span className="font-bold uppercase tracking-widest text-xs">Create Mastery</span>
+                </button>
+              )}
+
+              <nav className="space-y-2">
+                {navItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => { navigate('/' + item.id); setIsMobileMenuOpen(false); }}
+                    className={`flex items-center w-full p-4 rounded-xl transition-all ${activeTab === item.id
+                        ? (isDarkMode ? 'bg-white/10 text-white font-bold' : 'bg-gray-100 text-ffn-black font-bold')
+                        : (isDarkMode ? 'text-white/60 hover:text-white' : 'text-gray-500 hover:text-ffn-black')
+                      }`}
+                  >
+                    <item.icon className={`w-5 h-5 mr-4 ${activeTab === item.id ? 'text-ffn-primary' : ''}`} />
+                    <span className="text-sm font-bold uppercase tracking-widest">{item.label}</span>
+                  </button>
+                ))}
+              </nav>
+
+              <div className={`pt-6 border-t ${isDarkMode ? 'border-white/10' : 'border-gray-100'}`}>
+                {currentUser ? (
+                  <button
+                    onClick={() => { navigate('/my-profile'); setIsMobileMenuOpen(false); }}
+                    className={`flex items-center justify-between w-full p-4 rounded-xl ${isDarkMode ? 'bg-white/5 text-white' : 'bg-gray-50 text-ffn-black'}`}
+                  >
+                    <div className="flex items-center">
+                      <div className="w-10 h-10 rounded-full overflow-hidden mr-4">
+                        {currentUser.user_metadata?.avatar_url ? (
+                          <img src={currentUser.user_metadata.avatar_url} className="w-full h-full object-cover" alt="" />
+                        ) : (
+                          <div className="w-full h-full bg-ffn-primary flex items-center justify-center text-white font-bold">
+                            {currentUser.email?.[0].toUpperCase()}
+                          </div>
+                        )}
+                      </div>
+                      <div className="text-left">
+                        <div className="text-xs font-bold uppercase tracking-widest truncate max-w-[150px]">{currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0]}</div>
+                        <div className="text-[10px] uppercase font-black text-ffn-primary mt-1">View Profile</div>
+                      </div>
+                    </div>
+                    <ChevronRight className="w-5 h-5 opacity-50" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => { navigate('/login'); setIsMobileMenuOpen(false); }}
+                    className={`flex items-center justify-center w-full p-4 rounded-xl shadow-lg ${isDarkMode ? 'bg-white text-black' : 'bg-ffn-black text-white'}`}
+                  >
+                    <LogIn className="w-5 h-5 mr-3" />
+                    <span className="font-bold uppercase tracking-widest text-xs">Login</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <main className="lg:hidden flex-1 min-h-screen relative pt-32 pb-10"><div className="max-w-7xl mx-auto px-6"><AnimatePresence mode="wait"><motion.div key={activeTab} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>{children}</motion.div></AnimatePresence></div></main>
     </div>

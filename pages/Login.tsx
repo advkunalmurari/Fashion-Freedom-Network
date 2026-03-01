@@ -32,7 +32,7 @@ const LoginPage: React.FC<LoginProps> = ({ onLogin }) => {
     }, [onLogin]);
 
     return (
-        <div className="fixed inset-0 z-[100] flex overflow-hidden font-sans">
+        <div className="min-h-[100dvh] w-full relative z-[100] flex overflow-x-hidden overflow-y-auto font-sans">
             <AnimatedBackground />
 
             <div className="login-split-layout">

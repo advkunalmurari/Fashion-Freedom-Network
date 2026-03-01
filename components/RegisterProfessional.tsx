@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { UserRole, VerificationLevel } from '../types';
 import {
   ShieldCheck, CreditCard, ArrowRight, Loader2, Camera, CheckCircle,
@@ -30,20 +30,51 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
     avatarUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400'
   });
 
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const nextStep = (e: React.FormEvent) => {
     e.preventDefault();
     if (step < 4) setStep(step + 1);
   };
 
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setAvatarFile(file);
+      setFormData({ ...formData, avatarUrl: URL.createObjectURL(file) });
+    }
+  };
+
   const handlePaymentSuccess = async (details: any) => {
     setIsProcessing(true);
     try {
+      let finalAvatarUrl = formData.avatarUrl;
+
+      if (avatarFile) {
+        const fileExt = avatarFile.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `avatars/${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('avatars')
+          .upload(filePath, avatarFile);
+
+        if (uploadError) throw new Error("Failed to upload profile picture: " + uploadError.message);
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('avatars')
+          .getPublicUrl(filePath);
+
+        finalAvatarUrl = publicUrl;
+      }
+
       // 1. Register via Supabase directly 
       const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
-          data: { username: formData.username.replace('@', ''), full_name: formData.fullName, avatar_url: formData.avatarUrl }
+          data: { username: formData.username.replace('@', ''), full_name: formData.fullName, avatar_url: finalAvatarUrl }
         }
       });
       if (signUpError) throw new Error(signUpError.message);
@@ -55,7 +86,7 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
         username: formData.username.replace('@', ''),
         full_name: formData.fullName,
         email: formData.email,
-        avatar_url: formData.avatarUrl,
+        avatar_url: finalAvatarUrl,
         category: formData.category,
         is_professional: true,
         is_premium: true, // Auto-upgraded due to payment
@@ -71,7 +102,7 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
         id: signUpData.user.id,
         username: formData.username.replace('@', ''),
         displayName: formData.fullName,
-        avatarUrl: formData.avatarUrl,
+        avatarUrl: finalAvatarUrl,
         role: formData.category,
         verificationLevel: VerificationLevel.VERIFIED,
         isVerified: true,
@@ -139,7 +170,8 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
                     <input
                       required
                       type="text"
-                      className="w-full py-6 px-16 text-sm bg-white rounded-3xl border border-gray-100 focus:border-ffn-primary focus:shadow-xl transition-all"
+                      aria-label="Full Legal Name"
+                      className="w-full py-6 px-16 text-base bg-white rounded-3xl border border-gray-100 focus:border-ffn-primary focus:shadow-xl transition-all"
                       placeholder="e.g. Elena Rossi"
                       value={formData.fullName}
                       onChange={e => setFormData({ ...formData, fullName: e.target.value })}
@@ -154,7 +186,8 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
                       <input
                         required
                         type="text"
-                        className="w-full py-6 px-12 text-sm bg-white rounded-3xl border border-gray-100 focus:border-ffn-primary focus:shadow-xl transition-all"
+                        aria-label="Professional Username"
+                        className="w-full py-6 px-12 text-base bg-white rounded-3xl border border-gray-100 focus:border-ffn-primary focus:shadow-xl transition-all"
                         placeholder="username"
                         value={formData.username}
                         onChange={e => setFormData({ ...formData, username: e.target.value })}
@@ -168,7 +201,8 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
                       <input
                         required
                         type="email"
-                        className="w-full py-6 px-16 text-sm bg-white rounded-3xl border border-gray-100 focus:border-ffn-primary focus:shadow-xl transition-all"
+                        aria-label="Email Address"
+                        className="w-full py-6 px-16 text-base bg-white rounded-3xl border border-gray-100 focus:border-ffn-primary focus:shadow-xl transition-all"
                         placeholder="pro@fashion.com"
                         value={formData.email}
                         onChange={e => setFormData({ ...formData, email: e.target.value })}
@@ -183,7 +217,8 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
                     <input
                       required
                       type="password"
-                      className="w-full py-6 px-16 text-sm bg-white rounded-3xl border border-gray-100 focus:border-ffn-primary focus:shadow-xl transition-all"
+                      aria-label="Secure Password"
+                      className="w-full py-6 px-16 text-base bg-white rounded-3xl border border-gray-100 focus:border-ffn-primary focus:shadow-xl transition-all"
                       placeholder="••••••••"
                       value={formData.password}
                       onChange={e => setFormData({ ...formData, password: e.target.value })}
@@ -241,7 +276,10 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
                 className="space-y-10"
               >
                 <div className="flex flex-col md:flex-row gap-10 items-center">
-                  <div className="w-40 h-40 rounded-[3rem] bg-gray-50 border border-gray-100 overflow-hidden relative group cursor-pointer flex-none">
+                  <input type="file" ref={fileInputRef} className="hidden" accept="image/*" aria-label="Upload Identity Profile Picture" onChange={handleImageSelect} />
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-40 h-40 rounded-[3rem] bg-gray-50 border border-gray-100 overflow-hidden relative group cursor-pointer flex-none">
                     <img src={formData.avatarUrl} className="w-full h-full object-cover" alt="" />
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
                       <Camera className="w-8 h-8 text-white" />
@@ -250,7 +288,7 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
                   <div className="flex-1 space-y-4">
                     <h3 className="text-[10px] uppercase tracking-[0.4em] font-black text-gray-400">Hero Portrait</h3>
                     <p className="text-xs text-gray-400 font-light italic">"A high-fidelity editorial portrait increases discovery by 300%."</p>
-                    <button type="button" className="px-8 py-3 bg-ffn-black text-white text-[8px] font-bold uppercase tracking-widest rounded-full">Upload New Identity</button>
+                    <button type="button" onClick={() => fileInputRef.current?.click()} className="px-8 py-3 bg-ffn-black text-white text-[8px] font-bold uppercase tracking-widest rounded-full">Upload New Identity</button>
                   </div>
                 </div>
 
@@ -262,7 +300,8 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
                       <input
                         required
                         type="text"
-                        className="w-full py-6 px-16 text-sm bg-white rounded-3xl border border-gray-100 focus:border-ffn-primary focus:shadow-xl transition-all"
+                        aria-label="Base Location"
+                        className="w-full py-6 px-16 text-base bg-white rounded-3xl border border-gray-100 focus:border-ffn-primary focus:shadow-xl transition-all"
                         placeholder="e.g. Mumbai, India"
                         value={formData.location}
                         onChange={e => setFormData({ ...formData, location: e.target.value })}
@@ -276,7 +315,8 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
                       <input
                         required
                         type="text"
-                        className="w-full py-6 px-16 text-sm bg-white rounded-3xl border border-gray-100 focus:border-ffn-primary focus:shadow-xl transition-all"
+                        aria-label="Instagram Handle"
+                        className="w-full py-6 px-16 text-base bg-white rounded-3xl border border-gray-100 focus:border-ffn-primary focus:shadow-xl transition-all"
                         placeholder="@handle"
                         value={formData.instagram}
                         onChange={e => setFormData({ ...formData, instagram: e.target.value })}
@@ -289,7 +329,8 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
                   <label className="text-[10px] uppercase tracking-[0.4em] font-black text-gray-400">Professional Bio Architecture</label>
                   <textarea
                     required
-                    className="w-full py-6 px-8 text-sm h-40 bg-white rounded-[2rem] border border-gray-100 focus:border-ffn-primary focus:shadow-xl transition-all resize-none"
+                    aria-label="Professional Bio Architecture"
+                    className="w-full py-6 px-8 text-base h-40 bg-white rounded-[2rem] border border-gray-100 focus:border-ffn-primary focus:shadow-xl transition-all resize-none"
                     placeholder="Establish your narrative, influences, and expertise..."
                     value={formData.bio}
                     onChange={e => setFormData({ ...formData, bio: e.target.value })}

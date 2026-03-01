@@ -19,23 +19,65 @@ export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(true);
 
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
   const observerTarget = useRef<HTMLDivElement>(null);
 
-  const fetchFeed = async () => {
-    setIsRefreshing(true);
-    const res = await postService.getFeed();
+  const fetchFeed = async (pageNum: number = 1) => {
+    if (pageNum === 1) setIsRefreshing(true);
+    else setIsLoadingMore(true);
+
+    const res = await postService.getFeed(pageNum);
     if (res.success && res.data) {
-      setPosts(res.data);
+      if (res.data.length < 20) setHasMore(false);
+      else setHasMore(true);
+
+      if (pageNum === 1) {
+        setPosts(res.data);
+      } else {
+        setPosts(prev => {
+          const newPosts = res.data!.filter(newP => !prev.some(p => p.id === newP.id));
+          return [...prev, ...newPosts];
+        });
+      }
+    } else if (pageNum === 1) {
+      setPosts([]);
+      setHasMore(false);
     }
     setIsRefreshing(false);
+    setIsLoadingMore(false);
   };
 
   useEffect(() => {
-    fetchFeed();
+    setPage(1);
+    fetchFeed(1);
   }, []);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoadingMore && !isRefreshing) {
+          setPage(prev => {
+            const next = prev + 1;
+            fetchFeed(next);
+            return next;
+          });
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasMore, isLoadingMore, isRefreshing]);
+
   const handlePostCreated = () => {
-    fetchFeed(); // Refresh the feed when a new post is published
+    setPage(1);
+    fetchFeed(1); // Refresh the feed when a new post is published
   };
 
   return (
@@ -86,7 +128,22 @@ export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
         <CreatePost onPostCreated={handlePostCreated} />
 
         <AnimatePresence>
-          {!isRefreshing && posts.length === 0 ? (
+          {isRefreshing ? (
+            <div className="space-y-8 mt-12">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="animate-pulse bg-white rounded-[3rem] p-6 lg:p-8 space-y-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-gray-200 rounded-full" />
+                    <div className="space-y-2 flex-1">
+                      <div className="w-32 h-4 bg-gray-200 rounded-full" />
+                      <div className="w-24 h-3 bg-gray-100 rounded-full" />
+                    </div>
+                  </div>
+                  <div className="w-full aspect-[4/5] bg-gray-100 rounded-[2rem]" />
+                </div>
+              ))}
+            </div>
+          ) : posts.length === 0 ? (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -109,7 +166,7 @@ export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
 
         {/* Infinite Scroll Trigger & Loading State */}
         <div ref={observerTarget} className="py-20 flex flex-col items-center justify-center space-y-6">
-          {isRefreshing || isLoadingMore ? (
+          {isRefreshing ? null : isLoadingMore ? (
             <div className="flex flex-col items-center space-y-4">
               <motion.div
                 animate={{ rotate: 360 }}
@@ -118,8 +175,10 @@ export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
               />
               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-ffn-steel animate-pulse">Syncing Network Nodes...</span>
             </div>
+          ) : hasMore ? (
+            <div className="w-full flex justify-center py-10 opacity-0">Scroll trigger line</div>
           ) : (
-            <div className="flex items-center space-x-3 opacity-20">
+            <div className="flex items-center space-x-3 opacity-20 py-10">
               <Sparkles className="w-5 h-5 text-ffn-primary" />
               <span className="text-[9px] font-black uppercase tracking-[0.5em]">Identity Feed End Sequence</span>
             </div>

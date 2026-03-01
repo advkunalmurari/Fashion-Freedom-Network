@@ -70,7 +70,7 @@
 /* Responsive Layouts */
 .login-split-layout {
     display: flex;
-    min-height: 100vh;
+    min-height: 100dvh;
     width: 100%;
     position: relative;
     z-index: 10;
@@ -127,7 +127,7 @@
     border-radius: 12px;
     padding: 0 1.25rem 0 3rem;
     color: white;
-    font-size: 0.875rem;
+    font-size: 1rem;
     transition: all 0.2s ease;
     outline: none;
 }

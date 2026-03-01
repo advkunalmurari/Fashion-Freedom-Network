@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, TrendingUp, Play, Image as ImageIcon, Search, SlidersHorizontal, Grid, Camera, Zap, ArrowRight, Loader2 } from 'lucide-react';
 import { Post } from '../types';
@@ -11,19 +11,64 @@ export const Explore: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
 
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  const observerTarget = useRef<HTMLDivElement>(null);
+
   const topics = ['Streetwear', 'Avant-Garde', 'Minimalism', 'Sustainable', 'Couture', 'Vintage', 'Digital'];
 
-  useEffect(() => {
-    const fetchExplore = async () => {
-      setIsLoading(true);
-      const res = await postService.getExploreFeed();
-      if (res.success && res.data) {
+  const fetchExplore = async (pageNum: number = 1) => {
+    if (pageNum === 1) setIsLoading(true);
+    else setIsLoadingMore(true);
+
+    const res = await postService.getExploreFeed(pageNum);
+    if (res.success && res.data) {
+      if (res.data.length < 20) setHasMore(false);
+      else setHasMore(true);
+
+      if (pageNum === 1) {
         setPosts(res.data);
+      } else {
+        setPosts(prev => {
+          const newPosts = res.data!.filter(newP => !prev.some(p => p.id === newP.id));
+          return [...prev, ...newPosts];
+        });
       }
-      setIsLoading(false);
-    };
-    fetchExplore();
+    } else if (pageNum === 1) {
+      setPosts([]);
+      setHasMore(false);
+    }
+    setIsLoading(false);
+    setIsLoadingMore(false);
+  };
+
+  useEffect(() => {
+    setPage(1);
+    fetchExplore(1);
   }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoadingMore && !isLoading) {
+          setPage(prev => {
+            const next = prev + 1;
+            fetchExplore(next);
+            return next;
+          });
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasMore, isLoadingMore, isLoading]);
 
   const filteredPosts = posts.filter(post => {
     if (activeTab === 'motion') return post.type === 'VIDEO';
@@ -94,9 +139,10 @@ export const Explore: React.FC = () => {
       </header>
 
       {isLoading ? (
-        <div className="flex flex-col items-center justify-center py-32 space-y-6">
-          <Loader2 className="w-12 h-12 animate-spin text-ffn-primary" />
-          <p className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400">Scanning Identity Nodes...</p>
+        <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-10 space-y-10 py-10">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className={`animate-pulse bg-gray-100 rounded-[3.5rem] w-full ${i % 2 === 0 ? 'aspect-[3/4]' : 'aspect-square'} break-inside-avoid shadow-sm`} />
+          ))}
         </div>
       ) : (
         <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-10 space-y-10">
@@ -153,6 +199,23 @@ export const Explore: React.FC = () => {
           </AnimatePresence>
         </div>
       )}
+
+      {/* Infinite Scroll Trigger */}
+      <div ref={observerTarget} className="py-20 flex justify-center items-center">
+        {isLoading ? null : isLoadingMore ? (
+          <div className="flex flex-col items-center space-y-4">
+            <Loader2 className="w-8 h-8 animate-spin text-ffn-primary" />
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-ffn-steel animate-pulse">Syncing Explore Graph...</span>
+          </div>
+        ) : hasMore ? (
+          <div className="opacity-0 w-full h-10">Trigger</div>
+        ) : posts.length > 0 ? (
+          <div className="flex items-center space-x-3 opacity-20">
+            <Sparkles className="w-5 h-5 text-ffn-primary" />
+            <span className="text-[9px] font-black uppercase tracking-[0.5em]">Identity Feed End Sequence</span>
+          </div>
+        ) : null}
+      </div>
 
       {posts.length === 0 && !isLoading && (
         <div className="bg-gray-50 rounded-[4rem] p-32 text-center space-y-8 border-2 border-dashed border-gray-200 mt-10">
