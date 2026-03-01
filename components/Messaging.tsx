@@ -3,6 +3,7 @@ import { Search, Send, Image, Smile, Phone, Video, Info, MoreVertical, Paperclip
 import { motion, AnimatePresence } from 'framer-motion';
 import { messageService } from '../services/messageService';
 import { supabase } from '../supabase';
+import { PayPalButton } from './PayPalButton';
 
 export const Messaging: React.FC = () => {
   const [activeThreadIndex, setActiveThreadIndex] = useState(0);
@@ -11,6 +12,7 @@ export const Messaging: React.FC = () => {
   const [threads, setThreads] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isTyping, setIsTyping] = useState(false);
+  const [showHirePayment, setShowHirePayment] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -190,10 +192,30 @@ export const Messaging: React.FC = () => {
 
           <div className="flex items-center space-x-4">
             {/* Professional CTA */}
-            <button className="hidden md:flex items-center space-x-2 bg-ffn-black text-white px-5 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest shadow-lg hover:bg-ffn-primary transition-colors">
-              <Briefcase className="w-3 h-3" />
-              <span>Hire Talent</span>
-            </button>
+            <div className="relative">
+              {!showHirePayment ? (
+                <button
+                  onClick={() => setShowHirePayment(true)}
+                  className="hidden md:flex items-center space-x-2 bg-ffn-black text-white px-5 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest shadow-lg hover:bg-ffn-primary transition-colors">
+                  <Briefcase className="w-3 h-3" />
+                  <span>Hire Talent</span>
+                </button>
+              ) : (
+                <div className="absolute top-12 right-0 bg-white p-6 rounded-3xl w-72 shadow-2xl border border-gray-100 z-50 text-center space-y-4">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-ffn-black mb-2">Hire Escrow Deposit</p>
+                  <PayPalButton
+                    amount="250.00"
+                    currency="USD"
+                    type="capture"
+                    onSuccess={(data) => {
+                      alert(`Talent Hired Successfully! Deposit secured via Order ${data.id}.`);
+                      setShowHirePayment(false);
+                    }}
+                  />
+                  <button onClick={() => setShowHirePayment(false)} className="text-[9px] uppercase font-bold text-gray-400 hover:text-ffn-black w-full text-center">Cancel</button>
+                </div>
+              )}
+            </div>
             <div className="h-6 w-px bg-gray-100 mx-2 hidden md:block"></div>
             <button className="p-3 text-gray-400 hover:text-ffn-black hover:bg-gray-50 rounded-xl transition-all" title="Call"><Phone className="w-5 h-5" /></button>
             <button className="p-3 text-gray-400 hover:text-ffn-black hover:bg-gray-50 rounded-xl transition-all" title="Video Call"><Video className="w-5 h-5" /></button>

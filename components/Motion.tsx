@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Heart, MessageCircle, Share2, Music, Sparkles, Loader2, Volume2, VolumeX, Briefcase, Plus } from 'lucide-react';
 import { postService } from '../services/postService';
 import { Post } from '../types';
+import { PayPalButton } from './PayPalButton';
 
 export const Motion: React.FC = () => {
   const [reels, setReels] = useState<Post[]>([]);
@@ -56,6 +57,7 @@ const ReelCard: React.FC<{ reel: Post, muted: boolean, setMuted: (muted: boolean
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLiked, setIsLiked] = useState(reel.isLiked);
   const [likesCount, setLikesCount] = useState(reel.likes);
+  const [showBookingPayment, setShowBookingPayment] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -92,7 +94,7 @@ const ReelCard: React.FC<{ reel: Post, muted: boolean, setMuted: (muted: boolean
   const toggleLike = async () => {
     setIsLiked(!isLiked);
     setLikesCount(prev => isLiked ? prev - 1 : prev + 1);
-    await postService.toggleLike(reel.id, !isLiked);
+    await postService.toggleLike(reel.id);
   };
 
   return (
@@ -176,9 +178,28 @@ const ReelCard: React.FC<{ reel: Post, muted: boolean, setMuted: (muted: boolean
             </div>
 
             {/* Professional CTA - Book Talent */}
-            <div className="flex items-center space-x-3 bg-ffn-primary px-6 py-3 rounded-full border border-ffn-primary/50 w-fit cursor-pointer shadow-[0_0_20px_rgba(99,102,241,0.4)] hover:shadow-[0_0_30px_rgba(99,102,241,0.6)] transition-all">
-              <Briefcase className="w-4 h-4 text-white" />
-              <span className="text-white text-[9px] font-bold uppercase tracking-widest">Book Talent</span>
+            <div className="relative">
+              {!showBookingPayment ? (
+                <div
+                  onClick={(e) => { e.stopPropagation(); setShowBookingPayment(true); }}
+                  className="flex items-center space-x-3 bg-ffn-primary px-6 py-3 rounded-full border border-ffn-primary/50 w-fit cursor-pointer shadow-[0_0_20px_rgba(99,102,241,0.4)] hover:shadow-[0_0_30px_rgba(99,102,241,0.6)] transition-all">
+                  <Briefcase className="w-4 h-4 text-white" />
+                  <span className="text-white text-[9px] font-bold uppercase tracking-widest">Book Talent</span>
+                </div>
+              ) : (
+                <div className="absolute bottom-16 left-0 bg-white p-6 rounded-3xl w-72 shadow-2xl z-50 text-center space-y-4" onClick={e => e.stopPropagation()}>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-ffn-black mb-2">Book Booking Deposit</p>
+                  <PayPalButton
+                    amount="50.00"
+                    currency="USD"
+                    onSuccess={(data) => {
+                      alert(`Talent Booked Successfully! Order ID: ${data.id}`);
+                      setShowBookingPayment(false);
+                    }}
+                  />
+                  <button onClick={() => setShowBookingPayment(false)} className="text-[9px] uppercase font-bold text-gray-400 hover:text-ffn-black w-full text-center">Cancel</button>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -16,6 +16,8 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
   const [activeTab, setActiveTab] = useState<'overview' | 'business' | 'marketing' | 'analytics'>('overview');
   const [isSubscribing, setIsSubscribing] = useState<SubscriptionType | null>(null);
   const [activePlanBox, setActivePlanBox] = useState<SubscriptionType | null>(null);
+  const [activeBoostBox, setActiveBoostBox] = useState(false);
+  const [activeSpotBox, setActiveSpotBox] = useState(false);
 
   const stats = [
     { label: 'Profile Views', value: '4,820', icon: EyeIcon, color: 'text-ffn-primary' },
@@ -192,18 +194,53 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
               ))}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <div className="bg-white p-12 rounded-[4rem] border border-gray-100 shadow-2xl space-y-10">
-                <div className="flex items-center space-x-4 text-ffn-primary"><Plus className="w-8 h-8" /><span className="text-xs uppercase tracking-[0.5em] font-black">Visibility Boost</span></div>
-                <h3 className="text-4xl font-serif italic text-ffn-black">Global <br /> Profile Boost.</h3>
-                <p className="text-gray-400 font-light">Appear top of search results for 30 days.</p>
-                <button className="w-full bg-ffn-black text-white py-8 rounded-[2rem] text-xs font-black uppercase tracking-[0.5em] shadow-xl hover:bg-ffn-primary transition-all">Activate Boost — {PRICING.CURRENCY}{PRICING.PROFILE_BOOST}</button>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12">
+              <div className="bg-white p-12 rounded-[4rem] border border-gray-100 shadow-2xl flex flex-col justify-between space-y-10 transition-all">
+                <div className="space-y-6">
+                  <div className="flex items-center space-x-4 text-ffn-primary"><Plus className="w-8 h-8" /><span className="text-xs uppercase tracking-[0.5em] font-black">Visibility Boost</span></div>
+                  <h3 className="text-4xl font-serif italic text-ffn-black">Global <br /> Profile Boost.</h3>
+                  <p className="text-gray-400 font-light">Appear top of search results for 30 days.</p>
+                </div>
+                {activeBoostBox ? (
+                  <div className="mt-4 animate-in fade-in zoom-in duration-300">
+                    <PayPalButton
+                      amount={(PRICING.PROFILE_BOOST / 80).toFixed(2)}
+                      currency="USD"
+                      type="capture"
+                      onSuccess={(data) => {
+                        alert(`Success! Profile Boost secured via Order ${data.id}.`);
+                        setActiveBoostBox(false);
+                      }}
+                    />
+                    <button onClick={() => setActiveBoostBox(false)} className="w-full mt-4 py-3 text-[10px] uppercase font-bold text-gray-400 hover:text-ffn-primary transition-colors">Cancel Checkout</button>
+                  </div>
+                ) : (
+                  <button onClick={() => setActiveBoostBox(true)} className="w-full bg-ffn-black text-white py-8 rounded-[2rem] text-xs font-black uppercase tracking-[0.5em] shadow-xl hover:bg-ffn-primary transition-all">Activate Boost — {PRICING.CURRENCY}{PRICING.PROFILE_BOOST}</button>
+                )}
               </div>
-              <div className="bg-white p-12 rounded-[4rem] border border-gray-100 shadow-2xl space-y-10">
-                <div className="flex items-center space-x-4 text-ffn-accent"><Sparkles className="w-8 h-8" /><span className="text-xs uppercase tracking-[0.5em] font-black">Home Feature</span></div>
-                <h3 className="text-4xl font-serif italic text-ffn-black">Editorial <br /> Homepage Spot.</h3>
-                <p className="text-gray-400 font-light">Claim a headliner spot on the FFN Homepage.</p>
-                <button className="w-full bg-ffn-black text-white py-8 rounded-[2rem] text-xs font-black uppercase tracking-[0.5em] shadow-xl hover:bg-ffn-primary transition-all">Claim Spot — {PRICING.CURRENCY}{PRICING.FEATURED_HOME}</button>
+
+              <div className="bg-white p-12 rounded-[4rem] border border-gray-100 shadow-2xl flex flex-col justify-between space-y-10 transition-all">
+                <div className="space-y-6">
+                  <div className="flex items-center space-x-4 text-ffn-accent"><Sparkles className="w-8 h-8" /><span className="text-xs uppercase tracking-[0.5em] font-black">Home Feature</span></div>
+                  <h3 className="text-4xl font-serif italic text-ffn-black">Editorial <br /> Homepage Spot.</h3>
+                  <p className="text-gray-400 font-light">Claim a headliner spot on the FFN Homepage.</p>
+                </div>
+                {activeSpotBox ? (
+                  <div className="mt-4 animate-in fade-in zoom-in duration-300">
+                    <PayPalButton
+                      amount={(PRICING.FEATURED_HOME / 80).toFixed(2)}
+                      currency="USD"
+                      type="capture"
+                      onSuccess={(data) => {
+                        alert(`Success! Editorial Spot claimed via Order ${data.id}.`);
+                        setActiveSpotBox(false);
+                      }}
+                    />
+                    <button onClick={() => setActiveSpotBox(false)} className="w-full mt-4 py-3 text-[10px] uppercase font-bold text-gray-400 hover:text-ffn-primary transition-colors">Cancel Checkout</button>
+                  </div>
+                ) : (
+                  <button onClick={() => setActiveSpotBox(true)} className="w-full bg-ffn-black text-white py-8 rounded-[2rem] text-xs font-black uppercase tracking-[0.5em] shadow-xl hover:bg-ffn-primary transition-all">Claim Spot — {PRICING.CURRENCY}{PRICING.FEATURED_HOME}</button>
+                )}
               </div>
             </div>
           </motion.div>
