@@ -256,6 +256,9 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
               onLoad={() => setIsMediaLoading(false)}
               initial={{ opacity: 0 }}
               animate={{ opacity: isMediaLoading ? 0 : 1 }}
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchpriority={index === 0 ? "high" : "auto"}
+              decoding="async"
               className="w-full h-full object-cover transition-all duration-[2s] group-hover:scale-105"
               alt="Editorial content"
             />

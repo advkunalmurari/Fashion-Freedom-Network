@@ -1,241 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FFN | Fashion Freedom Network - Global Talent Infrastructure</title>
-    <meta name="description" content="India's Emerging Fashion Talent Discovery Platform. Connect with verified models, photographers, brands, and agencies.">
-    <meta property="og:title" content="Fashion Freedom Network">
-    <meta property="og:description" content="Global Talent Infrastructure for the Fashion Industry.">
-    <meta property="og:type" content="website">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              serif: ['Playfair Display', 'serif'],
-            },
-            colors: {
-              ffn: {
-                black: '#0A0A0A',
-                white: '#FFFFFF',
-                primary: '#6366F1',
-                secondary: '#F59E0B',
-                bg: '#FAFAFA',
-                gray: {
-                  50: '#F8FAFC',
-                  100: '#F1F5F9',
-                  200: '#E2E8F0',
-                  800: '#1E293B',
-                  900: '#0F172A'
-                },
-                accent: '#F43F5E',
-                ig: {
-                  purple: '#833ab4',
-                  red: '#fd1d1d',
-                  orange: '#fcb045',
-                  pink: '#e1306c',
-                  blue: '#405de6'
-                },
-                pride: {
-                  red: '#E40303',
-                  orange: '#FF8C00',
-                  yellow: '#FFED00',
-                  green: '#008026',
-                  blue: '#24408E',
-                  violet: '#732982'
-                }
-              }
-            },
-            animation: {
-              'gradient-x': 'gradient-x 15s ease infinite',
-              'gradient-y': 'gradient-y 15s ease infinite',
-              'gradient-xy': 'gradient-xy 15s ease infinite',
-              'float': 'float 6s ease-in-out infinite',
-              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-              'rainbow': 'rainbow 5s linear infinite',
-              'shimmer': 'shimmer 1.5s infinite linear',
-            },
-            keyframes: {
-              'gradient-y': {
-                '0%, 100%': { 'background-size': '400% 400%', 'background-position': 'center top' },
-                '50%': { 'background-size': '200% 200%', 'background-position': 'center bottom' },
-              },
-              'gradient-x': {
-                '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' },
-                '50%': { 'background-size': '200% 200%', 'background-position': 'right center' },
-              },
-              'gradient-xy': {
-                '0%, 100%': { 'background-size': '400% 400%', 'background-position': 'left center' },
-                '50%': { 'background-size': '200% 200%', 'background-position': 'right center' },
-              },
-              'float': {
-                '0%, 100%': { transform: 'translateY(0)' },
-                '50%': { transform: 'translateY(-20px)' },
-              },
-              'rainbow': {
-                '0%': { color: '#E40303' },
-                '17%': { color: '#FF8C00' },
-                '33%': { color: '#FFED00' },
-                '50%': { color: '#008026' },
-                '67%': { color: '#24408E' },
-                '83%': { color: '#732982' },
-                '100%': { color: '#E40303' },
-              },
-              'shimmer': {
-                '0%': { 'background-position': '200% 0' },
-                '100%': { 'background-position': '-200% 0' }
-              }
-            }
-          }
-        }
-      }
-    </script>
-    <style>
-      body {
-        background-color: #FAFAFA;
-        color: #0A0A0A;
-        overflow-x: hidden;
-        -webkit-font-smoothing: antialiased;
-        transition: background-color 0.5s ease, color 0.5s ease;
-      }
-      
-      body.dark-protocol {
-        background-color: #0A0A0A;
-        color: #FFFFFF;
-      }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FFN | Fashion Freedom Network - Global Talent Infrastructure</title>
+  <meta name="description"
+    content="India's Emerging Fashion Talent Discovery Platform. Connect with verified models, photographers, brands, and agencies.">
+  <meta property="og:title" content="Fashion Freedom Network">
+  <meta property="og:description" content="Global Talent Infrastructure for the Fashion Industry.">
+  <meta property="og:type" content="website">
 
-      /* Global Dark Mode Text Overrides - Highest Priority */
-      body.dark-protocol .text-ffn-black,
-      body.dark-protocol .text-black,
-      body.dark-protocol .text-gray-900 { color: #FFFFFF !important; }
-      body.dark-protocol .text-gray-800,
-      body.dark-protocol .text-gray-700 { color: #F1F5F9 !important; }
-      body.dark-protocol .text-gray-600 { color: #E2E8F0 !important; }
-      body.dark-protocol .text-gray-500,
-      body.dark-protocol .text-gray-400 { color: #94A3B8 !important; }
-      body.dark-protocol .text-gray-300 { color: #64748B !important; }
+  <!-- Preconnect to Google Fonts to accelerate loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
 
-      /* Background Overrides */
-      body.dark-protocol .bg-white { background-color: #121212 !important; border-color: rgba(255,255,255,0.08) !important; }
-      body.dark-protocol .bg-gray-50 { background-color: #1A1A1A !important; }
-      body.dark-protocol .bg-gray-100 { background-color: #262626 !important; }
-      body.dark-protocol .bg-ffn-bg { background-color: #0A0A0A !important; }
-
-      /* Border Fixes */
-      body.dark-protocol .border-gray-100 { border-color: rgba(255, 255, 255, 0.1) !important; }
-      body.dark-protocol .border-gray-50 { border-color: rgba(255, 255, 255, 0.05) !important; }
-      body.dark-protocol .divide-gray-100 > * + * { border-color: rgba(255, 255, 255, 0.1) !important; }
-
-      /* Button Visibility Fixes (Special Inversion for Brand Buttons) */
-      body.dark-protocol .bg-ffn-black { 
-        background-color: #FFFFFF !important; 
-        color: #0A0A0A !important; 
-      }
-      /* Ensure text and icons inside white-inverted buttons are dark */
-      body.dark-protocol .bg-ffn-black *,
-      body.dark-protocol .bg-ffn-black span,
-      body.dark-protocol .bg-ffn-black svg { 
-        color: #0A0A0A !important; 
-        fill: #0A0A0A !important;
-        stroke: #0A0A0A !important;
-      }
-      
-      /* Standardizing Input visibility */
-      body.dark-protocol input,
-      body.dark-protocol textarea,
-      body.dark-protocol select {
-        background-color: #1A1A1A !important;
-        color: #FFFFFF !important;
-        border-color: rgba(255,255,255,0.15) !important;
-      }
-      body.dark-protocol input::placeholder { color: rgba(255,255,255,0.3) !important; }
-
-      .mesh-bg {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        background-color: #FAFAFA;
-        background-image: 
-          radial-gradient(at 0% 0%, rgba(131, 58, 180, 0.15) 0px, transparent 50%),
-          radial-gradient(at 100% 0%, rgba(253, 29, 29, 0.15) 0px, transparent 50%),
-          radial-gradient(at 100% 100%, rgba(252, 176, 69, 0.1) 0px, transparent 50%),
-          radial-gradient(at 0% 100%, rgba(64, 93, 230, 0.1) 0px, transparent 50%);
-        filter: blur(80px);
-        animation: gradient-xy 20s ease infinite;
-        transition: all 0.5s ease;
-      }
-
-      body.dark-protocol .mesh-bg {
-        background-image: 
-          radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-          radial-gradient(at 100% 0%, rgba(244, 63, 94, 0.15) 0px, transparent 50%),
-          radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.1) 0px, transparent 50%);
-        opacity: 0.4;
-      }
-
-      .text-gradient-vibrant {
-        background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-size: 200% auto;
-        animation: gradient-x 5s linear infinite;
-      }
-
-      .bg-gradient-pride {
-        background: linear-gradient(to right, #E40303, #FF8C00, #FFED00, #008026, #24408E, #732982);
-      }
-
-      .glass-card-vibrant {
-        background: rgba(255, 255, 255, 0.6);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.8);
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
-      }
-
-      body.dark-protocol .glass-card-vibrant {
-        background: rgba(18, 18, 18, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-      }
-
-      .editorial-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 3rem;
-      }
-
-      .no-scrollbar::-webkit-scrollbar { display: none; }
-      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-      ::-webkit-scrollbar { width: 6px; }
-      ::-webkit-scrollbar-track { background: transparent; }
-      ::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 10px; }
-      body.dark-protocol ::-webkit-scrollbar-thumb { background: #333; }
-    </style>
-
-<script type="importmap">
-{
-  "imports": {
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "react": "https://esm.sh/react@^19.2.4",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.41.0",
-    "framer-motion": "https://esm.sh/framer-motion@^12.34.0",
-    "lucide-react": "https://esm.sh/lucide-react@^0.564.0"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
+  <link rel="stylesheet" href="/index.css">
 </head>
+
 <body>
-    <div class="mesh-bg"></div>
-    <div id="root"></div>
-<script type="module" src="/index.tsx"></script>
+  <div class="mesh-bg"></div>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
 </body>
+
 </html>

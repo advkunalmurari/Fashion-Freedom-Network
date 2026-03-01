@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { Loader2 } from 'lucide-react';
 
@@ -20,8 +20,14 @@ export const PayPalButton: React.FC<PayPalButtonProps> = ({
     type = 'capture',
     planId
 }) => {
-    const [{ isPending }] = usePayPalScriptReducer();
+    const [{ isPending }, dispatch] = usePayPalScriptReducer();
 
+    useEffect(() => {
+        dispatch({
+            type: "setLoadingStatus",
+            value: "pending"
+        });
+    }, [dispatch]);
     const handleCreateOrder = (data: any, actions: any) => {
         return actions.order.create({
             purchase_units: [

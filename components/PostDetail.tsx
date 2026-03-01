@@ -86,6 +86,8 @@ export const PostDetail: React.FC<PostDetailProps> = ({ post, onBack }) => {
         <div className="lg:w-3/5 bg-gray-50 relative group">
           <img
             src={post.mediaUrls[0]}
+            fetchpriority="high"
+            decoding="async"
             className="w-full h-full object-cover"
             alt="Editorial Work"
           />
@@ -255,7 +257,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({ post, onBack }) => {
               whileHover={{ y: -5 }}
               className="aspect-[4/5] bg-gray-50 rounded-[3rem] overflow-hidden border border-gray-100 shadow-xl group cursor-pointer"
             >
-              <img src={`https://picsum.photos/id/${150 + i}/600/800`} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="" />
+              <img src={`https://picsum.photos/id/${150 + i}/600/800`} loading="lazy" decoding="async" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="" />
             </motion.div>
           ))}
         </div>

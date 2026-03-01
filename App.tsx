@@ -143,7 +143,7 @@ const Application: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <PayPalScriptProvider options={{ "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID }}>
+    <PayPalScriptProvider options={{ "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID, "data-namespace": "paypal_sdk" }} deferLoading={true}>
       <BrowserRouter>
         <Application />
       </BrowserRouter>

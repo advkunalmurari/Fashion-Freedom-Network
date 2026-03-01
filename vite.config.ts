@@ -46,6 +46,19 @@ export default defineConfig(({ mode }) => {
       alias: {
         '@': path.resolve(__dirname, '.'),
       }
+    },
+    build: {
+      target: 'esnext',
+      minify: 'esbuild',
+      cssMinify: true,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom', 'react-router-dom', 'framer-motion', 'lucide-react', '@supabase/supabase-js'],
+            paypal: ['@paypal/react-paypal-js']
+          }
+        }
+      }
     }
   };
 });
