@@ -276,7 +276,7 @@ export const Layout: React.FC<LayoutProps> = ({
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className={`fixed inset-0 z-[150] pt-28 pb-10 overflow-y-auto lg:hidden ${isDarkMode ? 'bg-[#0A0A0A]' : 'bg-white'}`}
+            className={`fixed inset-0 z-[150] pt-28 pb-32 overflow-y-auto lg:hidden ${isDarkMode ? 'bg-[#0A0A0A]' : 'bg-white'}`}
           >
             <div className="px-8 space-y-6">
               {currentUser && (
