@@ -1,7 +1,7 @@
 import { supabase } from '../supabase';
 import { Post, UserRole, VerificationLevel } from '../types';
 
-const API_URL = 'http://localhost:5001/api';
+const API_URL = ;
 
 export const postService = {
     // Fetch a feed of posts
