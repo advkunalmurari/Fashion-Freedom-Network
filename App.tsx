@@ -40,6 +40,7 @@ const ReportProblem = React.lazy(() => import('./components/ReportProblem').then
 const AccountSwitcher = React.lazy(() => import('./components/AccountSwitcher').then(m => ({ default: m.AccountSwitcher })));
 const Editorial = React.lazy(() => import('./components/Editorial').then(m => ({ default: m.Editorial })));
 const LoginPage = React.lazy(() => import('./pages/Login'));
+const ForgotPasswordPage = React.lazy(() => import('./pages/ForgotPassword'));
 const Settings = React.lazy(() => import('./components/Settings').then(m => ({ default: m.Settings })));
 
 // Loading Fallback Spinner
@@ -119,6 +120,7 @@ const Application: React.FC = () => {
             <Route path="/editorial" element={<Editorial />} />
             <Route path="/settings" element={<Settings user={user} onLogout={handleLogout} />} />
             <Route path="/messages" element={<Messaging />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/login" element={<LoginPage onLogin={(userData) => { setUser(userData); navigate('/'); }} />} />
             <Route path="/my-profile" element={<MyProfile user={user} onLogout={handleLogout} />} />
             <Route path="/register-professional" element={<RegisterProfessional onSuccess={(userData) => { setUser(userData); navigate('/'); }} />} />
@@ -143,7 +145,7 @@ const Application: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <PayPalScriptProvider options={{ "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID || 'test', "data-namespace": "paypal_sdk" }} deferLoading={true}>
+    <PayPalScriptProvider options={{ "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID || 'test' }}>
       <BrowserRouter>
         <Application />
       </BrowserRouter>

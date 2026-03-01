@@ -165,62 +165,117 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
         </div>
       </header>
 
-      <motion.div layout className="editorial-grid">
-        <AnimatePresence>
-          {filteredTalent.map((talent, idx) => (
-            <motion.div
-              key={talent.id}
-              layout
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              whileHover={{ y: -10 }}
-              onClick={() => onSelectTalent(talent.id)}
-              className="group cursor-pointer bg-white rounded-[4rem] border border-gray-50 hover:border-ffn-primary/10 transition-all overflow-hidden shadow-xl hover:shadow-[0_40px_80px_rgba(99,102,241,0.08)]"
-            >
-              <div className="aspect-[3/4] relative overflow-hidden">
-                <img src={talent.avatarUrl} className="w-full h-full object-cover transition-all duration-[1.5s] group-hover:scale-110" alt={talent.displayName} />
-                <div className="absolute inset-0 bg-gradient-to-t from-ffn-black/90 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
-                <div className="absolute bottom-10 left-10 right-10">
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-3 text-white">
-                      <h4 className="text-3xl font-serif italic leading-none">{talent.displayName}</h4>
-                      {talent.isVerified && !talent.isPremium && <CheckCircle className="w-5 h-5 text-blue-400 fill-blue-400 shadow-xl" />}
-                      {talent.isPremium && <CheckCircle className="w-5 h-5 text-rose-500 fill-rose-500 drop-shadow-[0_0_10px_rgba(244,63,94,0.8)]" />}
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <p className="text-[10px] uppercase tracking-[0.4em] text-white/70 font-bold">{talent.location}</p>
-                      <div className="bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20">
-                        <span className="text-[8px] uppercase tracking-widest font-black text-white">{talent.role}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      <motion.div layout className="space-y-20">
+        {!search && activeFilter === 'ALL' && !onlyVerified ? (
+          <div className="space-y-24">
+            {/* Highest Ranked Models */}
+            <div className="space-y-10">
+              <div className="flex items-center justify-between px-2">
+                <h3 className="text-3xl font-serif italic text-ffn-black tracking-tight">Top Runway & Editorial Models</h3>
+                <button className="text-[10px] font-bold uppercase tracking-widest text-ffn-primary hover:text-ffn-black transition-colors">View All</button>
               </div>
-              <div className="p-10 flex items-center justify-between">
-                <div className="flex items-center space-x-2 text-ffn-primary">
-                  <DollarSign className="w-3.5 h-3.5" />
-                  <span className="text-[9px] uppercase tracking-widest font-black">Hire Hub Ready</span>
-                </div>
-                <button className="p-3 bg-gray-50 rounded-2xl group-hover:bg-ffn-black group-hover:text-white transition-all shadow-sm">
-                  <ArrowRight className="w-4 h-4" />
-                </button>
+              <div className="flex overflow-x-auto gap-8 pb-10 no-scrollbar px-2 snap-x">
+                {liveProfiles.filter(p => p.role === UserRole.MODEL).slice(0, 5).map(talent => (
+                  <TalentCard key={talent.id} talent={talent} onSelectTalent={onSelectTalent} />
+                ))}
               </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-
-        {filteredTalent.length === 0 && (
-          <div className="col-span-full py-48 text-center space-y-8">
-            <div className="w-32 h-32 bg-gray-50 rounded-[3rem] flex items-center justify-center mx-auto mb-8 shadow-inner relative overflow-hidden">
-              <UserIcon className="w-12 h-12 text-gray-200 relative z-10" />
-              <div className="absolute inset-0 bg-gradient-to-tr from-ffn-primary/5 to-ffn-accent/5 animate-pulse"></div>
             </div>
-            <h3 className="text-4xl font-serif italic text-gray-300 tracking-tight">Zero Mastery Matches</h3>
-            <p className="text-[10px] uppercase tracking-[0.5em] text-gray-400 max-w-sm mx-auto leading-loose">The creative graph is vast. Try adjusting your filters to discover new brilliance.</p>
+
+            {/* Top Photographers & Stylists */}
+            <div className="space-y-10 bg-ffn-black text-white p-10 md:p-16 rounded-[4rem] relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-ffn-primary/20 blur-[100px] rounded-full pointer-events-none"></div>
+              <div className="relative z-10 flex items-center justify-between px-2">
+                <h3 className="text-3xl font-serif italic tracking-tight">Master Creatives</h3>
+                <button className="text-[10px] font-bold uppercase tracking-widest text-white/50 hover:text-white transition-colors">Directory</button>
+              </div>
+              <div className="flex overflow-x-auto gap-8 pb-4 no-scrollbar px-2 snap-x relative z-10">
+                {liveProfiles.filter(p => [UserRole.ARTIST, UserRole.STYLIST, UserRole.BRAND].includes(p.role as any)).slice(0, 5).map(talent => (
+                  <TalentCard key={talent.id} talent={talent} onSelectTalent={onSelectTalent} darkTheme />
+                ))}
+              </div>
+            </div>
+
+            {/* Trending Worldwide */}
+            <div className="space-y-10">
+              <div className="flex items-center justify-between px-2">
+                <h3 className="text-3xl font-serif italic text-ffn-black tracking-tight">Trending Worldwide</h3>
+                <button className="text-[10px] font-bold uppercase tracking-widest text-ffn-primary hover:text-ffn-black transition-colors">Explore Graph</button>
+              </div>
+              <div className="editorial-grid">
+                {liveProfiles.slice(0, 6).map(talent => (
+                  <TalentCard key={talent.id} talent={talent} onSelectTalent={onSelectTalent} />
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="editorial-grid">
+            <AnimatePresence>
+              {filteredTalent.map((talent) => (
+                <TalentCard key={talent.id} talent={talent} onSelectTalent={onSelectTalent} />
+              ))}
+            </AnimatePresence>
+
+            {filteredTalent.length === 0 && (
+              <div className="col-span-full py-48 text-center space-y-8">
+                <div className="w-32 h-32 bg-gray-50 rounded-[3rem] flex items-center justify-center mx-auto mb-8 shadow-inner relative overflow-hidden">
+                  <UserIcon className="w-12 h-12 text-gray-200 relative z-10" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-ffn-primary/5 to-ffn-accent/5 animate-pulse"></div>
+                </div>
+                <h3 className="text-4xl font-serif italic text-gray-300 tracking-tight">Zero Mastery Matches</h3>
+                <p className="text-[10px] uppercase tracking-[0.5em] text-gray-400 max-w-sm mx-auto leading-loose">The creative graph is vast. Try adjusting your filters to discover new brilliance.</p>
+              </div>
+            )}
           </div>
         )}
       </motion.div>
     </div>
   );
 };
+
+interface TalentCardProps {
+  talent: User;
+  onSelectTalent: (id: string) => void;
+  darkTheme?: boolean;
+}
+
+const TalentCard: React.FC<TalentCardProps> = ({ talent, onSelectTalent, darkTheme = false }) => (
+  <motion.div
+    layout
+    initial={{ opacity: 0, scale: 0.9 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.9 }}
+    whileHover={{ y: -10 }}
+    onClick={() => onSelectTalent(talent.id)}
+    className={`group cursor-pointer rounded-[3rem] border transition-all overflow-hidden shadow-xl min-w-[280px] snap-center flex-1 ${darkTheme ? 'bg-white/5 border-white/10 hover:border-white/30 hover:shadow-[0_40px_80px_rgba(255,255,255,0.05)]' : 'bg-white border-gray-50 hover:border-ffn-primary/10 hover:shadow-[0_40px_80px_rgba(99,102,241,0.08)]'}`}
+  >
+    <div className="aspect-[3/4] relative overflow-hidden rounded-[2.5rem] m-2">
+      <img src={talent.avatarUrl} className="w-full h-full object-cover transition-all duration-[1.5s] group-hover:scale-110" alt={talent.displayName} />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
+      <div className="absolute bottom-8 left-8 right-8">
+        <div className="space-y-3">
+          <div className="flex items-center space-x-3 text-white">
+            <h4 className="text-3xl font-serif italic leading-none">{talent.displayName}</h4>
+            {talent.isVerified && !talent.isPremium && <CheckCircle className="w-5 h-5 text-blue-400 fill-blue-400 shadow-xl" />}
+            {talent.isPremium && <CheckCircle className="w-5 h-5 text-rose-500 fill-rose-500 drop-shadow-[0_0_10px_rgba(244,63,94,0.8)]" />}
+          </div>
+          <div className="flex items-center justify-between">
+            <p className="text-[9px] uppercase tracking-[0.4em] text-white/70 font-bold max-w-[120px] truncate">{talent.location}</p>
+            <div className="bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20">
+              <span className="text-[8px] uppercase tracking-widest font-black text-white">{talent.role}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div className={`p-8 flex items-center justify-between ${darkTheme ? 'text-white' : 'text-ffn-black'}`}>
+      <div className="flex items-center space-x-2 opacity-80">
+        <DollarSign className="w-3.5 h-3.5" />
+        <span className="text-[9px] uppercase tracking-widest font-black">Hire Hub Ready</span>
+      </div>
+      <button className={`p-3 rounded-2xl transition-all shadow-sm ${darkTheme ? 'bg-white/10 group-hover:bg-white group-hover:text-black' : 'bg-gray-50 group-hover:bg-ffn-black group-hover:text-white'}`}>
+        <ArrowRight className="w-4 h-4" />
+      </button>
+    </div>
+  </motion.div>
+);

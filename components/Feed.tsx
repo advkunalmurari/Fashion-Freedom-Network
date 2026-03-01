@@ -80,8 +80,53 @@ export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
     fetchFeed(1); // Refresh the feed when a new post is published
   };
 
+  const [pulling, setPulling] = useState(false);
+  const [pullDistance, setPullDistance] = useState(0);
+  const touchStartY = useRef(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (window.scrollY === 0) {
+      touchStartY.current = e.touches[0].clientY;
+      setPulling(true);
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (pulling) {
+      const currentY = e.touches[0].clientY;
+      const distance = currentY - touchStartY.current;
+      if (distance > 0) {
+        setPullDistance(Math.min(distance * 0.4, 80)); // Add resistance and cap at 80px
+      }
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (pulling) {
+      if (pullDistance >= 60) {
+        setPage(1);
+        fetchFeed(1);
+      }
+      setPulling(false);
+      setPullDistance(0);
+    }
+  };
+
   return (
-    <div className="max-w-xl mx-auto space-y-20 animate-in fade-in duration-700">
+    <div
+      className="max-w-xl mx-auto space-y-20 animate-in fade-in duration-700 relative"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Pull To Refresh Indicator */}
+      <div
+        className="absolute top-0 left-0 right-0 flex justify-center items-center overflow-hidden transition-all duration-300"
+        style={{ height: pullDistance, opacity: pullDistance / 60 }}
+      >
+        <Loader2 className={`w-6 h-6 text-ffn-primary ${isRefreshing ? 'animate-spin' : ''}`} style={{ transform: `rotate(${pullDistance * 3}deg)` }} />
+      </div>
+
       {/* Stories Tray */}
       <div className="flex space-x-10 overflow-x-auto pb-10 no-scrollbar border-b border-gray-100 px-2">
         <motion.div

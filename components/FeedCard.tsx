@@ -203,7 +203,7 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.6, delay: index * 0.05 }}
-        className="bg-white rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden shadow-xl group border border-gray-100 transition-all hover:shadow-2xl mb-12 md:mb-24"
+        className="bg-white rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden shadow-xl group border border-gray-100 transition-all hover:shadow-2xl hover:-translate-y-2 mb-12 md:mb-24"
       >
         {/* Header */}
         <div className="flex items-center justify-between p-5 md:p-7">

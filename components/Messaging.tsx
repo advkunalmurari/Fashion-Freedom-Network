@@ -1,6 +1,5 @@
-
-import React, { useState, useEffect } from 'react';
-import { Search, Send, Image, Smile, Phone, Video, Info, MoreVertical, Paperclip, Mic, Loader2 } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Search, Send, Image, Smile, Phone, Video, Info, MoreVertical, Paperclip, Mic, Loader2, CheckCircle, Check, Briefcase, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { messageService } from '../services/messageService';
 import { supabase } from '../supabase';
@@ -11,6 +10,8 @@ export const Messaging: React.FC = () => {
   const [messages, setMessages] = useState<any[]>([]);
   const [threads, setThreads] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchThreads();
@@ -34,14 +35,14 @@ export const Messaging: React.FC = () => {
           },
           (payload) => {
             const newMsg = payload.new as any;
-            // Get session to check if we sent it (avoid duplicates since we add locally)
             supabase.auth.getSession().then(({ data: { session } }) => {
               if (session && newMsg.sender_id !== session.user.id) {
                 setMessages(prev => [...prev, {
                   id: newMsg.id,
                   sender: 'them',
                   text: newMsg.text,
-                  time: new Date(newMsg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                  time: new Date(newMsg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                  status: 'delivered'
                 }]);
               }
             });
@@ -49,27 +50,32 @@ export const Messaging: React.FC = () => {
         )
         .subscribe();
 
+      // Mock typing indicator for the first thread to feel "alive"
+      if (activeThreadIndex === 0) {
+        setIsTyping(true);
+        const timer = setTimeout(() => setIsTyping(false), 5000);
+        return () => {
+          clearTimeout(timer);
+          supabase.removeChannel(channel);
+        };
+      }
+
       return () => {
         supabase.removeChannel(channel);
       };
     }
   }, [activeThreadIndex, threads]);
 
+  useEffect(() => {
+    // Scroll to bottom when messages change
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isTyping]);
+
   const fetchThreads = async () => {
     try {
       const data = await messageService.getThreads();
       if (data.success) {
         setThreads(data.data);
-
-        // Handle deep-linking from /messages?chatId=...
-        const params = new URLSearchParams(window.location.search);
-        const chatId = params.get('chatId');
-        if (chatId) {
-          const index = data.data.findIndex((t: any) => t.id === chatId);
-          if (index !== -1) {
-            setActiveThreadIndex(index);
-          }
-        }
       }
     } catch (error) {
       console.error("Failed to fetch threads:", error);
@@ -82,7 +88,12 @@ export const Messaging: React.FC = () => {
     try {
       const data = await messageService.getMessages(threadId);
       if (data.success) {
-        setMessages(data.data);
+        // Hydrate with mock statuses for demo
+        const hydrated = data.data.map((m: any, i: number) => ({
+          ...m,
+          status: m.sender === 'me' ? (i === data.data.length - 1 ? 'delivered' : 'read') : null
+        }));
+        setMessages(hydrated);
       }
     } catch (error) {
       console.error("Failed to fetch messages:", error);
@@ -95,15 +106,26 @@ export const Messaging: React.FC = () => {
     if (!activeThread?.participants?.[0]?.id) return;
 
     try {
-      // Optimistic UI could go here, but waiting for DB confirmation is safer for now
       const currentInput = inputValue;
-      setInputValue(''); // Clear immediately for UX
+      setInputValue(''); // Optimistic clear
+
+      // Add optimistic message
+      const optMsg = {
+        id: Date.now().toString(),
+        sender: 'me',
+        text: currentInput,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        status: 'sending'
+      };
+      setMessages(prev => [...prev, optMsg]);
 
       const data = await messageService.sendMessage(activeThread.participants[0].id, currentInput, activeThread.id);
+
       if (data.success) {
-        setMessages(prev => [...prev, data.data]);
+        setMessages(prev => prev.map(m => m.id === optMsg.id ? { ...data.data, status: 'delivered' } : m));
       } else {
         setInputValue(currentInput); // Restore on failure
+        setMessages(prev => prev.filter(m => m.id !== optMsg.id));
         alert("Failed to send message: " + data.error);
       }
     } catch (error) {
@@ -112,7 +134,7 @@ export const Messaging: React.FC = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-140px)] flex bg-white rounded-[3rem] overflow-hidden border border-gray-100 shadow-2xl">
+    <div className="h-[calc(100vh-140px)] flex bg-white rounded-[3rem] overflow-hidden border border-gray-100 shadow-2xl relative">
       {/* Sidebar */}
       <div className="w-1/3 border-r border-gray-100 flex flex-col bg-gray-50/30">
         <div className="p-8 space-y-8">
@@ -147,7 +169,7 @@ export const Messaging: React.FC = () => {
                   <h4 className="font-bold text-sm truncate tracking-tight text-ffn-black">{t.name || 'Unknown'}</h4>
                   <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">{t.time || 'now'}</span>
                 </div>
-                <p className="text-xs text-gray-400 truncate font-light">{t.lastMsg || 'No messages yet'}</p>
+                <p className="text-xs text-gray-400 truncate font-light">{idx === 0 && isTyping ? <span className="text-ffn-primary animate-pulse tracking-widest">typing...</span> : (t.lastMsg || 'No messages yet')}</p>
               </div>
             </motion.div>
           ))}
@@ -157,7 +179,7 @@ export const Messaging: React.FC = () => {
       {/* Chat Area */}
       <div className="flex-1 flex flex-col bg-white">
         {/* Header */}
-        <header className="px-10 py-6 border-b border-gray-50 flex items-center justify-between">
+        <header className="px-10 py-6 border-b border-gray-50 flex items-center justify-between bg-white z-10">
           <div className="flex items-center space-x-4">
             <div className="w-12 h-12 rounded-2xl overflow-hidden border border-gray-100"><img src={threads[activeThreadIndex]?.avatar || 'https://picsum.photos/id/65/100/100'} className="w-full h-full object-cover" alt="" /></div>
             <div>
@@ -165,7 +187,14 @@ export const Messaging: React.FC = () => {
               <span className="text-[8px] uppercase tracking-widest text-emerald-500 font-bold">{threads[activeThreadIndex]?.status || 'Offline'}</span>
             </div>
           </div>
-          <div className="flex items-center space-x-6">
+
+          <div className="flex items-center space-x-4">
+            {/* Professional CTA */}
+            <button className="hidden md:flex items-center space-x-2 bg-ffn-black text-white px-5 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest shadow-lg hover:bg-ffn-primary transition-colors">
+              <Briefcase className="w-3 h-3" />
+              <span>Hire Talent</span>
+            </button>
+            <div className="h-6 w-px bg-gray-100 mx-2 hidden md:block"></div>
             <button className="p-3 text-gray-400 hover:text-ffn-black hover:bg-gray-50 rounded-xl transition-all" title="Call"><Phone className="w-5 h-5" /></button>
             <button className="p-3 text-gray-400 hover:text-ffn-black hover:bg-gray-50 rounded-xl transition-all" title="Video Call"><Video className="w-5 h-5" /></button>
             <button className="p-3 text-gray-400 hover:text-ffn-black hover:bg-gray-50 rounded-xl transition-all" title="More Options"><MoreVertical className="w-5 h-5" /></button>
@@ -173,34 +202,71 @@ export const Messaging: React.FC = () => {
         </header>
 
         {/* Messages */}
-        <div className="flex-1 p-10 space-y-6 overflow-y-auto no-scrollbar bg-gray-50/20">
+        <div className="flex-1 p-6 md:p-10 space-y-6 overflow-y-auto no-scrollbar bg-gray-50/20 relative">
           <div className="flex flex-col items-center py-10 opacity-40">
             <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-gray-300">Identity Encrypted Feed</span>
           </div>
 
           <AnimatePresence>
-            {messages.map((m) => (
+            {messages.map((m, index) => (
               <motion.div
-                key={m.id}
+                key={m.id || index}
                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 className={`flex ${m.sender === 'me' ? 'justify-end' : 'justify-start'}`}
               >
-                <div className={`max-w-md p-6 rounded-[1.8rem] text-sm leading-relaxed shadow-sm ${m.sender === 'me' ? 'bg-ffn-black text-white rounded-tr-none' : 'bg-white border border-gray-100 text-ffn-black rounded-tl-none'}`}>
+                <div className={`max-w-md p-5 md:p-6 rounded-[1.8rem] text-sm leading-relaxed shadow-sm relative group ${m.sender === 'me' ? 'bg-ffn-black text-white rounded-tr-none' : 'bg-white border border-gray-100 text-ffn-black rounded-tl-none'}`}>
                   {m.text}
-                  <div className={`text-[8px] mt-3 font-bold uppercase tracking-widest opacity-40 ${m.sender === 'me' ? 'text-white' : 'text-ffn-black'}`}>
-                    {m.time}
+
+                  {/* Metadata line (Time + Status) */}
+                  <div className={`flex items-center space-x-2 text-[8px] mt-3 font-bold uppercase tracking-widest ${m.sender === 'me' ? 'text-white/50' : 'text-gray-400'}`}>
+                    <span>{m.time}</span>
+                    {m.sender === 'me' && (
+                      <span className="flex items-center">
+                        {m.status === 'sending' && <Loader2 className="w-3 h-3 animate-spin" />}
+                        {m.status === 'delivered' && <Check className="w-3 h-3" />}
+                        {m.status === 'read' && (
+                          <div className="flex -space-x-1 text-ffn-accent">
+                            <Check className="w-3 h-3" />
+                            <Check className="w-3 h-3" />
+                          </div>
+                        )}
+                      </span>
+                    )}
                   </div>
                 </div>
               </motion.div>
             ))}
+
+            {/* Typing Indicator */}
+            {isTyping && activeThreadIndex === 0 && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                className="flex justify-start"
+              >
+                <div className="bg-white border border-gray-100 rounded-[1.8rem] rounded-tl-none px-6 py-4 shadow-sm flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <div className="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <div className="w-2 h-2 bg-gray-300 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                </div>
+              </motion.div>
+            )}
           </AnimatePresence>
+          <div ref={messagesEndRef} />
         </div>
 
         {/* Input */}
-        <div className="p-8 border-t border-gray-50">
-          <div className="flex items-center space-x-4">
-            <button className="p-4 text-gray-400 hover:text-ffn-black hover:bg-gray-50 rounded-2xl transition-all" title="Attach Files"><Paperclip className="w-5 h-5" /></button>
+        <div className="p-4 md:p-8 border-t border-gray-50 bg-white">
+          <div className="flex items-center space-x-2 md:space-x-4">
+            <button className="p-3 md:p-4 text-gray-400 hover:text-ffn-black hover:bg-gray-50 rounded-2xl transition-all" title="Attach Proposal">
+              <FileText className="w-5 h-5" />
+            </button>
+            <button className="p-3 md:p-4 hidden sm:block text-gray-400 hover:text-ffn-black hover:bg-gray-50 rounded-2xl transition-all" title="Attach File">
+              <Paperclip className="w-5 h-5" />
+            </button>
+
             <div className="flex-1 relative">
               <input
                 type="text"
@@ -208,16 +274,17 @@ export const Messaging: React.FC = () => {
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                 placeholder="Compose message..."
-                className="w-full bg-gray-50 border-none rounded-[2rem] py-5 px-8 text-sm focus:ring-2 focus:ring-ffn-primary transition-all pr-20"
+                className="w-full bg-gray-50 border-none rounded-[2rem] py-4 md:py-5 px-6 md:px-8 text-sm focus:ring-2 focus:ring-ffn-primary transition-all pr-20"
               />
               <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center space-x-2 text-gray-400">
                 <button className="hover:text-ffn-black transition-colors"><Smile className="w-5 h-5" /></button>
                 <button className="hover:text-ffn-black transition-colors"><Mic className="w-5 h-5" /></button>
               </div>
             </div>
+
             <button
               onClick={handleSend}
-              className="p-5 bg-ffn-black text-white rounded-[1.8rem] shadow-xl hover:bg-ffn-primary transition-all disabled:opacity-50"
+              className="p-4 md:p-5 bg-ffn-black text-white rounded-[1.8rem] shadow-xl hover:bg-ffn-primary transition-all disabled:opacity-50"
               disabled={!inputValue.trim()}
             >
               <Send className="w-5 h-5" />
@@ -237,7 +304,9 @@ export const Messaging: React.FC = () => {
         </div>
         <div className="space-y-6">
           <button className="w-full bg-white border border-gray-100 py-4 rounded-2xl text-[9px] font-bold uppercase tracking-widest shadow-sm hover:border-ffn-primary transition-all">View Mastery Hub</button>
-          <div className="space-y-4">
+          <button className="w-full bg-ffn-black text-white py-4 rounded-2xl text-[9px] font-bold uppercase tracking-widest shadow-lg hover:bg-ffn-primary transition-all">Send Job Offer</button>
+
+          <div className="space-y-4 pt-4 border-t border-gray-100">
             <span className="text-[8px] uppercase tracking-[0.4em] font-bold text-gray-300">Shared Identity Layers</span>
             <div className="flex -space-x-3 overflow-hidden">
               {[1, 2, 3, 4].map(i => (

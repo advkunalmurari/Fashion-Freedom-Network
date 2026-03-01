@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Mail, Lock, ArrowRight, User, Camera, Loader2, Image as ImageIcon } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabase';
 import { LOGO_SVG } from '../constants';
 import { authService } from '../services/authService';
@@ -227,7 +227,17 @@ const LoginCard: React.FC<LoginCardProps> = ({ onSuccess }) => {
                     <div className="space-y-2 text-left">
                         <div className="flex justify-between items-center ml-1">
                             <label className="text-[10px] uppercase tracking-[0.2em] font-medium text-white/50">Password</label>
-                            <span className="text-[10px] text-white/30 hover:text-white transition-colors cursor-pointer">Forgot?</span>
+                            <Link
+                                to="/forgot-password"
+                                className="text-[10px] text-white/30 hover:text-white transition-colors cursor-pointer"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    navigate('/forgot-password');
+                                }}
+                            >
+                                Forgot?
+                            </Link>
                         </div>
                         <div className="relative group">
                             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 group-focus-within:text-white transition-colors" size={18} />

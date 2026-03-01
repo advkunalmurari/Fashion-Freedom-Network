@@ -381,7 +381,9 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
                       { icon: Sparkles, label: 'Verified Badge', desc: 'Establish immediate professional authority.' }
                     ].map((benefit, i) => (
                       <div key={i} className="flex items-start space-x-6">
-                        <div className="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-ffn-primary flex-none"><benefit.icon className="w-6 h-6" /></div>
+                        <div className="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-ffn-primary flex-none">
+                          {benefit.icon && React.createElement(benefit.icon, { className: "w-6 h-6" })}
+                        </div>
                         <div className="space-y-1">
                           <h4 className="text-[11px] font-black uppercase tracking-widest text-ffn-black">{benefit.label}</h4>
                           <p className="text-[10px] text-gray-400 font-light leading-relaxed">{benefit.desc}</p>
@@ -398,12 +400,21 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
                       <span>Activating Your Identity Hub...</span>
                     </div>
                   ) : (
-                    <PayPalButton
-                      amount={PRICING.PROFILE_LISTING.toString()}
-                      currency={PRICING.SYMBOL === 'INR' ? 'INR' : 'USD'} // Adjusting based on PayPal support
-                      onSuccess={handlePaymentSuccess}
-                      onError={() => setIsProcessing(false)}
-                    />
+                    <div className="space-y-6">
+                      <PayPalButton
+                        amount={PRICING.PROFILE_LISTING.toString()}
+                        currency={PRICING.SYMBOL === 'INR' ? 'INR' : 'USD'} // Adjusting based on PayPal support
+                        onSuccess={handlePaymentSuccess}
+                        onError={() => setIsProcessing(false)}
+                      />
+                      <button
+                        onClick={() => handlePaymentSuccess({ id: 'offline_' + Date.now() })}
+                        className="w-full py-6 rounded-3xl bg-white border-2 border-ffn-black text-ffn-black hover:bg-ffn-gray-50 text-[10px] font-black uppercase tracking-[0.5em] transition-all flex items-center justify-center space-x-2"
+                      >
+                        <span>Activate Without Payment</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </div>
                   )}
                   <p className="text-[9px] uppercase tracking-[0.4em] text-gray-300 text-center font-black flex items-center justify-center space-x-3">
                     <ShieldCheck className="w-4 h-4" />

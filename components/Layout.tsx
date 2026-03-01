@@ -10,6 +10,7 @@ import {
 import { LOGO_SVG, BRAND_SOCIALS } from '../constants';
 import { CreatePostModal } from './CreatePostModal';
 import { SettingsOverlay } from './SettingsOverlay';
+import { MobileBottomNav } from './MobileBottomNav';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -56,7 +57,7 @@ export const Layout: React.FC<LayoutProps> = ({
     { id: 'shoots', icon: Camera, label: 'Shoots' },
     { id: 'brands', icon: BrandIcon, label: 'Brands' },
     { id: 'castings', icon: Briefcase, label: 'Castings' },
-    { id: 'marketplace', icon: ShoppingBag, label: 'Market' },
+    { id: 'marketplace', icon: ShoppingBag, label: 'Marketplace' },
   ];
 
   const sidebarVariants = {
@@ -343,7 +344,22 @@ export const Layout: React.FC<LayoutProps> = ({
         )}
       </AnimatePresence>
 
-      <main className="lg:hidden flex-1 min-h-screen relative pt-32 pb-10"><div className="max-w-7xl mx-auto px-6"><AnimatePresence mode="wait"><motion.div key={activeTab} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>{children}</motion.div></AnimatePresence></div></main>
+      <main className="lg:hidden flex-1 min-h-screen relative pt-32 pb-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <AnimatePresence mode="wait">
+            <motion.div key={activeTab} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              {children}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </main>
+
+      {/* Mobile Bottom Navigation Bar */}
+      <MobileBottomNav
+        activeTab={activeTab}
+        isDarkMode={isDarkMode}
+        onCreatePost={() => setIsCreateModalOpen(true)}
+      />
     </div>
   );
 };

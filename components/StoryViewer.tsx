@@ -1,27 +1,22 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-// Added Share2 to the lucide-react imports
-import { X, ChevronLeft, ChevronRight, MoreHorizontal, Send, Heart, MessageCircle, Share2 } from 'lucide-react';
-import { User } from '../types';
+import { X, ChevronLeft, ChevronRight, MoreHorizontal, Send, Heart, Share2 } from 'lucide-react';
+import { Story } from './StoriesRail';
 
 interface StoryViewerProps {
-  user: User;
+  initialIndex: number;
+  stories: Story[];
   onClose: () => void;
 }
 
-export const StoryViewer: React.FC<StoryViewerProps> = ({ user, onClose }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+export const StoryViewer: React.FC<StoryViewerProps> = ({ initialIndex, stories, onClose }) => {
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [progress, setProgress] = useState(0);
-
-  // Mock story items for the selected user
-  const stories = [
-    { url: `https://picsum.photos/id/10/1080/1920`, type: 'IMAGE' },
-    { url: `https://picsum.photos/id/20/1080/1920`, type: 'IMAGE' },
-    { url: `https://picsum.photos/id/30/1080/1920`, type: 'IMAGE' },
-  ];
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
+    if (isPaused) return;
+
     const duration = 5000; // 5 seconds per story
     const interval = 50; // Update every 50ms
     const step = (interval / duration) * 100;
@@ -42,7 +37,7 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({ user, onClose }) => {
     }, interval);
 
     return () => clearInterval(timer);
-  }, [currentIndex, onClose, stories.length]);
+  }, [currentIndex, isPaused, onClose, stories.length]);
 
   const handleNext = () => {
     if (currentIndex < stories.length - 1) {
@@ -60,100 +55,111 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({ user, onClose }) => {
     }
   };
 
+  const currentStory = stories[currentIndex];
+
   return (
     <div className="fixed inset-0 z-[1000] bg-ffn-black flex items-center justify-center">
-      <motion.div 
+      <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 1.1, opacity: 0 }}
-        className="relative h-full w-full max-w-[500px] md:h-[90vh] md:rounded-[3rem] overflow-hidden shadow-2xl bg-gray-900"
+        className="relative h-full w-full max-w-[500px] md:h-[90vh] md:rounded-[3rem] overflow-hidden shadow-2xl bg-[#0A0A0A]"
       >
-        {/* Background Image with blur for ambient effect */}
+        {/* Background Blur */}
         <div className="absolute inset-0 z-0">
-          <img src={stories[currentIndex].url} className="w-full h-full object-cover blur-3xl opacity-30 scale-110" alt="" />
-          <div className="absolute inset-0 bg-black/40" />
+          <img src={currentStory.media_url} className="w-full h-full object-cover blur-3xl opacity-30 scale-110" alt="" />
+          <div className="absolute inset-0 bg-black/50" />
         </div>
 
         {/* Main Content */}
         <AnimatePresence mode="wait">
-          <motion.img 
+          <motion.img
             key={currentIndex}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            src={stories[currentIndex].url} 
-            className="relative z-10 w-full h-full object-cover" 
-            alt="Fashion Story" 
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            src={currentStory.media_url}
+            className="relative z-10 w-full h-full object-contain"
+            alt="Story"
           />
         </AnimatePresence>
 
         {/* Overlay Navigation Bars */}
-        <div className="absolute top-0 left-0 right-0 z-20 p-6 space-y-6">
-          <div className="flex space-x-2">
+        <div className="absolute top-0 left-0 right-0 z-20 p-4 pt-10 md:pt-6 space-y-4 bg-gradient-to-b from-black/60 to-transparent">
+          <div className="flex space-x-1 px-1">
             {stories.map((_, i) => (
-              <div key={i} className="h-1 flex-1 bg-white/20 rounded-full overflow-hidden">
-                <motion.div 
-                  className="h-full bg-white"
-                  initial={{ width: 0 }}
-                  animate={{ 
-                    width: i < currentIndex ? '100%' : (i === currentIndex ? `${progress}%` : '0%') 
-                  }}
-                  transition={{ duration: 0.1 }}
+              <div key={i} className="h-0.5 flex-1 bg-white/20 rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full bg-white transition-all duration-75"
+                  style={{ width: i < currentIndex ? '100%' : (i === currentIndex ? `${progress}%` : '0%') }}
                 />
               </div>
             ))}
           </div>
 
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 rounded-xl border-2 border-white overflow-hidden shadow-lg">
-                <img src={user.avatarUrl} className="w-full h-full object-cover" alt="" />
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 rounded-full border border-white/20 overflow-hidden shadow-lg">
+                <img src={currentStory.user.avatar} className="w-full h-full object-cover" alt="" />
               </div>
-              <div>
-                <p className="text-white text-[10px] font-black uppercase tracking-widest">{user.username}</p>
-                <p className="text-white/60 text-[8px] uppercase tracking-widest font-bold">2h Ago</p>
+              <div className="flex flex-col">
+                <div className="flex items-center space-x-2">
+                  <span className="text-white text-xs font-bold truncate">{currentStory.user.name.split(' ')[0]}</span>
+                  <span className="text-white/60 text-[10px]">2h</span>
+                </div>
+                {/* Professional Tags (FFN Differntiator) */}
+                {currentStory.story_tag && currentStory.story_tag !== 'None' && (
+                  <span className="text-[8px] bg-ffn-primary/80 backdrop-blur border border-ffn-primary px-2 py-0.5 rounded-sm text-white uppercase tracking-widest mt-0.5 inline-block w-max">
+                    {currentStory.story_tag}
+                  </span>
+                )}
               </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <button className="text-white/60 hover:text-white"><MoreHorizontal className="w-5 h-5" /></button>
-              <button onClick={onClose} className="text-white/60 hover:text-white"><X className="w-6 h-6" /></button>
+            <div className="flex items-center space-x-2">
+              <button className="p-2 text-white/80 hover:text-white"><MoreHorizontal className="w-5 h-5" /></button>
+              <button onClick={onClose} className="p-2 text-white/80 hover:text-white"><X className="w-6 h-6" /></button>
             </div>
           </div>
         </div>
 
-        {/* Interaction Areas */}
-        <div className="absolute inset-0 z-15 flex">
-          <div className="w-1/3 h-full cursor-pointer" onClick={handlePrev} />
-          <div className="w-2/3 h-full cursor-pointer" onClick={handleNext} />
+        {/* Interaction Areas (Tap left/right, Hold to pause) */}
+        <div
+          className="absolute inset-x-0 top-24 bottom-24 z-15 flex"
+          onMouseDown={() => setIsPaused(true)}
+          onMouseUp={() => setIsPaused(false)}
+          onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
+        >
+          <div className="w-1/3 h-full cursor-pointer" onClick={(e) => { e.stopPropagation(); handlePrev(); }} />
+          <div className="w-2/3 h-full cursor-pointer" onClick={(e) => { e.stopPropagation(); handleNext(); }} />
         </div>
 
         {/* Bottom Bar */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 p-8 pt-20 bg-gradient-to-t from-black via-black/20 to-transparent">
-          <div className="flex items-center space-x-4">
+        <div className="absolute bottom-0 left-0 right-0 z-20 pb-safe pb-6 pt-12 px-4 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+          <div className="flex items-center space-x-3">
             <div className="flex-1 relative">
-              <input 
-                type="text" 
-                placeholder="Reply to story..." 
-                className="w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-full py-4 px-6 text-white text-xs focus:ring-1 focus:ring-white transition-all placeholder:text-white/40"
+              <input
+                type="text"
+                placeholder="Send message..."
+                className="w-full bg-black/40 backdrop-blur-xl border border-white/20 rounded-full py-3.5 px-5 text-white text-sm focus:outline-none focus:border-white/50 transition-all placeholder:text-white/60"
               />
-              <button className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors">
-                <Send className="w-4 h-4" />
-              </button>
             </div>
-            <button className="p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white hover:bg-ffn-accent transition-all">
+            <button className="p-3.5 bg-black/40 backdrop-blur-xl border border-white/20 rounded-full text-white hover:bg-white/10 transition-all">
               <Heart className="w-5 h-5" />
             </button>
-            <button className="p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white">
+            <button className="p-3.5 bg-black/40 backdrop-blur-xl border border-white/20 rounded-full text-white">
               <Share2 className="w-5 h-5" />
             </button>
           </div>
         </div>
 
-        {/* Side Nav Arrows (Desktop Only) */}
-        <button onClick={handlePrev} className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full items-center justify-center text-white opacity-0 hover:opacity-100 transition-opacity">
+        {/* Desktop Side Nav Arrows */}
+        <button onClick={handlePrev} className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-black/40 backdrop-blur-xl border border-white/10 rounded-full items-center justify-center text-white opacity-0 hover:opacity-100 transition-opacity">
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <button onClick={handleNext} className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full items-center justify-center text-white opacity-0 hover:opacity-100 transition-opacity">
+        <button onClick={handleNext} className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-black/40 backdrop-blur-xl border border-white/10 rounded-full items-center justify-center text-white opacity-0 hover:opacity-100 transition-opacity">
           <ChevronRight className="w-6 h-6" />
         </button>
       </motion.div>
