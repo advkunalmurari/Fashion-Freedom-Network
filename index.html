@@ -37,8 +37,8 @@
   <link rel="stylesheet" href="/index.css">
 </head>
 
-<div class="mesh-bg"></div>
-<div id="root">
+<body>
+  <div class="mesh-bg"></div>
   <style>
     .ffn-initial-loader {
       position: fixed;
@@ -68,11 +68,21 @@
       }
     }
   </style>
-  <div class="ffn-initial-loader">
-    <div class="ffn-spinner"></div>
+  <div id="root">
+    <div class="ffn-initial-loader">
+      <div class="ffn-spinner"></div>
+    </div>
   </div>
-</div>
-<script type="module" src="/index.tsx"></script>
+  <script type="module" src="/index.tsx"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function (registrations) {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
+  </script>
 </body>
 
 </html>
