@@ -1,0 +1,7 @@
+{
+  "name": "Fashion Freedom Network (FFN)",
+  "description": "A premium global-scale fashion social network and talent marketplace platform, combining social engagement with professional portfolio and hiring tools.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
