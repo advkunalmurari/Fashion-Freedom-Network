@@ -123,7 +123,7 @@ export const BrandDashboard: React.FC<BrandDashboardProps> = ({ user, onLogout }
                                 <div key={i} className="bg-white rounded-[3rem] overflow-hidden border border-gray-100 shadow-xl group">
                                     <div className="h-48 bg-gray-100 relative overflow-hidden">
                                         <img src={`https://i.pravatar.cc/300?img=${i + 10}`} className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" alt="" />
-                                        <button className="absolute top-4 right-4 p-3 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white hover:text-ffn-black transition-all">
+                                        <button title="Save Talent" className="absolute top-4 right-4 p-3 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white hover:text-ffn-black transition-all">
                                             <Bookmark className="w-4 h-4" />
                                         </button>
                                     </div>

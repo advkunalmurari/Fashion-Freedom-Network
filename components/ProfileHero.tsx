@@ -87,6 +87,7 @@ export const ProfileHero: React.FC<{ user: User }> = ({ user }) => {
         )}
 
         <input
+          title="Upload Cover Image"
           type="file"
           ref={coverInputRef}
           className="hidden"
@@ -142,6 +143,7 @@ export const ProfileHero: React.FC<{ user: User }> = ({ user }) => {
             )}
 
             <button
+              title="Update Avatar"
               disabled={isUploadingAvatar}
               onClick={() => avatarInputRef.current?.click()}
               className="absolute -bottom-2 -right-2 p-4 bg-ffn-black text-white rounded-2xl shadow-2xl hover:bg-ffn-primary transition-all disabled:opacity-50 hover:scale-110 z-30 group"
@@ -268,6 +270,7 @@ export const ProfileHero: React.FC<{ user: User }> = ({ user }) => {
         </div>
 
         <input
+          title="Upload Avatar Image"
           type="file"
           ref={avatarInputRef}
           className="hidden"

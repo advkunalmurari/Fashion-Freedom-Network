@@ -27,7 +27,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({ onClose, onPos
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
+    const files = Array.from(e.target.files || []) as File[];
     if (files.length > 0) {
       const previews = files.map(file => ({
         url: URL.createObjectURL(file),
@@ -74,7 +74,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({ onClose, onPos
         animate={{ scale: 1, opacity: 1, y: 0 }}
         className="bg-white w-full max-w-5xl h-[90vh] md:h-[80vh] rounded-[3rem] md:rounded-[4rem] overflow-hidden relative shadow-2xl flex flex-col md:flex-row border border-white/20"
       >
-        <button onClick={onClose} className="absolute top-6 right-6 z-50 p-3 bg-white/50 backdrop-blur rounded-2xl md:bg-gray-50 hover:bg-ffn-accent hover:text-white transition-all">
+        <button title="Close modal" onClick={onClose} className="absolute top-6 right-6 z-50 p-3 bg-white/50 backdrop-blur rounded-2xl md:bg-gray-50 hover:bg-ffn-accent hover:text-white transition-all">
           <X className="w-5 h-5" />
         </button>
 
@@ -120,6 +120,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({ onClose, onPos
             </div>
           )}
           <input
+            title="Upload Media files"
             type="file"
             ref={fileInputRef}
             className="hidden"
@@ -148,6 +149,8 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({ onClose, onPos
                 <div className="space-y-2">
                   <label className="text-[9px] uppercase tracking-[0.4em] font-black text-gray-400">Editorial Narrative</label>
                   <textarea
+                    title="Editorial Narrative"
+                    aria-label="Editorial Narrative"
                     className="w-full bg-gray-50 border-none rounded-3xl p-5 text-sm h-28 resize-none focus:ring-1 focus:ring-ffn-primary transition-all shadow-inner"
                     placeholder="The synergy of light and structure..."
                     value={caption}
@@ -166,6 +169,8 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({ onClose, onPos
                     <div className="space-y-2">
                       <label className="text-[8px] uppercase tracking-widest font-bold text-gray-400">Shoot Type</label>
                       <select
+                        title="Shoot Type"
+                        aria-label="Shoot Type"
                         className="w-full bg-white border-none rounded-xl py-3 px-4 text-xs shadow-sm focus:ring-1 focus:ring-ffn-primary"
                         value={shootType}
                         onChange={e => setShootType(e.target.value)}
@@ -179,6 +184,8 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({ onClose, onPos
                     <div className="space-y-2">
                       <label className="text-[8px] uppercase tracking-widest font-bold text-gray-400">Location</label>
                       <input
+                        title="Location"
+                        aria-label="Location"
                         type="text"
                         className="w-full bg-white border-none rounded-xl py-3 px-4 text-xs shadow-sm focus:ring-1 focus:ring-ffn-primary"
                         placeholder="e.g. Milan, IT"
@@ -192,6 +199,8 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({ onClose, onPos
                     <div className="relative">
                       <Tag className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
                       <input
+                        title="Brand Tag"
+                        aria-label="Brand Tag"
                         type="text"
                         className="w-full bg-white border-none rounded-xl py-3 pl-10 pr-4 text-xs shadow-sm focus:ring-1 focus:ring-ffn-primary"
                         placeholder="Brand Tag (e.g. @Gucci)"
@@ -205,6 +214,8 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({ onClose, onPos
                     <div className="relative">
                       <SwitchCamera className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
                       <input
+                        title="Photographer Tag"
+                        aria-label="Photographer Tag"
                         type="text"
                         className="w-full bg-white border-none rounded-xl py-3 pl-10 pr-4 text-xs shadow-sm focus:ring-1 focus:ring-ffn-primary"
                         placeholder="Photographer (e.g. @marcoroberti)"

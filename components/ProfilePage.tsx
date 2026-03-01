@@ -362,7 +362,7 @@ export const ProfilePage: React.FC<{ user: User; onBack: () => void }> = ({ user
         {showModelCard && (
           <div className="fixed inset-0 z-[1200] flex items-center justify-center p-6 bg-ffn-black/90 backdrop-blur-xl">
             <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white w-full max-w-4xl h-[90vh] rounded-[4rem] overflow-hidden relative flex flex-col md:flex-row shadow-2xl">
-              <button onClick={() => setShowModelCard(false)} className="absolute top-10 right-10 z-50 p-4 bg-gray-100 rounded-2xl hover:bg-ffn-black hover:text-white transition-all"><X className="w-6 h-6" /></button>
+              <button title="Close Model Card" onClick={() => setShowModelCard(false)} className="absolute top-10 right-10 z-50 p-4 bg-gray-100 rounded-2xl hover:bg-ffn-black hover:text-white transition-all"><X className="w-6 h-6" /></button>
 
               <div className="md:w-1/2 bg-gray-100 p-0 relative h-1/2 md:h-full group">
                 <img src={user.avatarUrl} className="w-full h-full object-cover grayscale transition-all group-hover:grayscale-0" alt="" />
@@ -413,7 +413,7 @@ export const ProfilePage: React.FC<{ user: User; onBack: () => void }> = ({ user
             <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="bg-white w-full max-lg rounded-[3.5rem] p-12 space-y-8 shadow-2xl">
               <div className="flex items-center justify-between">
                 <div className="space-y-1"><h3 className="text-3xl font-serif italic text-ffn-black">Identity Pitch</h3><p className="text-[9px] uppercase tracking-[0.3em] font-black text-gray-400">Networking Protocol</p></div>
-                <button onClick={() => setShowConnectModal(false)} className="p-4 bg-gray-50 rounded-2xl hover:bg-red-50 hover:text-red-500 transition-all"><X className="w-6 h-6" /></button>
+                <button title="Close Connect Modal" onClick={() => setShowConnectModal(false)} className="p-4 bg-gray-50 rounded-2xl hover:bg-red-50 hover:text-red-500 transition-all"><X className="w-6 h-6" /></button>
               </div>
               <div className="space-y-6">
                 <p className="text-sm text-gray-500 font-light leading-relaxed">Briefly introduce yourself and why you'd like to professionally connect with <span className="font-bold text-ffn-black">{user.displayName}</span>.</p>
@@ -444,13 +444,13 @@ export const ProfilePage: React.FC<{ user: User; onBack: () => void }> = ({ user
             <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="bg-white w-full max-xl rounded-[3.5rem] p-12 md:p-16 space-y-12 shadow-2xl">
               <div className="flex items-center justify-between">
                 <div className="space-y-1"><h3 className="text-3xl font-serif italic text-ffn-black">Secure Hiring Escrow</h3><p className="text-[9px] uppercase tracking-[0.3em] font-black text-gray-400">AUTHORITY DISCOVERY PROTOCOL</p></div>
-                <button onClick={() => setShowHireModal(false)} className="p-4 bg-gray-50 rounded-2xl"><X className="w-6 h-6" /></button>
+                <button title="Close Hire Modal" onClick={() => setShowHireModal(false)} className="p-4 bg-gray-50 rounded-2xl"><X className="w-6 h-6" /></button>
               </div>
               <div className="space-y-8">
-                <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest font-black text-gray-400">Project Title</label><input required className="w-full bg-gray-50 border-none rounded-2xl p-5 text-sm" placeholder="e.g. Vogue Summer Editorial" /></div>
+                <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest font-black text-gray-400">Project Title</label><input title="Project Title" required className="w-full bg-gray-50 border-none rounded-2xl p-5 text-sm" placeholder="e.g. Vogue Summer Editorial" /></div>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest font-black text-gray-400">Start Date</label><input type="date" required className="w-full bg-gray-50 border-none rounded-2xl p-5 text-sm" /></div>
-                  <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest font-black text-gray-400">Escrow Deposit</label><input type="text" readOnly value={`$250.00`} className="w-full bg-gray-50 border-none rounded-2xl p-5 text-sm font-bold text-emerald-600" /></div>
+                  <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest font-black text-gray-400">Start Date</label><input title="Start Date" type="date" required className="w-full bg-gray-50 border-none rounded-2xl p-5 text-sm" /></div>
+                  <div className="space-y-2"><label className="text-[10px] uppercase tracking-widest font-black text-gray-400">Escrow Deposit</label><input title="Escrow Deposit" type="text" readOnly value={`$250.00`} className="w-full bg-gray-50 border-none rounded-2xl p-5 text-sm font-bold text-emerald-600" /></div>
                 </div>
                 <div className="pt-4 border-t border-gray-100">
                   <p className="text-[10px] uppercase tracking-widest font-black text-ffn-primary mb-6 text-center">Secure Talent Deposit</p>

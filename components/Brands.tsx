@@ -40,14 +40,14 @@ export const Brands: React.FC = () => {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <h3 className="text-4xl font-serif italic text-ffn-black">{brand.brand_name}</h3>
-                    <button className="text-ffn-primary"><ExternalLink className="w-5 h-5" /></button>
+                    <button title="Visit Website" className="text-ffn-primary"><ExternalLink className="w-5 h-5" /></button>
                   </div>
                   <p className="text-[10px] uppercase tracking-widest font-black text-gray-400">{brand.industry} &bull; {brand.location}</p>
                 </div>
                 <p className="text-sm text-gray-500 font-light leading-relaxed">{brand.description}</p>
                 <div className="pt-6 flex gap-4">
                   <button className="flex-1 px-8 py-5 bg-ffn-black text-white rounded-2xl text-[9px] font-bold uppercase tracking-[0.4em] shadow-lg hover:bg-ffn-primary transition-all">View Active Castings</button>
-                  <button className="p-5 border border-gray-100 rounded-2xl text-gray-400 hover:text-ffn-black transition-all"><Globe className="w-5 h-5" /></button>
+                  <button title="View Global Presence" className="p-5 border border-gray-100 rounded-2xl text-gray-400 hover:text-ffn-black transition-all"><Globe className="w-5 h-5" /></button>
                 </div>
               </div>
             </div>

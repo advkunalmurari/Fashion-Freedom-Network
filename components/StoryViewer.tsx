@@ -117,8 +117,8 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({ initialIndex, stories,
               </div>
             </div>
             <div className="flex items-center space-x-2">
-              <button className="p-2 text-white/80 hover:text-white"><MoreHorizontal className="w-5 h-5" /></button>
-              <button onClick={onClose} className="p-2 text-white/80 hover:text-white"><X className="w-6 h-6" /></button>
+              <button title="More options" className="p-2 text-white/80 hover:text-white"><MoreHorizontal className="w-5 h-5" /></button>
+              <button title="Close story" onClick={onClose} className="p-2 text-white/80 hover:text-white"><X className="w-6 h-6" /></button>
             </div>
           </div>
         </div>
@@ -142,24 +142,25 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({ initialIndex, stories,
             <div className="flex-1 relative">
               <input
                 type="text"
+                title="Send message"
                 placeholder="Send message..."
                 className="w-full bg-black/40 backdrop-blur-xl border border-white/20 rounded-full py-3.5 px-5 text-white text-sm focus:outline-none focus:border-white/50 transition-all placeholder:text-white/60"
               />
             </div>
-            <button className="p-3.5 bg-black/40 backdrop-blur-xl border border-white/20 rounded-full text-white hover:bg-white/10 transition-all">
+            <button title="Like story" className="p-3.5 bg-black/40 backdrop-blur-xl border border-white/20 rounded-full text-white hover:bg-white/10 transition-all">
               <Heart className="w-5 h-5" />
             </button>
-            <button className="p-3.5 bg-black/40 backdrop-blur-xl border border-white/20 rounded-full text-white">
+            <button title="Share story" className="p-3.5 bg-black/40 backdrop-blur-xl border border-white/20 rounded-full text-white">
               <Share2 className="w-5 h-5" />
             </button>
           </div>
         </div>
 
         {/* Desktop Side Nav Arrows */}
-        <button onClick={handlePrev} className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-black/40 backdrop-blur-xl border border-white/10 rounded-full items-center justify-center text-white opacity-0 hover:opacity-100 transition-opacity">
+        <button title="Previous story" onClick={handlePrev} className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-black/40 backdrop-blur-xl border border-white/10 rounded-full items-center justify-center text-white opacity-0 hover:opacity-100 transition-opacity">
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <button onClick={handleNext} className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-black/40 backdrop-blur-xl border border-white/10 rounded-full items-center justify-center text-white opacity-0 hover:opacity-100 transition-opacity">
+        <button title="Next story" onClick={handleNext} className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-black/40 backdrop-blur-xl border border-white/10 rounded-full items-center justify-center text-white opacity-0 hover:opacity-100 transition-opacity">
           <ChevronRight className="w-6 h-6" />
         </button>
       </motion.div>

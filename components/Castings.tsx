@@ -173,7 +173,7 @@ export const Castings: React.FC = () => {
         {showPostModal && (
           <div className="fixed inset-0 z-[1100] flex items-center justify-center p-6 bg-ffn-black/80 backdrop-blur-xl">
             <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white w-full max-w-4xl h-[90vh] rounded-[4rem] overflow-hidden relative flex flex-col border border-white/20 shadow-3xl">
-              <button onClick={() => setShowPostModal(false)} className="absolute top-10 right-10 z-50 p-4 bg-gray-100 rounded-2xl hover:bg-ffn-accent hover:text-white transition-all"><X className="w-6 h-6" /></button>
+              <button title="Close modal" onClick={() => setShowPostModal(false)} className="absolute top-10 right-10 z-50 p-4 bg-gray-100 rounded-2xl hover:bg-ffn-accent hover:text-white transition-all"><X className="w-6 h-6" /></button>
               <div className="p-16 overflow-y-auto no-scrollbar">
                 <div className="space-y-12">
                   <div className="space-y-4">
@@ -228,7 +228,7 @@ export const Castings: React.FC = () => {
         {selectedCasting && (
           <div className="fixed inset-0 z-[1000] flex items-center justify-center p-6 bg-ffn-black/80 backdrop-blur-xl">
             <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white w-full max-w-4xl h-[90vh] rounded-[4rem] overflow-hidden relative shadow-2xl flex flex-col border border-white/20">
-              <button onClick={() => setSelectedCasting(null)} className="absolute top-10 right-10 z-50 p-4 bg-gray-100 rounded-2xl hover:bg-ffn-black hover:text-white transition-all"><X className="w-6 h-6" /></button>
+              <button title="Close modal" onClick={() => setSelectedCasting(null)} className="absolute top-10 right-10 z-50 p-4 bg-gray-100 rounded-2xl hover:bg-ffn-black hover:text-white transition-all"><X className="w-6 h-6" /></button>
               <div className="p-16 lg:p-20 overflow-y-auto no-scrollbar flex-1">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
                   <div className="lg:col-span-7 space-y-16">

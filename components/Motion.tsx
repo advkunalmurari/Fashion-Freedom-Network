@@ -139,6 +139,7 @@ const ReelCard: React.FC<{ reel: Post, muted: boolean, setMuted: (muted: boolean
       <div className="absolute top-10 w-full left-0 px-8 md:px-12 flex justify-between items-center z-50">
         <h2 className="text-white text-2xl font-serif italic tracking-tight drop-shadow-md">Motion</h2>
         <button
+          title="Toggle Volume"
           onClick={(e) => { e.stopPropagation(); setMuted(!muted); }}
           className="p-4 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all"
         >
@@ -154,7 +155,7 @@ const ReelCard: React.FC<{ reel: Post, muted: boolean, setMuted: (muted: boolean
               <div className="w-14 h-14 rounded-full border-2 border-white overflow-hidden shadow-2xl bg-gray-900 relative z-10">
                 <img src={reel.author.avatarUrl} alt={reel.author.displayName} className="w-full h-full object-cover" />
               </div>
-              <button className="absolute -bottom-1 -right-1 w-6 h-6 bg-ffn-primary text-white rounded-full flex items-center justify-center border-2 border-black z-20 shadow-lg" onClick={(e) => e.stopPropagation()}>
+              <button title="Add Story" className="absolute -bottom-1 -right-1 w-6 h-6 bg-ffn-primary text-white rounded-full flex items-center justify-center border-2 border-black z-20 shadow-lg" onClick={(e) => e.stopPropagation()}>
                 <Plus className="w-3 h-3" />
               </button>
             </div>
