@@ -69,38 +69,60 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
         finalAvatarUrl = publicUrl;
       }
 
-      // 1. Register via Supabase directly 
+      // 1. Register via Supabase
+      const cleanUsername = formData.username.replace('@', '');
       const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
-          data: { username: formData.username.replace('@', ''), full_name: formData.fullName, avatar_url: finalAvatarUrl }
+          data: { username: cleanUsername, full_name: formData.fullName, avatar_url: finalAvatarUrl }
         }
       });
-      if (signUpError) throw new Error(signUpError.message);
-      if (!signUpData.user) throw new Error("Registration failed.");
 
-      // Insert profile on Supabase
+      if (signUpError) {
+        if (signUpError.message.toLowerCase().includes('already registered') || signUpError.message.toLowerCase().includes('user already')) {
+          throw new Error('An account with this email already exists. Please log in instead.');
+        }
+        throw new Error(signUpError.message);
+      }
+      if (!signUpData.user) throw new Error('Registration failed. Please try again.');
+
+      // Detect duplicate email (Supabase returns empty identities when email is already taken)
+      if (signUpData.user.identities && signUpData.user.identities.length === 0) {
+        throw new Error('An account with this email already exists. Please log in instead.');
+      }
+
+      const userId = signUpData.user.id;
+
+      // Insert/update profile
       const { error: profileError } = await supabase.from('profiles').upsert({
-        user_id: signUpData.user.id,
-        username: formData.username.replace('@', ''),
+        user_id: userId,
+        username: cleanUsername,
         full_name: formData.fullName,
         email: formData.email,
         avatar_url: finalAvatarUrl,
         category: formData.category,
         is_professional: true,
-        is_premium: true, // Auto-upgraded due to payment
+        is_premium: true,
         bio: formData.bio,
         location: formData.location
       }, { onConflict: 'user_id' });
-      if (profileError) console.error("Profile error:", profileError);
+      if (profileError) console.error('Profile error:', profileError);
 
-      // 2. Verify payment (Capture)
+      // Verify payment
       await paypalService.verifyPayment(details.id || details.subscriptionID);
 
+      // Try to sign in immediately (works when email confirmation is disabled in Supabase)
+      const { data: signInData } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      const activeUser = signInData?.user || signUpData.user;
+
       onSuccess({
-        id: signUpData.user.id,
-        username: formData.username.replace('@', ''),
+        id: activeUser.id,
+        username: cleanUsername,
         displayName: formData.fullName,
         avatarUrl: finalAvatarUrl,
         role: formData.category,

@@ -8,6 +8,9 @@ import { FeedCard } from './FeedCard';
 import { StoryViewer } from './StoryViewer';
 import { postService } from '../services/postService';
 import { CreatePost } from './CreatePost';
+import { EditorialFeedFeature } from './EditorialFeedFeature';
+import { DiscoveryPulseCard } from './DiscoveryPulseCard';
+import { TalentInjectionCard } from './TalentInjectionCard';
 
 interface FeedProps {
   onSelectPost?: (id: string) => void;
@@ -122,9 +125,12 @@ export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
       {/* Pull To Refresh Indicator */}
       <div
         className="absolute top-0 left-0 right-0 flex justify-center items-center overflow-hidden transition-all duration-300"
-        style={{ height: pullDistance, opacity: pullDistance / 60 }}
+        style={{ height: pullDistance, opacity: pullDistance / 60 } as React.CSSProperties}
       >
-        <Loader2 className={`w-6 h-6 text-ffn-primary ${isRefreshing ? 'animate-spin' : ''}`} style={{ transform: `rotate(${pullDistance * 3}deg)` }} />
+        <Loader2
+          className={`w-6 h-6 text-ffn-primary ${isRefreshing ? 'animate-spin' : ''}`}
+          style={{ transform: `rotate(${pullDistance * 3}deg)` } as React.CSSProperties}
+        />
       </div>
 
       {/* Stories Tray */}
@@ -204,7 +210,26 @@ export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
             </motion.div>
           ) : (
             posts.map((post, idx) => (
-              <FeedCard key={post.id} post={post} index={idx} onSelectPost={onSelectPost} />
+              <React.Fragment key={post.id}>
+                <FeedCard post={post} index={idx} onSelectPost={onSelectPost} />
+
+                {/* Injection Logic */}
+                {(idx + 1) % 4 === 0 && (idx + 1) / 4 === 1 && (
+                  <EditorialFeedFeature
+                    title="The Cyber Couture Protocol"
+                    subtitle="Identity Deep Dive"
+                    description="Exploring the intersection of digital identity and physical high-fashion. How 2025's leading creators are redefining the global graph."
+                  />
+                )}
+
+                {(idx + 1) % 4 === 0 && (idx + 1) / 4 === 2 && (
+                  <DiscoveryPulseCard />
+                )}
+
+                {(idx + 1) % 4 === 0 && (idx + 1) / 4 === 3 && posts.length > 0 && (
+                  <TalentInjectionCard talent={MOCK_TALENT_POOL[0]} />
+                )}
+              </React.Fragment>
             ))
           )}
         </AnimatePresence>

@@ -12,6 +12,7 @@ const ApplyNow = React.lazy(() => import('./components/ApplyNow').then(m => ({ d
 const Feed = React.lazy(() => import('./components/Feed').then(m => ({ default: m.Feed })));
 const Marketplace = React.lazy(() => import('./components/Marketplace').then(m => ({ default: m.Marketplace })));
 const Messaging = React.lazy(() => import('./components/Messaging').then(m => ({ default: m.Messaging })));
+const UnifiedProtocolFeed = React.lazy(() => import('./components/UnifiedProtocolFeed').then(m => ({ default: m.UnifiedProtocolFeed })));
 const Explore = React.lazy(() => import('./components/Explore').then(m => ({ default: m.Explore })));
 const Castings = React.lazy(() => import('./components/Castings').then(m => ({ default: m.Castings })));
 const Network = React.lazy(() => import('./components/Network').then(m => ({ default: m.Network })));
@@ -32,17 +33,32 @@ const AboutPage = React.lazy(() => import('./components/InfoPages').then(m => ({
 const FAQPage = React.lazy(() => import('./components/InfoPages').then(m => ({ default: m.FAQPage })));
 const CommunityGuidelines = React.lazy(() => import('./components/InfoPages').then(m => ({ default: m.CommunityGuidelines })));
 const PricingPage = React.lazy(() => import('./components/InfoPages').then(m => ({ default: m.PricingPage })));
-const VerificationPage = React.lazy(() => import('./components/InfoPages').then(m => ({ default: m.VerificationPage })));
+const VerificationPage = React.lazy(() => import('./components/VerificationNode').then(m => ({ default: m.VerificationNode })));
+const PortfolioAudit = React.lazy(() => import('./components/PortfolioAuditEngine').then(m => ({ default: m.PortfolioAuditEngine })));
 const ContactPage = React.lazy(() => import('./components/Contact').then(m => ({ default: m.ContactPage })));
-const TrendLab = React.lazy(() => import('./components/TrendLab').then(m => ({ default: m.TrendLab })));
-const SavedHub = React.lazy(() => import('./components/SavedHub').then(m => ({ default: m.SavedHub })));
 const ActivityLedger = React.lazy(() => import('./components/ActivityLedger').then(m => ({ default: m.ActivityLedger })));
 const ReportProblem = React.lazy(() => import('./components/ReportProblem').then(m => ({ default: m.ReportProblem })));
 const AccountSwitcher = React.lazy(() => import('./components/AccountSwitcher').then(m => ({ default: m.AccountSwitcher })));
 const Editorial = React.lazy(() => import('./components/Editorial').then(m => ({ default: m.Editorial })));
 const LoginPage = React.lazy(() => import('./pages/Login'));
 const ForgotPasswordPage = React.lazy(() => import('./pages/ForgotPassword'));
+const ResetPasswordPage = React.lazy(() => import('./pages/ResetPassword'));
 const Settings = React.lazy(() => import('./components/Settings').then(m => ({ default: m.Settings })));
+const RentalMarketplace = React.lazy(() => import('./components/RentalMarketplace').then(m => ({ default: m.RentalMarketplace })));
+const MasterclassHub = React.lazy(() => import('./components/MasterclassHub').then(m => ({ default: m.MasterclassHub })));
+const TalentMatchEngine = React.lazy(() => import('./components/TalentMatchEngine').then(m => ({ default: m.TalentMatchEngine })));
+const CreatorEarningsDashboard = React.lazy(() => import('./components/CreatorEarningsDashboard').then(m => ({ default: m.CreatorEarningsDashboard })));
+const TrendForecaster = React.lazy(() => import('./components/TrendForecaster').then(m => ({ default: m.TrendForecaster })));
+const CastingBoard = React.lazy(() => import('./components/CastingBoard').then(m => ({ default: m.CastingBoard })));
+const BrandProfilePage = React.lazy(() => import('./components/BrandProfilePage').then(m => ({ default: m.BrandProfilePage })));
+const EscrowTracker = React.lazy(() => import('./components/EscrowTracker').then(m => ({ default: m.EscrowTracker })));
+const CollaborationHub = React.lazy(() => import('./components/CollaborationHub').then(m => ({ default: m.CollaborationHub })));
+const PressRoom = React.lazy(() => import('./components/PressRoom').then(m => ({ default: m.PressRoom })));
+const ProjectWarRoom = React.lazy(() => import('./components/ProjectWarRoom').then(m => ({ default: m.ProjectWarRoom })));
+const AgencyCommandCenter = React.lazy(() => import('./components/AgencyCommandCenter').then(m => ({ default: m.AgencyCommandCenter })));
+const TrendLab = React.lazy(() => import('./components/TrendLab').then(m => ({ default: m.TrendLab })));
+const SavedHub = React.lazy(() => import('./components/SavedHub').then(m => ({ default: m.SavedHub })));
+const VerifiedCertificate = React.lazy(() => import('./components/VerifiedCertificate').then(m => ({ VerifiedCertificate: m.VerifiedCertificate })));
 
 // Loading Fallback Spinner
 const PageLoader = () => (
@@ -118,11 +134,28 @@ const Application: React.FC = () => {
             <Route path="/brand-dashboard" element={<BrandDashboard user={user} onLogout={handleLogout} />} />
             <Route path="/castings" element={<Castings />} />
             <Route path="/marketplace" element={<Marketplace />} />
+            <Route path="/rentals" element={<RentalMarketplace />} />
+            <Route path="/academy" element={<MasterclassHub />} />
+            <Route path="/match" element={<TalentMatchEngine />} />
+            <Route path="/earnings" element={<CreatorEarningsDashboard />} />
+            <Route path="/trends" element={<TrendForecaster />} />
+            <Route path="/casting-board" element={<CastingBoard />} />
+            <Route path="/brands/:brandId" element={<BrandProfilePage />} />
+            <Route path="/escrow" element={<EscrowTracker />} />
             <Route path="/network" element={<Network />} />
+            <Route path="/collabs" element={<CollaborationHub />} />
+            <Route path="/press" element={<PressRoom />} />
+            <Route path="/war-room/:projectId" element={<ProjectWarRoom />} />
+            <Route path="/agency-dashboard" element={<AgencyCommandCenter />} />
+            <Route path="/saved" element={<SavedHub />} />
+            <Route path="/certificate/:id" element={<VerifiedCertificate user={MOCK_TALENT_POOL[0]} verificationDate="2025-03-01" trustScore={942} />} />
+
             <Route path="/editorial" element={<Editorial />} />
             <Route path="/settings" element={<Settings user={user} onLogout={handleLogout} />} />
-            <Route path="/messages" element={<Messaging />} />
+            <Route path="/inbox" element={<UnifiedProtocolFeed />} />
+            <Route path="/messages" element={<Navigate to="/inbox" replace />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/login" element={<LoginPage onLogin={(userData) => { setUser(userData); navigate('/'); }} />} />
             <Route path="/my-profile" element={<MyProfile user={user} onLogout={handleLogout} />} />
             <Route path="/register-professional" element={<RegisterProfessional onSuccess={(userData) => { setUser(userData); navigate('/'); }} />} />
@@ -136,6 +169,7 @@ const Application: React.FC = () => {
             <Route path="/community-guidelines" element={<CommunityGuidelines />} />
             <Route path="/pricing" element={<PricingPage onRegister={() => navigate('/register-professional')} />} />
             <Route path="/verification" element={<VerificationPage />} />
+            <Route path="/portfolio-audit" element={<PortfolioAudit />} />
             <Route path="/profile-view/:id" element={<ProfilePage user={MOCK_TALENT_POOL[0]} onBack={() => navigate('/directory')} />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

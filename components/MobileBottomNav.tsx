@@ -35,7 +35,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ activeTab, isD
         { id: 'home', icon: Home, label: 'Home', action: () => navigate('/') },
         { id: 'explore', icon: Compass, label: 'Explore', action: () => navigate('/explore') },
         { id: 'create', icon: PlusSquare, label: 'Create', action: onCreatePost },
-        { id: 'messages', icon: MessageCircle, label: 'Messages', action: () => navigate('/messages') },
+        { id: 'inbox', icon: MessageCircle, label: 'Inbox', action: () => navigate('/inbox') },
         { id: 'my-profile', icon: User, label: 'Profile', action: () => navigate('/my-profile') }
     ];
 
@@ -70,8 +70,8 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ activeTab, isD
 
                                 <item.icon
                                     className={`transition-all duration-300 ${item.id === 'create'
-                                            ? 'w-7 h-7 text-white'
-                                            : isActive ? 'w-6 h-6 scale-110 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]' : 'w-5 h-5'
+                                        ? 'w-7 h-7 text-white'
+                                        : isActive ? 'w-6 h-6 scale-110 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]' : 'w-5 h-5'
                                         }`}
                                 />
 

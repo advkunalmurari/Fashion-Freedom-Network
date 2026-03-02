@@ -109,6 +109,28 @@ const authService = {
      */
     async verifySession(token) {
         return this.getAuthenticatedUser(token);
+    },
+    /**
+     * Confirm an existing user's email using the Admin API.
+     * Used to unblock users who registered before email confirmation was disabled.
+     */
+    async confirmUserEmail(email) {
+        // First find the user by email using the admin API
+        const { data: listData, error: listError } = await supabase.auth.admin.listUsers();
+        if (listError) throw listError;
+
+        const user = listData?.users?.find(u => u.email === email);
+        if (!user) throw new Error(`No account found for ${email}.`);
+
+        if (user.email_confirmed_at) {
+            return { message: 'Email already confirmed.', user };
+        }
+
+        const { data, error } = await supabase.auth.admin.updateUserById(user.id, {
+            email_confirm: true
+        });
+        if (error) throw error;
+        return { message: 'Email confirmed successfully. You can now log in.', user: data.user };
     }
 };
 

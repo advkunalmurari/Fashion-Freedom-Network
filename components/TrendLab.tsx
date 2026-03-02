@@ -1,122 +1,145 @@
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, TrendingUp, Search, Loader2, Award, Zap, Globe, BrainCircuit } from 'lucide-react';
-import { geminiService } from '../services/geminiService';
+import React from 'react';
+import { motion } from 'framer-motion';
+import {
+  TrendingUp, Globe, Zap, Users,
+  ArrowUpRight, ArrowDownRight,
+  MapPin, Activity, Flame, Target
+} from 'lucide-react';
+import { MarketDemandHeatmap } from './MarketDemandHeatmap';
+import { MOCK_TRENDS, MOCK_STYLE_NODES } from '../constants';
 
 export const TrendLab: React.FC = () => {
-  const [analysis, setAnalysis] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const runAnalysis = async () => {
-    setIsLoading(true);
-    try {
-      const result = await geminiService.analyzeStyle("");
-      setAnalysis(result || "Unable to sync with trend nodes.");
-    } catch (e) {
-      console.error(e);
-      setAnalysis("Error connecting to intelligence protocol.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
-    <div className="space-y-20 py-12 animate-in fade-in duration-700">
-      <header className="max-w-4xl mx-auto text-center space-y-8">
-        <div className="inline-flex items-center space-x-3 px-6 py-2 bg-ffn-black text-white rounded-full text-[10px] font-bold uppercase tracking-[0.5em] shadow-2xl">
-          <BrainCircuit className="w-4 h-4 text-ffn-accent animate-pulse" />
-          <span>Gemini Intelligence Protocol</span>
+    <div className="min-h-screen pb-32 space-y-16">
+      {/* Editorial Header */}
+      <div className="relative py-20 px-8 rounded-[4rem] bg-ffn-secondary border border-white/5 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-ffn-primary/10 via-transparent to-transparent opacity-50" />
+        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-6">
+          <div className="inline-flex items-center space-x-3 px-6 py-2 rounded-full border border-ffn-primary/20 bg-ffn-primary/5 backdrop-blur-3xl">
+            <Zap className="w-4 h-4 text-ffn-primary animate-pulse" />
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-ffn-primary">Market Intelligence Protocol</span>
+          </div>
+          <h1 className="text-5xl md:text-7xl font-serif italic text-white leading-tight">
+            Predictive Style <br />
+            <span className="text-ffn-primary">Liquidity Intelligence</span>
+          </h1>
+          <p className="text-sm md:text-base text-gray-500 font-medium max-w-2xl mx-auto leading-relaxed">
+            Real-time analysis of fashion capital demand nodes, professional movement, and the emergence of hyper-curated professional trends.
+          </p>
         </div>
-        <h1 className="text-7xl md:text-9xl font-serif italic text-ffn-black tracking-tighter leading-none">Trend <br/> Forensic Lab.</h1>
-        <p className="text-xl text-gray-400 font-light italic max-w-2xl mx-auto">Leverage advanced computational modeling to forecast the next evolution of global fashion cycles.</p>
-        <div className="pt-6">
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={runAnalysis}
-            disabled={isLoading}
-            className="px-16 py-8 bg-ffn-black text-white rounded-[2.5rem] text-xs font-black uppercase tracking-[0.5em] shadow-3xl hover:bg-ffn-primary transition-all flex items-center justify-center space-x-4 mx-auto disabled:opacity-50"
+      </div>
+
+      {/* Primary Market Pulse */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="lg:col-span-12">
+          <MarketDemandHeatmap />
+        </div>
+      </div>
+
+      {/* Trend Nodes Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {MOCK_TRENDS.map((trend, i) => (
+          <motion.div
+            key={trend.id}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: i * 0.1 }}
+            className="p-8 rounded-[2.5rem] bg-white/5 border border-white/5 group hover:bg-white/10 transition-all duration-500"
           >
-            {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
-            <span>{isLoading ? 'Processing Signal...' : 'Initiate Trend Forecast'}</span>
-          </motion.button>
-        </div>
-      </header>
-
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 max-w-7xl mx-auto">
-        <div className="lg:col-span-8">
-          <AnimatePresence mode="wait">
-            {analysis ? (
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-white p-12 md:p-20 rounded-[4rem] border border-gray-100 shadow-2xl space-y-12 relative overflow-hidden"
-              >
-                <div className="absolute top-0 right-0 w-64 h-64 bg-ffn-primary/5 blur-[100px]" />
-                <div className="flex items-center justify-between border-b border-gray-50 pb-8">
-                   <h3 className="text-3xl font-serif italic text-ffn-black">Intelligence Report</h3>
-                   <span className="text-[10px] font-black uppercase tracking-widest text-emerald-500">Live Forecast 2025</span>
-                </div>
-                <div className="prose prose-ffn max-w-none">
-                  <p className="text-lg text-gray-600 leading-relaxed font-light whitespace-pre-wrap">{analysis}</p>
-                </div>
-                <div className="pt-12 flex gap-4">
-                  <button className="flex-1 py-6 bg-ffn-black text-white rounded-3xl text-[10px] font-bold uppercase tracking-widest shadow-xl">Export Narrative</button>
-                  <button onClick={() => setAnalysis(null)} className="px-8 py-6 bg-gray-50 text-gray-400 rounded-3xl hover:text-ffn-accent transition-colors"><TrendingUp className="w-5 h-5" /></button>
-                </div>
-              </motion.div>
-            ) : (
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="h-[600px] bg-gray-50/50 rounded-[4rem] border border-dashed border-gray-200 flex flex-center items-center justify-center"
-              >
-                <div className="text-center space-y-6 opacity-30">
-                   <Search className="w-16 h-16 mx-auto mb-4" />
-                   <p className="text-[10px] uppercase tracking-[0.5em] font-black">Awaiting Intelligence Sync</p>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        <div className="lg:col-span-4 space-y-8">
-           <div className="bg-ffn-black text-white p-12 rounded-[3.5rem] shadow-2xl space-y-10 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-ffn-accent/20 blur-[50px] animate-pulse" />
-              <div className="flex items-center space-x-3 text-ffn-primary">
-                 <Award className="w-5 h-5" />
-                 <span className="text-[10px] font-black uppercase tracking-widest">Mastery Tool</span>
+            <div className="flex items-center justify-between mb-6">
+              <div className={`p-3 rounded-xl bg-black/40 ${trend.trend === 'up' ? 'text-green-500' : trend.trend === 'down' ? 'text-red-500' : 'text-gray-500'}`}>
+                {trend.trend === 'up' ? <ArrowUpRight className="w-5 h-5" /> : trend.trend === 'down' ? <ArrowDownRight className="w-5 h-5" /> : <TrendingUp className="w-5 h-5" />}
               </div>
-              <h3 className="text-3xl font-serif italic leading-none">Forecast Accuracy</h3>
-              <p className="text-white/40 text-sm font-light leading-relaxed">Our models are trained on 15 years of editorial data from Milan, Paris, and London archives.</p>
-              <div className="pt-4">
-                <div className="flex items-end justify-between mb-2">
-                   <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Reliability Index</span>
-                   <span className="text-2xl font-serif italic text-ffn-primary">94.2%</span>
-                </div>
-                <div className="h-1 bg-white/10 rounded-full overflow-hidden">
-                   <motion.div initial={{ width: 0 }} animate={{ width: '94.2%' }} className="h-full bg-ffn-primary shadow-[0_0_10px_rgba(99,102,241,1)]" />
-                </div>
-              </div>
-           </div>
+              <span className={`text-[10px] font-black uppercase tracking-widest ${trend.trend === 'up' ? 'text-green-500' : 'text-red-400'}`}>
+                {trend.change > 0 ? `+${trend.change}%` : `${trend.change}%`}
+              </span>
+            </div>
+            <div className="space-y-1">
+              <span className="text-[9px] font-black uppercase tracking-widest text-gray-500">{trend.label}</span>
+              <div className="text-3xl font-serif italic text-white">{trend.value}</div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
 
-           <div className="bg-white p-12 rounded-[3.5rem] border border-gray-100 shadow-xl space-y-10">
-              <h4 className="text-[10px] uppercase tracking-[0.5em] font-black text-ffn-primary">Active Signals</h4>
-              <div className="space-y-6">
-                {[
-                  { label: 'Neo-Ruralism', strength: 'Strong', color: 'text-emerald-500' },
-                  { label: 'Digital Brutalism', strength: 'Emerging', color: 'text-blue-500' },
-                  { label: 'Hyper-Minimal', strength: 'Stable', color: 'text-gray-400' }
-                ].map((signal, i) => (
-                  <div key={i} className="flex items-center justify-between border-b border-gray-50 pb-4 last:border-0">
-                    <span className="text-[11px] font-bold uppercase tracking-widest text-ffn-black">{signal.label}</span>
-                    <span className={`text-[9px] font-black uppercase tracking-widest ${signal.color}`}>{signal.strength}</span>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        {/* Style Nodes Table */}
+        <div className="p-10 rounded-[3rem] bg-white/5 border border-white/5 space-y-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-xl font-serif italic text-white">Active Style Nodes</h3>
+              <p className="text-[9px] font-black uppercase tracking-[0.4em] text-ffn-primary">Geographic Competence Index</p>
+            </div>
+          </div>
+          <div className="space-y-6">
+            {MOCK_STYLE_NODES.map((node, i) => (
+              <motion.div
+                key={node.id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="flex items-center justify-between group cursor-pointer"
+              >
+                <div className="flex items-center space-x-6">
+                  <div className="w-12 h-12 rounded-xl bg-black/40 border border-white/10 flex items-center justify-center text-gray-500 group-hover:text-ffn-primary transition-colors">
+                    <MapPin className="w-5 h-5" />
                   </div>
-                ))}
+                  <div className="space-y-1">
+                    <h4 className="text-base font-serif italic text-white">{node.city}: {node.styleName}</h4>
+                    <div className="flex items-center space-x-3 text-[8px] font-black uppercase tracking-widest text-gray-500">
+                      <span>{node.activeTalent} Identities</span>
+                      <span>•</span>
+                      <span className="text-green-500">+{node.growth}% Index</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm font-black text-white">{node.demandScore}%</div>
+                  <div className="text-[7px] font-black uppercase tracking-widest text-gray-500">Node Demand</div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Global Opportunity Index */}
+        <div className="p-10 rounded-[3rem] bg-ffn-primary text-black space-y-10">
+          <div className="space-y-3">
+            <h3 className="text-2xl font-serif italic leading-tight">Regional Opportunity Thresholds</h3>
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-60">Strategic Deployment Data</p>
+          </div>
+
+          <div className="space-y-8">
+            {[
+              { label: 'Runway Talent Liquidity', value: 88, city: 'Milan' },
+              { label: 'CGI Identity Demand', value: 74, city: 'Tokyo' },
+              { label: 'Editorial Visualists', value: 95, city: 'Paris' },
+            ].map((item, i) => (
+              <div key={i} className="space-y-4">
+                <div className="flex justify-between items-baseline">
+                  <div className="space-y-1">
+                    <span className="text-[11px] font-bold uppercase tracking-tight">{item.label}</span>
+                    <div className="text-[8px] font-black uppercase tracking-widest opacity-40">{item.city} Protocol</div>
+                  </div>
+                  <span className="text-xl font-serif italic">{item.value}%</span>
+                </div>
+                <div className="h-2 w-full bg-black/10 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${item.value}%` }}
+                    transition={{ duration: 1, delay: i * 0.2 }}
+                    className="h-full bg-black"
+                  />
+                </div>
               </div>
-              <button className="w-full py-5 bg-gray-50 text-gray-400 rounded-2xl text-[9px] font-bold uppercase tracking-widest hover:bg-ffn-black hover:text-white transition-all">View All Nodes</button>
-           </div>
+            ))}
+          </div>
+
+          <button className="w-full py-6 bg-black text-white rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.4em] hover:brightness-110 transition-all flex items-center justify-center space-x-4 shadow-2xl">
+            <span>Generate Predictive Brief</span>
+            <Target className="w-5 h-5" />
+          </button>
         </div>
       </div>
     </div>

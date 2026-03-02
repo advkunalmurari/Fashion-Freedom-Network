@@ -63,7 +63,7 @@ const LoginCard: React.FC<LoginCardProps> = ({ onSuccess }) => {
                     finalAvatarUrl = publicUrl;
                 }
 
-                // 2. Register via Supabase natively
+                // 2. Register via Supabase
                 const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
                     email,
                     password,
@@ -71,10 +71,20 @@ const LoginCard: React.FC<LoginCardProps> = ({ onSuccess }) => {
                         data: { username, full_name: fullName, avatar_url: finalAvatarUrl }
                     }
                 });
-                if (signUpError) throw new Error(signUpError.message);
-                if (!signUpData.user) throw new Error("Registration failed.");
+                if (signUpError) {
+                    if (signUpError.message.toLowerCase().includes('already registered') || signUpError.message.toLowerCase().includes('user already')) {
+                        throw new Error('An account with this email already exists. Please switch to Login instead.');
+                    }
+                    throw new Error(signUpError.message);
+                }
+                if (!signUpData.user) throw new Error('Registration failed. Please try again.');
 
-                // 3. Create or update profile directly on Supabase
+                // Detect duplicate email (Supabase returns empty identities when email is already taken)
+                if (signUpData.user.identities && signUpData.user.identities.length === 0) {
+                    throw new Error('An account with this email already exists. Please switch to Login instead.');
+                }
+
+                // 3. Create profile
                 await supabase.from('profiles').upsert({
                     user_id: signUpData.user.id,
                     username,
@@ -86,31 +96,70 @@ const LoginCard: React.FC<LoginCardProps> = ({ onSuccess }) => {
                     is_premium: false
                 }, { onConflict: 'user_id' });
 
-                // 4. Hand off to success callback
-                onSuccess(signUpData.user);
+                // 4. Try to sign in immediately (works if email confirmation is disabled in Supabase)
+                const { data: signInData } = await supabase.auth.signInWithPassword({ email, password });
+                if (signInData?.user) {
+                    onSuccess(signInData.user);
+                } else {
+                    // Email confirmation is enabled — show a clear message
+                    setError(null);
+                    setLoading(false);
+                    alert(`✅ Account created! Please check your inbox (${email}) and verify your email before logging in.`);
+                    return;
+                }
 
             } else {
-                // Handle Login (existing logic)
+                // Handle Login
                 const { data, error: authError } = await supabase.auth.signInWithPassword({
                     email,
                     password,
                 });
 
-                if (authError) throw new Error('Invalid email or password');
+                if (authError) {
+                    // Provide specific, user-friendly error messages
+                    if (authError.message.toLowerCase().includes('email not confirmed')) {
+                        throw new Error('Please verify your email address before logging in. Check your inbox for a confirmation link.');
+                    }
+                    if (authError.message.toLowerCase().includes('invalid login credentials')) {
+                        throw new Error('Incorrect email or password. Please try again.');
+                    }
+                    throw new Error(authError.message);
+                }
 
                 if (data.user) {
-                    // Check for profile
-                    const { data: profile } = await supabase
+                    // Use maybeSingle() to safely return null when no profile exists
+                    // (single() throws an error if no row is found)
+                    const { data: profile, error: profileError } = await supabase
                         .from('profiles')
                         .select('id')
                         .eq('user_id', data.user.id)
-                        .single();
+                        .maybeSingle();
+
+                    if (profileError) {
+                        console.error('Profile fetch error:', profileError);
+                    }
 
                     if (!profile) {
-                        navigate('/create-profile');
-                    } else {
-                        onSuccess(data.user);
+                        // Auto-create a basic profile so the user isn't locked out
+                        // This handles users who registered via social login or where the profile row was not created
+                        const { error: upsertError } = await supabase.from('profiles').upsert({
+                            user_id: data.user.id,
+                            username: data.user.user_metadata?.username || email.split('@')[0],
+                            full_name: data.user.user_metadata?.full_name || data.user.user_metadata?.name || '',
+                            email: data.user.email,
+                            avatar_url: data.user.user_metadata?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80',
+                            category: 'Standard',
+                            is_professional: false,
+                            is_premium: false
+                        }, { onConflict: 'user_id' });
+
+                        if (upsertError) {
+                            console.error('Could not auto-create profile:', upsertError);
+                        }
                     }
+
+                    // Always proceed to app — profile will be created/loaded on next page
+                    onSuccess(data.user);
                 }
             }
         } catch (err: any) {

@@ -11,6 +11,7 @@ import { VerificationLevel } from '../types';
 import { StoriesRail, Story } from './StoriesRail';
 import { StoryViewer } from './StoryViewer';
 import { PublicStats } from './PublicStats';
+import { MagneticButton } from './MagneticButton';
 
 const HubGraphic: React.FC<{ type: string }> = ({ type }) => {
   switch (type) {
@@ -61,14 +62,49 @@ export const Home: React.FC<{ onApply: () => void; onDirectory: () => void; onRe
             <Sparkles className="w-4 h-4 text-ffn-accent animate-pulse" />
             <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-ffn-primary">The Identity Protocol for Fashion</span>
           </motion.div>
-          <motion.h1 variants={itemVariants} className="text-6xl md:text-[10rem] lg:text-[11rem] font-serif italic leading-[0.9] tracking-tighter text-ffn-black">
-            India’s Emerging <br />
+          <motion.h1
+            variants={itemVariants}
+            className="text-6xl md:text-[10rem] lg:text-[11rem] font-serif italic leading-[0.9] tracking-tighter text-ffn-black relative"
+          >
+            <motion.span
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              className="inline-block"
+            >
+              India’s Emerging
+            </motion.span> <br />
             <span className="text-gradient-vibrant not-italic font-bold">Fashion Talent</span> <br />
-            Discovery Platform.
+            <motion.span
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              className="inline-block"
+            >
+              Discovery Platform.
+            </motion.span>
           </motion.h1>
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-12">
-            <motion.button whileHover={{ scale: 1.05, boxShadow: "0 30px 60px rgba(99, 102, 241, 0.4)" }} whileTap={{ scale: 0.98 }} onClick={onRegisterProfessional} className="w-full sm:w-auto bg-ffn-black text-white px-16 py-8 rounded-[2.5rem] text-xs font-bold uppercase tracking-[0.4em] flex items-center justify-center space-x-4 group shadow-[0_20px_40px_rgba(0,0,0,0.1)]"><span>Register Identity</span><ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" /></motion.button>
-            <motion.button whileHover={{ scale: 1.05, backgroundColor: "#fff" }} whileTap={{ scale: 0.98 }} onClick={onDirectory} className="w-full sm:w-auto bg-white/50 backdrop-blur-md border border-gray-100 text-ffn-black px-16 py-8 rounded-[2.5rem] text-xs font-bold uppercase tracking-[0.4em] shadow-sm hover:shadow-xl transition-all">Hire Mastery</motion.button>
+            <MagneticButton strength={0.3}>
+              <motion.button
+                whileHover={{ scale: 1.05, boxShadow: "0 30px 60px rgba(99, 102, 241, 0.4)" }}
+                whileTap={{ scale: 0.98 }}
+                onClick={onRegisterProfessional}
+                className="w-80 bg-ffn-black text-white py-8 rounded-[2.5rem] text-xs font-bold uppercase tracking-[0.4em] flex items-center justify-center space-x-4 group shadow-[0_20px_40px_rgba(0,0,0,0.1)] transition-all"
+              >
+                <span>Register Identity</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+              </motion.button>
+            </MagneticButton>
+
+            <MagneticButton strength={0.3}>
+              <motion.button
+                whileHover={{ scale: 1.05, backgroundColor: "#fff" }}
+                whileTap={{ scale: 0.98 }}
+                onClick={onDirectory}
+                className="w-80 bg-white/50 backdrop-blur-md border border-gray-100 text-ffn-black py-8 rounded-[2.5rem] text-xs font-bold uppercase tracking-[0.4em] shadow-sm hover:shadow-xl transition-all"
+              >
+                Hire Mastery
+              </motion.button>
+            </MagneticButton>
           </motion.div>
         </div>
       </section>

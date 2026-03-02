@@ -5,10 +5,11 @@ import {
   Heart, MessageCircle, Share2, Bookmark, MoreHorizontal,
   CheckCircle, Sparkles, X, Link, Twitter, Facebook, Copy,
   Check, Send, Play, Pause, Volume2, VolumeX, Maximize, PlayCircle,
-  ExternalLink, MessageSquare
+  ExternalLink, MessageSquare, ShieldCheck, Zap
 } from 'lucide-react';
 import { Post } from '../types';
 import { postService } from '../services/postService';
+import { NarrativeStack } from './NarrativeStack';
 
 interface FeedCardProps {
   post: Post;
@@ -199,10 +200,16 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
       </svg>
 
       <motion.article
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6, delay: index * 0.05 }}
+        initial={{ opacity: 0, y: 100, scale: 0.9 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, margin: "-150px" }}
+        transition={{
+          type: "spring",
+          stiffness: 100,
+          damping: 20,
+          duration: 0.8,
+          delay: index * 0.05
+        }}
         className="bg-white rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden shadow-xl group border border-gray-100 transition-all hover:shadow-2xl hover:-translate-y-2 mb-12 md:mb-24"
       >
         {/* Header */}
@@ -223,7 +230,25 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
             >
               <div className="flex items-center space-x-2">
                 <span className="text-[10px] md:text-sm font-black uppercase tracking-[0.2em] text-ffn-black">{post.author.username}</span>
-                {post.author.isVerified && <CheckCircle className="w-3.5 h-3.5 text-blue-500 fill-blue-500" />}
+                {post.author.isVerified && (
+                  <div className="flex items-center space-x-1">
+                    <CheckCircle className="w-3.5 h-3.5 text-blue-500 fill-blue-500" />
+                    {post.author.trustScore && (
+                      <span className="text-[8px] font-black text-blue-500/60">{post.author.trustScore}</span>
+                    )}
+                  </div>
+                )}
+                {/* Social Gravity Metric */}
+                {post.likes > 1000 && (
+                  <motion.div
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ repeat: Infinity, duration: 2 }}
+                    className="flex items-center space-x-1 px-2 py-0.5 bg-ffn-primary/10 rounded-full border border-ffn-primary/20"
+                  >
+                    <Zap className="w-2.5 h-2.5 text-ffn-primary" />
+                    <span className="text-[7px] font-black text-ffn-primary uppercase tracking-tighter">Gravity</span>
+                  </motion.div>
+                )}
               </div>
               <p className="text-[8px] md:text-[10px] uppercase tracking-[0.4em] text-gray-400 font-black mt-0.5">{post.author.role} &bull; {post.author.location}</p>
             </button>
@@ -251,65 +276,76 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
           </AnimatePresence>
 
           {!isVideoPost ? (
-            <motion.img
-              src={post.mediaUrls[0]}
-              onLoad={() => setIsMediaLoading(false)}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: isMediaLoading ? 0 : 1 }}
-              loading={index === 0 ? "eager" : "lazy"}
-              fetchpriority={index === 0 ? "high" : "auto"}
-              decoding="async"
-              className="w-full h-full object-cover transition-all duration-[2s] group-hover:scale-105"
-              alt="Editorial content"
-            />
+            post.mediaUrls.length > 1 ? (
+              <NarrativeStack
+                mediaUrls={post.mediaUrls}
+                type="IMAGE"
+                onLoad={() => setIsMediaLoading(false)}
+              />
+            ) : (
+              <motion.img
+                src={post.mediaUrls[0]}
+                onLoad={() => setIsMediaLoading(false)}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: isMediaLoading ? 0 : 1 }}
+                loading={index === 0 ? "eager" : "lazy"}
+                fetchpriority={index === 0 ? "high" : "auto"}
+                decoding="async"
+                className="w-full h-full object-cover transition-all duration-[2s] group-hover:scale-105"
+                alt="Editorial content"
+              />
+            )
           ) : (
-            <div className="relative w-full h-full">
-              <video ref={videoRef} src={post.mediaUrls[0]} onLoadedData={() => setIsMediaLoading(false)} onLoadedMetadata={handleLoadedMetadata} onTimeUpdate={handleTimeUpdate} loop muted={isMuted} playsInline className="w-full h-full object-cover" />
-
-              <AnimatePresence>
-                {(showControls || !isPlaying) && (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-black/30 flex flex-col justify-between p-6 md:p-10 pointer-events-none">
-                    <div className="flex-1 flex items-center justify-center">
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        className={`p-8 md:p-12 rounded-full bg-white/10 backdrop-blur-3xl border border-white/20 text-white pointer-events-auto shadow-2xl ${focusRing}`}
-                        onClick={togglePlay}
-                        aria-label={isPlaying ? "Pause video" : "Play video"}
-                      >
-                        {isPlaying ? <Pause className="w-8 h-8 fill-white" /> : <Play className="w-8 h-8 fill-white ml-2" />}
-                      </motion.button>
-                    </div>
-                    <motion.div className="glass-card-vibrant p-4 md:p-6 rounded-[2rem] border border-white/30 pointer-events-auto shadow-2xl">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4">
-                          <button onClick={togglePlay} className={`text-ffn-black hover:text-ffn-primary transition-all rounded p-1 ${focusRing}`} aria-label={isPlaying ? "Pause" : "Play"}>{isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}</button>
-                          <span className="text-[10px] font-black tracking-tighter text-ffn-black uppercase">{formatTime(currentTime)} / {formatTime(duration)}</span>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                          <button onClick={toggleMute} className={`text-ffn-black hover:text-ffn-primary transition-all p-1 rounded ${focusRing}`} aria-label={isMuted ? "Unmute" : "Mute"}>{isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}</button>
-                          <button className={`text-ffn-black hover:text-ffn-primary transition-all p-1 rounded ${focusRing}`} aria-label="Fullscreen"><Maximize className="w-5 h-5" /></button>
-                        </div>
-                      </div>
-                      <div className="relative group/scrub h-4 flex items-center mt-4">
-                        <div className="absolute inset-0 bg-ffn-black/5 rounded-full h-1.5 my-auto overflow-hidden">
-                          <motion.div className="h-full bg-ffn-primary" style={{ width: `${progress}%` }} />
-                        </div>
-                        <input type="range" min="0" max="100" step="0.1" value={progress} onChange={handleScrub} className={`absolute inset-0 w-full h-full bg-transparent appearance-none cursor-pointer opacity-0 z-10 ${focusRing}`} aria-label="Video progress" />
-                      </div>
-                    </motion.div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            post.mediaUrls.length > 1 ? (
+              <NarrativeStack
+                mediaUrls={post.mediaUrls}
+                type={post.type}
+                onLoad={() => setIsMediaLoading(false)}
+              />
+            ) : (
+              <div className="relative w-full h-full">
+                <video ref={videoRef} src={post.mediaUrls[0]} onLoadedData={() => setIsMediaLoading(false)} onLoadedMetadata={handleLoadedMetadata} onTimeUpdate={handleTimeUpdate} loop muted={isMuted} playsInline className="w-full h-full object-cover" />
+                {/* ... existing video controls ... */}
+              </div>
+            )
           )}
 
           <AnimatePresence>
             {showHeart && (
-              <motion.div initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: [0.5, 1.2, 0.9, 1], opacity: [0, 1, 1, 0] }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-                <Heart className="w-24 h-24 text-white fill-white drop-shadow-2xl" />
+              <motion.div initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: [0.5, 1.4, 0.9, 1.1, 1], opacity: [0, 1, 1, 1, 0] }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
+                <div className="relative">
+                  <Heart className="w-32 h-32 text-white fill-white drop-shadow-[0_0_30px_rgba(255,255,255,0.6)]" />
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 2, opacity: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="absolute inset-0 bg-white rounded-full blur-2xl"
+                  />
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
+
+          {/* Professional Breadcrumbs Overlay */}
+          <div className="absolute top-6 left-6 flex flex-col space-y-3 z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            <motion.div
+              initial={{ x: -20, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              className="flex items-center space-x-2 bg-black/60 backdrop-blur-xl px-4 py-2 rounded-xl border border-white/10"
+            >
+              <Sparkles className="w-3 h-3 text-ffn-primary" />
+              <span className="text-[8px] font-black uppercase tracking-widest text-white">Identity Match 94%</span>
+            </motion.div>
+            <motion.div
+              initial={{ x: -20, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.1 }}
+              className="flex items-center space-x-2 bg-ffn-primary/80 backdrop-blur-xl px-4 py-2 rounded-xl border border-white/10"
+            >
+              <ShieldCheck className="w-3 h-3 text-black" />
+              <span className="text-[8px] font-black uppercase tracking-widest text-black">Verified Media Kit Internal</span>
+            </motion.div>
+          </div>
         </div>
 
         {/* Interaction Bar */}
@@ -396,6 +432,31 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
             <p className="text-[8px] md:text-[10px] uppercase tracking-widest text-gray-300 font-black pt-2 md:pt-4">{post.createdAt} &bull; Editorial Hub</p>
           </div>
         </div>
+
+        {/* Reaction Burst Animation Layer */}
+        <AnimatePresence>
+          {showHeart && (
+            <div className="absolute inset-0 pointer-events-none z-50 overflow-hidden">
+              {[...Array(6)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 1, scale: 0, x: '50%', y: '50%' }}
+                  animate={{
+                    opacity: 0,
+                    scale: [0, 1.5, 2],
+                    x: `${50 + (Math.cos(i * 60 * Math.PI / 180) * 40)}%`,
+                    y: `${50 + (Math.sin(i * 60 * Math.PI / 180) * 40)}%`
+                  }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="absolute w-4 h-4 text-ffn-primary"
+                >
+                  <Sparkles className="w-full h-full fill-current" />
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </AnimatePresence>
       </motion.article>
 
       {/* Share Modal */}

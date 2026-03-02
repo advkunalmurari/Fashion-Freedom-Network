@@ -11,6 +11,11 @@ import { LOGO_SVG, BRAND_SOCIALS } from '../constants';
 import { CreatePostModal } from './CreatePostModal';
 import { SettingsOverlay } from './SettingsOverlay';
 import { MobileBottomNav } from './MobileBottomNav';
+import { NotificationCenter } from './NotificationCenter';
+import { MagneticButton } from './MagneticButton';
+import { Newspaper, Command } from 'lucide-react';
+import { GlobalSearch } from './GlobalSearch';
+import { GlobalSearchOverlay } from './GlobalSearchOverlay';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -33,6 +38,7 @@ export const Layout: React.FC<LayoutProps> = ({
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -57,7 +63,11 @@ export const Layout: React.FC<LayoutProps> = ({
     { id: 'shoots', icon: Camera, label: 'Shoots' },
     { id: 'brands', icon: BrandIcon, label: 'Brands' },
     { id: 'castings', icon: Briefcase, label: 'Castings' },
+    { id: 'collabs', icon: Users, label: 'Collabs' },
+    { id: 'press', icon: Newspaper, label: 'Press Room' },
+    { id: 'inbox', icon: MessageCircle, label: 'Inbox' },
     { id: 'marketplace', icon: ShoppingBag, label: 'Marketplace' },
+    { id: 'agency-dashboard', icon: Briefcase, label: 'Agency Hub', role: 'AGENCY' },
   ];
 
   const sidebarVariants = {
@@ -118,36 +128,66 @@ export const Layout: React.FC<LayoutProps> = ({
           </div>
 
           {currentUser && (
-            <motion.button
-              onClick={() => setIsCreateModalOpen(true)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`mb-8 flex items-center shadow-xl hover:bg-ffn-primary transition-all overflow-hidden ${isDarkMode ? 'bg-white text-black border border-white/10' : 'bg-ffn-black text-white'} ${isSidebarCollapsed ? 'p-3 justify-center' : 'p-4 space-x-4'}`}
-            >
-              <PlusCircle className="w-5 h-5 flex-none" />
-              {!isSidebarCollapsed && <span className="text-[8px] font-black uppercase tracking-widest whitespace-nowrap">Create Mastery</span>}
-            </motion.button>
+            <MagneticButton strength={0.2} className="w-full">
+              <motion.button
+                onClick={() => setIsCreateModalOpen(true)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`mb-8 flex items-center shadow-xl hover:bg-ffn-primary transition-all overflow-hidden w-full ${isDarkMode ? 'bg-white text-black border border-white/10' : 'bg-ffn-black text-white'} ${isSidebarCollapsed ? 'p-3 justify-center' : 'p-4 space-x-4'}`}
+              >
+                <PlusCircle className="w-5 h-5 flex-none" />
+                {!isSidebarCollapsed && <span className="text-[8px] font-black uppercase tracking-widest whitespace-nowrap">Create Mastery</span>}
+              </motion.button>
+            </MagneticButton>
           )}
 
+          <div className="mb-8">
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className={`w-full flex items-center justify-between p-4 rounded-2xl border transition-all group focus:outline-none ${isDarkMode ? 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10 hover:text-white' : 'bg-gray-50 border-gray-100 text-gray-500 hover:bg-gray-100 hover:text-ffn-black'}`}
+            >
+              <div className={`flex items-center ${isSidebarCollapsed ? 'justify-center' : 'space-x-4'}`}>
+                <Search className="w-5 h-5 group-hover:text-ffn-primary transition-colors" />
+                {!isSidebarCollapsed && <span className="text-[10px] font-black uppercase tracking-widest">Global Search</span>}
+              </div>
+              {!isSidebarCollapsed && (
+                <div className="flex items-center space-x-1 px-2 py-1 rounded-lg bg-black/10 border border-white/5">
+                  <Command className="w-3 h-3" />
+                  <span className="text-[10px] font-black">K</span>
+                </div>
+              )}
+            </button>
+          </div>
+
           <nav className="flex-1 space-y-1 overflow-y-auto no-scrollbar pr-2 pb-6">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => navigate('/' + item.id)}
-                className={`flex items-center w-full text-left p-3 rounded-2xl transition-all relative group focus:outline-none
-                  ${isSidebarCollapsed ? 'justify-center' : 'space-x-4'}
-                  ${activeTab === item.id
-                    ? (isDarkMode ? 'text-white font-bold shadow-xl' : 'bg-ffn-black text-white font-bold shadow-xl')
-                    : (isDarkMode ? 'text-white/80 hover:text-white' : 'text-gray-400 hover:text-ffn-black')}`}
-              >
-                {activeTab === item.id && (
-                  <motion.div layoutId="activeTab" className={`absolute inset-0 rounded-2xl -z-10 ${isDarkMode ? 'bg-white/10' : 'bg-ffn-black'}`} transition={{ type: "spring", bounce: 0.2, duration: 0.6 }} />
-                )}
-                <item.icon className={`w-4 h-4 transition-all duration-300 ${activeTab === item.id ? 'scale-110' : 'group-hover:text-ffn-primary'}`} />
-                {!isSidebarCollapsed && <span className="text-[8px] font-bold uppercase tracking-[0.2em] whitespace-nowrap">{item.label}</span>}
-              </button>
-            ))}
+            {navItems
+              .filter(item => !item.role || (currentUser?.user_metadata?.role === item.role))
+              .map((item) => (
+                <MagneticButton key={item.id} strength={0.15} className="w-full">
+                  <button
+                    onClick={() => navigate('/' + item.id)}
+                    className={`flex items-center w-full text-left p-3 rounded-2xl transition-all relative group focus:outline-none
+                    ${isSidebarCollapsed ? 'justify-center' : 'space-x-4'}
+                    ${activeTab === item.id
+                        ? (isDarkMode ? 'text-white font-bold shadow-xl' : 'bg-ffn-black text-white font-bold shadow-xl')
+                        : (isDarkMode ? 'text-white/80 hover:text-white' : 'text-gray-400 hover:text-ffn-black')}`}
+                  >
+                    {activeTab === item.id && (
+                      <motion.div layoutId="activeTab" className={`absolute inset-0 rounded-2xl -z-10 ${isDarkMode ? 'bg-white/10' : 'bg-ffn-black'}`} transition={{ type: "spring", bounce: 0.2, duration: 0.6 }} />
+                    )}
+                    <item.icon className={`w-4 h-4 transition-all duration-300 ${activeTab === item.id ? 'scale-110' : 'group-hover:text-ffn-primary'}`} />
+                    {!isSidebarCollapsed && <span className="text-[8px] font-bold uppercase tracking-[0.2em] whitespace-nowrap">{item.label}</span>}
+                  </button>
+                </MagneticButton>
+              ))}
           </nav>
+
+          {/* Notification bell */}
+          {currentUser && (
+            <div className="mb-3">
+              <NotificationCenter isDarkMode={isDarkMode} isSidebarCollapsed={isSidebarCollapsed} />
+            </div>
+          )}
 
           <div className={`mt-4 space-y-3 pt-6 border-t overflow-hidden ${isDarkMode ? 'border-white/5' : 'border-gray-50'}`}>
             <button
@@ -266,6 +306,9 @@ export const Layout: React.FC<LayoutProps> = ({
       <header className={`lg:hidden w-full h-24 border-b flex items-center justify-between px-8 fixed top-0 backdrop-blur-3xl z-[200] shadow-sm transition-colors duration-500 ${isDarkMode ? 'bg-[#0A0A0A]/95 border-white/5' : 'bg-white/95 border-gray-50'}`}>
         <div onClick={() => navigate('/')} className="flex items-center space-x-4"><div className="w-10 h-10 drop-shadow-md">{LOGO_SVG}</div><div className="flex flex-col leading-none"><span className={`font-serif font-bold text-2xl tracking-tighter ${isDarkMode ? 'text-white' : 'text-ffn-black'}`}>ffn</span><span className={`text-[6px] uppercase tracking-[0.6em] font-black ${isDarkMode ? 'text-white/40' : 'text-ffn-steel'}`}>Identity Lab</span></div></div>
         <div className="flex items-center space-x-4">
+          <div className="hidden sm:block">
+            <GlobalSearch isDarkMode={isDarkMode} />
+          </div>
           <button onClick={() => setIsSettingsOpen(true)} className={`p-2 transition-colors ${isDarkMode ? 'text-white/60 hover:text-white' : 'text-gray-400 hover:text-ffn-primary'}`}><MoreHorizontal className="w-5 h-5" /></button>
           <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className={`p-3.5 rounded-2xl transition-colors focus:outline-none ${isDarkMode ? 'text-white bg-white/5' : 'text-ffn-black bg-gray-50'}`}>{isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}</button>
         </div>
@@ -353,6 +396,11 @@ export const Layout: React.FC<LayoutProps> = ({
           </AnimatePresence>
         </div>
       </main>
+
+      <GlobalSearchOverlay
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+      />
 
       {/* Mobile Bottom Navigation Bar */}
       <MobileBottomNav
