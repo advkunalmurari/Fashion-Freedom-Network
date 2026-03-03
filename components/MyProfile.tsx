@@ -12,8 +12,11 @@ import { PRICING } from '../constants';
 import { SubscriptionType } from '../types';
 import { supabase } from '../supabase';
 import { PayPalButton } from './PayPalButton';
+import { useProfile } from '../hooks/useProfile';
 
 export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user, onLogout }) => {
+  const { profile, loading: profileLoading, saving, updateProfile, uploadAvatar } = useProfile();
+
   const [activeTab, setActiveTab] = useState<'overview' | 'business' | 'marketing' | 'analytics'>('overview');
   const [isSubscribing, setIsSubscribing] = useState<SubscriptionType | null>(null);
   const [activePlanBox, setActivePlanBox] = useState<SubscriptionType | null>(null);
@@ -26,8 +29,16 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
   const [isExiting, setIsExiting] = useState(false);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
 
+  // Merge real profile data with auth user metadata as fallback
+  const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User';
+  const displayAvatar = profile?.avatar_url || user?.user_metadata?.avatar_url || '';
+  const displayBio = profile?.bio || user?.user_metadata?.bio || '';
+  const displayLocation = profile?.location || user?.user_metadata?.location || 'India';
+  const displayCategory = profile?.category || user?.user_metadata?.category || 'Creative Professional';
+  const displayUsername = profile?.username || user?.user_metadata?.username || user?.email?.split('@')[0] || 'user';
+
   const stats = [
-    { label: 'Profile Views', value: '4,820', icon: EyeIcon, color: 'text-ffn-primary' },
+    { label: 'Profile Views', value: '4,820', icon: Eye, color: 'text-ffn-primary' },
     { label: 'Search Indexing', value: '842', icon: Search, color: 'text-blue-500' },
     { label: 'Network Reach', value: '12.4k', icon: Users, color: 'text-emerald-500' },
     { label: 'Direct Inquiries', value: '28', icon: MessageCircle, color: 'text-ffn-accent' },

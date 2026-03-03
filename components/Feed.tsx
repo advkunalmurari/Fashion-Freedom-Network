@@ -6,11 +6,11 @@ import { Post, User } from '../types';
 import { MOCK_POSTS, MOCK_TALENT_POOL } from '../constants';
 import { FeedCard } from './FeedCard';
 import { StoryViewer } from './StoryViewer';
-import { postService } from '../services/postService';
 import { CreatePost } from './CreatePost';
 import { EditorialFeedFeature } from './EditorialFeedFeature';
 import { DiscoveryPulseCard } from './DiscoveryPulseCard';
 import { TalentInjectionCard } from './TalentInjectionCard';
+import { supabase } from '../supabase';
 
 interface FeedProps {
   onSelectPost?: (id: string) => void;
@@ -31,23 +31,28 @@ export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
     if (pageNum === 1) setIsRefreshing(true);
     else setIsLoadingMore(true);
 
-    const res = await postService.getFeed(pageNum);
-    if (res.success && res.data) {
-      if (res.data.length < 20) setHasMore(false);
-      else setHasMore(true);
+    try {
+      const limit = 20;
+      const { data, error } = await supabase
+        .from('posts')
+        .select(`*, profiles:user_id (username, full_name, avatar_url, category)`)
+        .order('created_at', { ascending: false })
+        .range((pageNum - 1) * limit, pageNum * limit - 1);
 
-      if (pageNum === 1) {
-        setPosts(res.data);
+      if (!error && data && data.length > 0) {
+        setHasMore(data.length === limit);
+        if (pageNum === 1) setPosts(data as unknown as Post[]);
+        else setPosts(prev => [...prev, ...(data as unknown as Post[]).filter(np => !prev.some(p => p.id === np.id))]);
       } else {
-        setPosts(prev => {
-          const newPosts = res.data!.filter(newP => !prev.some(p => p.id === newP.id));
-          return [...prev, ...newPosts];
-        });
+        // Fallback to mock data when table is empty or missing
+        if (pageNum === 1) setPosts(MOCK_POSTS as unknown as Post[]);
+        setHasMore(false);
       }
-    } else if (pageNum === 1) {
-      setPosts([]);
+    } catch {
+      if (pageNum === 1) setPosts(MOCK_POSTS as unknown as Post[]);
       setHasMore(false);
     }
+
     setIsRefreshing(false);
     setIsLoadingMore(false);
   };

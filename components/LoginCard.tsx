@@ -43,24 +43,30 @@ const LoginCard: React.FC<LoginCardProps> = ({ onSuccess }) => {
                     throw new Error("Full Name and Username are required for sign up.");
                 }
 
-                // 1. Upload Avatar if selected
+                // 1. Upload Avatar if selected (non-blocking — falls back to default if storage fails)
                 let finalAvatarUrl = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80';
                 if (avatarFile) {
-                    const fileExt = avatarFile.name.split('.').pop();
-                    const fileName = `${Math.random()}.${fileExt}`;
-                    const filePath = `avatars/${fileName}`;
+                    try {
+                        const fileExt = avatarFile.name.split('.').pop();
+                        const fileName = `${Math.random()}.${fileExt}`;
+                        const filePath = `avatars/${fileName}`;
 
-                    const { error: uploadError } = await supabase.storage
-                        .from('avatars')
-                        .upload(filePath, avatarFile);
+                        const { error: uploadError } = await supabase.storage
+                            .from('avatars')
+                            .upload(filePath, avatarFile);
 
-                    if (uploadError) throw new Error("Failed to upload profile picture: " + uploadError.message);
-
-                    const { data: { publicUrl } } = supabase.storage
-                        .from('avatars')
-                        .getPublicUrl(filePath);
-
-                    finalAvatarUrl = publicUrl;
+                        if (!uploadError) {
+                            const { data: { publicUrl } } = supabase.storage
+                                .from('avatars')
+                                .getPublicUrl(filePath);
+                            finalAvatarUrl = publicUrl;
+                        } else {
+                            console.warn('Avatar upload failed, using default:', uploadError.message);
+                        }
+                    } catch (uploadErr) {
+                        console.warn('Avatar upload error, using default avatar:', uploadErr);
+                        // Continue with default avatar — don't block registration
+                    }
                 }
 
                 // 2. Register via Supabase
