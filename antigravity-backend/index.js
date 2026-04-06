@@ -13,6 +13,7 @@ const profileController = require('./profiles/profileController');
 const mediaController = require('./media/mediaController');
 const paymentController = require('./payments/paymentController');
 const razorpayController = require('./payments/razorpayController');
+const payuController = require('./payments/payuController');
 const castingController = require('./casting-calls/castingController');
 const bookingController = require('./photoshoots/bookingController');
 const messageController = require('./messages/messageController');
@@ -73,6 +74,10 @@ app.post('/api/payments/verify-subscription', authMiddleware, paymentController.
 // Payments (Razorpay Subscriptions)
 app.post('/api/razorpay/create-subscription', authMiddleware, razorpayController.createSubscription);
 app.post('/api/razorpay/verify-subscription', authMiddleware, razorpayController.verifySubscription);
+
+// Payments (PayU - callbacks from PayU, no auth middleware as PayU posts directly)
+app.post('/api/payu/success', express.urlencoded({ extended: true }), payuController.handleSuccess);
+app.post('/api/payu/failure', express.urlencoded({ extended: true }), payuController.handleFailure);
 
 // Casting Calls
 app.post('/api/casting-calls/create', authMiddleware, castingController.create);

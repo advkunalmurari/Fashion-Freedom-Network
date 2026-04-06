@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Suspense, Component } from 'react';
+import { LazyMotion, domMax } from 'framer-motion';
 
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
@@ -45,6 +46,8 @@ const LoginPage = React.lazy(() => import('./pages/Login'));
 const ForgotPasswordPage = React.lazy(() => import('./pages/ForgotPassword'));
 const ResetPasswordPage = React.lazy(() => import('./pages/ResetPassword'));
 const Settings = React.lazy(() => import('./components/Settings').then(m => ({ default: m.Settings })));
+const PaymentSuccess = React.lazy(() => import('./pages/PaymentSuccess'));
+const PaymentFailure = React.lazy(() => import('./pages/PaymentFailure'));
 const RentalMarketplace = React.lazy(() => import('./components/RentalMarketplace').then(m => ({ default: m.RentalMarketplace })));
 const MasterclassHub = React.lazy(() => import('./components/MasterclassHub').then(m => ({ default: m.MasterclassHub })));
 const TalentMatchEngine = React.lazy(() => import('./components/TalentMatchEngine').then(m => ({ default: m.TalentMatchEngine })));
@@ -70,8 +73,11 @@ const PageLoader = () => (
 );
 
 // Error Boundary — catches runtime crashes and shows a friendly error instead of blank screen
-class ErrorBoundary extends Component<{ children: React.ReactNode }, { hasError: boolean; error: string }> {
-  state = { hasError: false, error: '' };
+class GlobalErrorBoundary extends React.Component<any, any> {
+  constructor(props: any) {
+    super(props);
+    this.state = { hasError: false, error: '' };
+  }
 
   static getDerivedStateFromError(err: Error) {
     return { hasError: true, error: err.message };
@@ -149,7 +155,7 @@ const Application: React.FC = () => {
         onToggleDarkMode={toggleDarkMode}
       >
         <Suspense fallback={<PageLoader />}>
-          <ErrorBoundary>
+          <GlobalErrorBoundary>
             <Routes>
               <Route path="/" element={user ? <Home onApply={() => navigate('/register-professional')} onDirectory={() => navigate('/directory')} onRegisterProfessional={() => navigate('/register-professional')} /> : <Navigate to="/login" replace />} />
               <Route path="/home" element={<Navigate to="/" replace />} />
@@ -201,9 +207,11 @@ const Application: React.FC = () => {
               <Route path="/verification" element={<VerificationPage />} />
               <Route path="/portfolio-audit" element={<PortfolioAudit />} />
               <Route path="/profile-view/:id" element={<ProfilePage onBack={() => navigate('/directory')} />} />
+              <Route path="/payment-success" element={<PaymentSuccess />} />
+              <Route path="/payment-failure" element={<PaymentFailure />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
-          </ErrorBoundary>
+          </GlobalErrorBoundary>
         </Suspense>
       </Layout>
     </div>
@@ -213,9 +221,11 @@ const Application: React.FC = () => {
 const App: React.FC = () => {
   return (
     <PayPalScriptProvider options={{ "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID || 'test' }}>
-      <BrowserRouter>
-        <Application />
-      </BrowserRouter>
+      <LazyMotion features={domMax}>
+        <BrowserRouter>
+          <Application />
+        </BrowserRouter>
+      </LazyMotion>
     </PayPalScriptProvider>
   );
 };
