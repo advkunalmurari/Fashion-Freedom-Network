@@ -104,9 +104,22 @@ export interface User {
     topMarkets: string[];
     monthlyViews: { month: string; value: number }[];
   };
+  workCredits?: WorkCredit[];
   isDemoContent?: boolean;
   verificationStatus?: 'unverified' | 'pending' | 'verified' | 'rejected';
   trustScore?: number;
+  aestheticTags?: string[];
+  aestheticMatchScore?: number;
+}
+
+export interface Story {
+  id: string;
+  user_id: string;
+  user: User;
+  media_url: string;
+  media_type: 'image' | 'video';
+  story_tag?: string;
+  createdAt?: string;
 }
 
 // Added missing Post interface
@@ -461,6 +474,70 @@ export interface TrendSignal {
   sparkline: TrendSignalPoint[];
 }
 
+export interface SentimentSignal {
+  id: string;
+  keyword: string;
+  sentiment: 'positive' | 'neutral' | 'negative';
+  volume: number;
+  velocity: number;
+}
+
+export interface AestheticSpotlight {
+  id: string;
+  title: string;
+  subtitle: string;
+  imageUrl: string;
+  description: string;
+  demandGrowth: number;
+  topNodes: string[];
+}
+
+// --- Marketplace & Professional Hub ---
+export interface MarketMetric {
+  label: string;
+  value: string | number;
+  trend: 'up' | 'down' | 'neutral';
+}
+
+export interface MarketplaceItem {
+  id: string;
+  title: string;
+  price: string;
+  rating: number;
+  image: string;
+  author: string;
+  role: string;
+  description: string;
+  deliverables: string[];
+  type: 'digital' | 'physical' | 'service';
+  velocity: number; // 0-100 demand score
+  trustScore: number; // 0-100
+  recentActivity?: string;
+  metrics: MarketMetric[];
+}
+
+export interface BoutiqueSpotlight {
+  id: string;
+  title: string;
+  subtitle: string;
+  imageUrl: string;
+  description: string;
+  specialization: string[];
+  capacity: string;
+  location: string;
+}
+
+export interface LiveDrop {
+  id: string;
+  title: string;
+  brand: string;
+  timeRemaining: string; // ISO or countdown string
+  slotsTotal: number;
+  slotsRemaining: number;
+  price: string;
+  type: 'service' | 'limited-edition';
+}
+
 
 
 
@@ -723,6 +800,36 @@ export interface ProjectMilestone {
   dueDate?: string;
 }
 
+// ─── Portfolio Infrastructure ────────────────────────────────────────────────
+export type PortfolioTemplate = 'MASONRY' | 'GRID' | 'NARRATIVE_STACK' | 'FULL_BLEED';
+
+export interface PortfolioLayout {
+  id: string;
+  userId: string;
+  template: PortfolioTemplate;
+  items: PortfolioItem[];
+  createdAt: string;
+  isActive: boolean;
+}
+
+export interface PortfolioItem {
+  id: string;
+  mediaUrl: string;
+  type: 'image' | 'video';
+  size: 'small' | 'medium' | 'large' | 'wide' | 'tall';
+  order: number;
+  caption?: string;
+}
+
+// ─── AI Aesthetic Intelligence ───────────────────────────────────────────────
+export interface AestheticPulse {
+  primaryAesthetic: string;
+  secondaryAesthetics: string[];
+  colorPalette: string[];
+  visualSignature: string; // Brief AI summary
+  compatibilityIndex: number; // 0-100
+}
+
 export interface ProjectMessage {
   id: string;
   senderId: string;
@@ -892,6 +999,24 @@ export interface TrendMetric {
   trend: 'up' | 'down' | 'neutral';
 }
 
+export interface SentimentSignal {
+  id: string;
+  keyword: string;
+  sentiment: 'positive' | 'neutral' | 'negative';
+  volume: number;
+  velocity: number;
+}
+
+export interface AestheticSpotlight {
+  id: string;
+  title: string;
+  subtitle: string;
+  imageUrl: string;
+  description: string;
+  demandGrowth: number;
+  topNodes: string[];
+}
+
 export interface StyleNode {
   id: string;
   city: string;
@@ -899,4 +1024,26 @@ export interface StyleNode {
   demandScore: number; // 0-100
   activeTalent: number;
   growth: number;
+}
+
+// ─── Phase 78: Recruitment & Brand CRM ───────────────────────────────────────
+export type RecruitmentStatus = 'SCOUTED' | 'INTERVIEWING' | 'NEGOTIATING' | 'BOOKED' | 'ARCHIVED';
+
+export interface PrivateBrandNote {
+  id: string;
+  brandId: string;
+  talentId: string;
+  content: string;
+  createdAt: string;
+  authorName: string;
+}
+
+export interface RecruitmentLead {
+  id: string;
+  brandId: string;
+  talentId: string;
+  status: RecruitmentStatus;
+  updatedAt: string;
+  notes?: PrivateBrandNote[];
+  matchScore: number;
 }

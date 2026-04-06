@@ -1,7 +1,18 @@
 
 const paymentService = require('./paymentService');
+const paymentDb = require('./paymentDb');
 
 const paymentController = {
+    async getTransactions(req, res) {
+        const userId = req.user.id;
+        try {
+            const data = await paymentDb.getUserTransactions(userId);
+            res.status(200).json({ success: true, data });
+        } catch (error) {
+            res.status(500).json({ success: false, message: error.message });
+        }
+    },
+
     async createOrder(req, res) {
         const { amount, currency } = req.body;
         try {

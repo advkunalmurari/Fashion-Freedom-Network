@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react';
-import { Mail, Lock, ArrowRight, User, Camera, Loader2, Image as ImageIcon } from 'lucide-react';
+import { Mail, Lock, ArrowRight, User, Camera, Loader2, Sparkles, Image as ImageIcon } from 'lucide-react';
+
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabase';
-import { LOGO_SVG } from '../constants';
+import { Logo } from './icons/Logo';
 import { authService } from '../services/authService';
 import '../styles/login.css';
 
@@ -150,7 +151,7 @@ const LoginCard: React.FC<LoginCardProps> = ({ onSuccess }) => {
                         // This handles users who registered via social login or where the profile row was not created
                         const { error: upsertError } = await supabase.from('profiles').upsert({
                             user_id: data.user.id,
-                            username: data.user.user_metadata?.username || email.split('@')[0],
+                            username: data.user.user_metadata?.username || email?.split('@')?.[0] || 'user',
                             full_name: data.user.user_metadata?.full_name || data.user.user_metadata?.name || '',
                             email: data.user.email,
                             avatar_url: data.user.user_metadata?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80',
@@ -176,33 +177,35 @@ const LoginCard: React.FC<LoginCardProps> = ({ onSuccess }) => {
     };
 
     return (
-        <div className="login-card fade-in stagger-3">
-            <div className="text-center mb-8">
-                <div className="w-16 h-16 mx-auto mb-6 text-white drop-shadow-xl flex items-center justify-center">
-                    {LOGO_SVG}
+        <div className="login-card fade-in stagger-3 relative z-10 group/card">
+            <div className="text-center mb-10 relative">
+                <div className="w-20 h-20 mx-auto mb-8 text-white flex items-center justify-center bg-white/5 rounded-3xl border border-white/10 backdrop-blur-xl shadow-2xl group-hover/card:scale-110 transition-transform duration-700">
+                    <div className="w-10 h-10"><Logo /></div>
                 </div>
-                <h2 className="text-white/40 text-[11px] uppercase tracking-[0.4em] font-semibold mb-2">Fashion Freedom Network</h2>
-                <p className="text-white/20 text-xs font-light">
-                    {isSignUp ? "Create your identity to access the hub" : "Enter your credentials to access the hub"}
+                <h2 className="text-white text-[12px] uppercase tracking-[0.6em] font-black mb-4 opacity-80">Fashion Freedom Network</h2>
+                <div className="w-12 h-[1px] bg-ffn-primary mx-auto mb-6"></div>
+                <p className="text-white/30 text-[11px] font-light italic tracking-widest max-w-[280px] mx-auto">
+                    {isSignUp ? "INITIALIZE IDENTITY CONFIGURATION" : "ESTABLISH PROTOCOL CONNECTION"}
                 </p>
             </div>
 
-            <div className="flex bg-white/5 rounded-2xl p-1 mb-6">
+            <div className="flex bg-white/[0.03] border border-white/5 rounded-[22px] p-1.5 mb-8">
                 <button
                     type="button"
                     onClick={() => setIsSignUp(false)}
-                    className={`flex-1 py-3 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${!isSignUp ? 'bg-white text-ffn-black shadow-lg' : 'text-white/50 hover:text-white/80'}`}
+                    className={`flex-1 py-4 rounded-[18px] text-[9px] font-black uppercase tracking-[0.3em] transition-all duration-500 ${!isSignUp ? 'bg-white text-ffn-black shadow-[0_10px_30px_rgba(255,255,255,0.1)]' : 'text-white/30 hover:text-white/50'}`}
                 >
-                    Login
+                    Establish
                 </button>
                 <button
                     type="button"
                     onClick={() => setIsSignUp(true)}
-                    className={`flex-1 py-3 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${isSignUp ? 'bg-white text-ffn-black shadow-lg' : 'text-white/50 hover:text-white/80'}`}
+                    className={`flex-1 py-4 rounded-[18px] text-[9px] font-black uppercase tracking-[0.3em] transition-all duration-500 ${isSignUp ? 'bg-white text-ffn-black shadow-[0_10px_30px_rgba(255,255,255,0.1)]' : 'text-white/30 hover:text-white/50'}`}
                 >
-                    Sign Up
+                    Construct
                 </button>
             </div>
+
 
             <form onSubmit={handleSubmit} className="space-y-4">
                 {isSignUp && (
@@ -216,19 +219,24 @@ const LoginCard: React.FC<LoginCardProps> = ({ onSuccess }) => {
                         />
                         <div
                             onClick={() => fileInputRef.current?.click()}
-                            className="w-24 h-24 rounded-full border-2 border-dashed border-white/20 flex items-center justify-center cursor-pointer overflow-hidden group relative hover:border-white/50 transition-all bg-white/5"
+                            className="w-28 h-28 rounded-full border border-white/10 flex items-center justify-center cursor-pointer overflow-hidden group relative hover:border-ffn-primary transition-all bg-white/[0.02] p-1 shadow-2xl"
                         >
-                            {avatarPreview ? (
-                                <img src={avatarPreview} alt="Preview" className="w-full h-full object-cover group-hover:opacity-50 transition-opacity" />
-                            ) : (
-                                <Camera className="w-8 h-8 text-white/30 group-hover:text-white/60 transition-colors" />
-                            )}
-                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <Camera className="w-5 h-5 text-white" />
+                            <div className="w-full h-full rounded-full overflow-hidden relative">
+                                {avatarPreview ? (
+                                    <img src={avatarPreview} alt="Preview" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                ) : (
+                                    <div className="w-full h-full flex flex-col items-center justify-center bg-white/5 italic">
+                                        <Camera className="w-6 h-6 text-white/20 mb-2 group-hover:text-ffn-primary transition-colors" />
+                                    </div>
+                                )}
+                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+                                    <Camera className="w-5 h-5 text-white" />
+                                </div>
                             </div>
                         </div>
-                        <span className="text-[10px] uppercase tracking-[0.2em] font-medium text-white/50">Profile Picture</span>
+                        <span className="text-[9px] uppercase tracking-[0.4em] font-black text-white/30 italic">Face Vector Allocation</span>
                     </div>
+
                 )}
 
                 <div className="space-y-4">
@@ -332,11 +340,13 @@ const LoginCard: React.FC<LoginCardProps> = ({ onSuccess }) => {
 
             <button
                 onClick={() => navigate('/register-professional')}
-                className="w-full h-[3.5rem] bg-white/5 hover:bg-white/10 text-white/60 rounded-12 border border-white/10 text-sm font-medium transition-all"
-                style={{ borderRadius: '12px' }}
+                className="w-full h-[4rem] bg-white/5 hover:bg-white/[0.08] text-white/40 hover:text-white rounded-[20px] border border-white/5 hover:border-white/20 text-[10px] uppercase tracking-[0.4em] font-black transition-all duration-500 flex items-center justify-center gap-3 group"
+                style={{ borderRadius: '20px' }}
             >
-                Create Professional Profile
+                <span>Initiate Pro Onboarding</span>
+                <Sparkles size={14} className="opacity-40 group-hover:opacity-100 group-hover:rotate-12 transition-all" />
             </button>
+
         </div>
     );
 };

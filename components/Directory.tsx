@@ -116,8 +116,9 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
   });
 
   return (
-    <div className="space-y-24 pb-32 bg-[#fafafa]">
-      <header className="relative py-32 px-12 rounded-[6rem] overflow-hidden bg-ffn-black shadow-[0_50px_100px_rgba(0,0,0,0.5)] mx-4 mt-4">
+    <div className="space-y-24 pb-32 bg-ffn-black text-white selection:bg-ffn-primary/30">
+      <header className="relative py-16 md:py-32 px-6 md:px-12 rounded-[3rem] md:rounded-[6rem] overflow-hidden bg-ffn-black shadow-[0_50px_100px_rgba(0,0,0,0.5)] mx-4 mt-4">
+
         {/* Background Visuals - Enhanced with Video-like Motion */}
         <div className="absolute inset-0 z-0">
           <img
@@ -169,10 +170,11 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
                 </div>
               </motion.div>
 
-              <h1 className="text-8xl md:text-[11rem] font-serif italic text-white leading-[0.8] tracking-tighter drop-shadow-2xl">
+              <h1 className="text-5xl md:text-[11rem] font-serif italic text-white leading-[0.8] tracking-tighter drop-shadow-2xl">
                 The Master <br />
-                <span className="text-ffn-primary not-italic font-sans font-black uppercase tracking-tighter block mt-4 text-7xl md:text-9xl">Identity Graph</span>
+                <span className="text-ffn-primary not-italic font-sans font-black uppercase tracking-tighter block mt-4 text-4xl md:text-9xl">Identity Graph</span>
               </h1>
+
 
               <p className="text-lg md:text-xl text-white/50 max-w-xl font-medium leading-relaxed tracking-wide">
                 Examine the worldwide creative dataset. Filter through mastery metrics, AR-verified attributes, and verified collaboration history.
@@ -197,21 +199,22 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
             </div>
 
             <div className="flex flex-col items-start lg:items-end space-y-10">
-              <div className="p-8 rounded-[3.5rem] bg-white text-ffn-black shadow-2xl space-y-6 max-w-sm border border-white/20">
-                <div className="flex items-center space-x-4">
+              <div className="p-8 rounded-[3.5rem] bg-white/5 backdrop-blur-3xl text-white shadow-2xl space-y-6 max-w-sm border border-white/10 relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-br from-ffn-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="relative z-10 flex items-center space-x-4">
                   <div className="w-12 h-12 bg-ffn-primary rounded-2xl flex items-center justify-center shadow-lg shadow-ffn-primary/30">
                     <Sparkles className="w-6 h-6 text-white" />
                   </div>
-                  <h4 className="text-xl font-black uppercase tracking-tight">Showcase Yourself</h4>
+                  <h4 className="text-xl font-black uppercase tracking-tight">Showcase Mastery</h4>
                 </div>
-                <p className="text-xs font-bold text-gray-500 leading-normal uppercase tracking-widest">Register your professional identity to be featured in the global hero section.</p>
+                <p className="relative z-10 text-[10px] font-bold text-white/40 leading-normal uppercase tracking-widest">Register your professional identity to be featured in the global hero section.</p>
                 <MagneticButton>
                   <button
                     onClick={onRegisterProfessional}
-                    className="w-full bg-ffn-black text-white px-8 py-5 rounded-3xl text-[10px] font-black uppercase tracking-[0.4em] flex items-center justify-between group hover:bg-ffn-primary transition-all shadow-xl shadow-ffn-primary/10"
+                    className="relative z-10 w-full bg-white text-ffn-black px-8 py-5 rounded-3xl text-[10px] font-black uppercase tracking-[0.4em] flex items-center justify-between group/btn hover:bg-ffn-primary hover:text-white transition-all shadow-xl"
                   >
                     <span>Begin Registration</span>
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                    <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-2 transition-transform" />
                   </button>
                 </MagneticButton>
               </div>
@@ -225,18 +228,19 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
                 <input
                   type="text"
                   placeholder="EXAMINE BY NAME, MASTERY, OR LOCATION..."
-                  className="w-full bg-white/5 backdrop-blur-3xl border border-white/10 rounded-[3rem] py-10 pl-24 pr-12 text-[12px] font-black text-white placeholder:text-white/20 uppercase tracking-[0.4em] shadow-2xl focus:border-ffn-primary/40 focus:bg-white/10 transition-all outline-none"
+                  className="w-full bg-white/5 backdrop-blur-3xl border border-white/10 rounded-[2rem] md:rounded-[3rem] py-6 md:py-10 pl-16 md:pl-24 pr-8 md:pr-12 text-[10px] md:text-[12px] font-black text-white placeholder:text-white/20 uppercase tracking-[0.4em] shadow-2xl focus:border-ffn-primary/40 focus:bg-white/10 transition-all outline-none"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
               <button
                 onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                className={`px-16 py-10 rounded-[3rem] text-[11px] font-black uppercase tracking-[0.4em] border transition-all flex items-center space-x-6 ${showAdvancedFilters ? 'bg-white text-ffn-black border-white shadow-2xl' : 'bg-white/5 border-white/10 text-white/30 hover:border-ffn-primary/40 hover:text-white'}`}
+                className={`px-8 md:px-16 py-6 md:py-10 rounded-[2rem] md:rounded-[3rem] text-[9px] md:text-[11px] font-black uppercase tracking-[0.4em] border transition-all flex items-center justify-center space-x-4 md:space-x-6 ${showAdvancedFilters ? 'bg-white text-ffn-black border-white shadow-2xl' : 'bg-white/5 border-white/10 text-white/30 hover:border-ffn-primary/40 hover:text-white'}`}
               >
-                <SlidersHorizontal className="w-6 h-6" />
+                <SlidersHorizontal className="w-5 h-5 md:w-6 md:h-6" />
                 <span>Smart Parameters</span>
               </button>
+
             </div>
 
             {/* Trending Categories */}
@@ -361,10 +365,11 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
             <div className="space-y-16">
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 px-8">
                 <div className="space-y-4">
-                  <h3 className="text-6xl font-serif italic text-ffn-black tracking-tighter">Vanguard Talent</h3>
-                  <p className="text-[11px] font-black uppercase tracking-[0.6em] text-gray-400">Master Entities Defining the Global Aesthetic Curve</p>
+                  <h3 className="text-4xl md:text-6xl font-serif italic text-white tracking-tighter">Vanguard Talent</h3>
+
+                  <p className="text-[11px] font-black uppercase tracking-[0.6em] text-white/30">Master Entities Defining the Global Aesthetic Curve</p>
                 </div>
-                <button className="px-8 py-4 rounded-full border border-gray-200 text-[10px] font-black uppercase tracking-[0.4em] hover:bg-ffn-black hover:text-white transition-all">Scan Full Graph</button>
+                <button className="px-8 py-4 rounded-full border border-white/10 text-[10px] font-black uppercase tracking-[0.4em] hover:bg-white hover:text-ffn-black transition-all">Scan Full Graph</button>
               </div>
               <div className="flex overflow-x-auto gap-16 pb-16 no-scrollbar px-8 snap-x">
                 {liveProfiles.filter(p => p.role === UserRole.MODEL).slice(0, 6).map(talent => (
@@ -380,7 +385,8 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
 
               <div className="relative z-10 flex flex-col md:flex-row items-start md:items-end justify-between gap-12 mb-16">
                 <div className="space-y-6">
-                  <h3 className="text-7xl font-serif italic tracking-tighter">Creative <span className="text-ffn-primary">Collective</span></h3>
+                  <h3 className="text-5xl md:text-7xl font-serif italic tracking-tighter">Creative <span className="text-ffn-primary">Collective</span></h3>
+
                   <p className="text-[12px] font-black uppercase tracking-[0.5em] text-white/30 max-w-lg">Advanced nodes across photography, styling, and visual arts.</p>
                 </div>
                 <button className="px-12 py-5 rounded-3xl bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-[0.4em] hover:bg-white hover:text-ffn-black transition-all">Expand Dataset</button>
@@ -398,12 +404,12 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
-                  className="inline-block px-8 py-3 rounded-full bg-ffn-primary/5 border border-ffn-primary/10 text-ffn-primary text-[10px] font-black uppercase tracking-[0.5em]"
+                  className="inline-block px-8 py-3 rounded-full bg-ffn-primary/10 border border-ffn-primary/20 text-ffn-primary text-[10px] font-black uppercase tracking-[0.5em]"
                 >
                   Trending Worldwide
                 </motion.div>
-                <h3 className="text-7xl md:text-8xl font-serif italic text-ffn-black tracking-tighter">Global Projections</h3>
-                <p className="text-[12px] font-black uppercase tracking-[0.6em] text-gray-400 max-w-2xl mx-auto leading-relaxed">Discover the next wave of brilliance emerging from the digital fashion frontier.</p>
+                <h3 className="text-7xl md:text-8xl font-serif italic text-white tracking-tighter">Global Projections</h3>
+                <p className="text-[12px] font-black uppercase tracking-[0.6em] text-white/30 max-w-2xl mx-auto leading-relaxed">Discover the next wave of brilliance emerging from the digital fashion frontier.</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12 auto-rows-[450px]">
@@ -512,12 +518,12 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
 
             {filteredTalent.length === 0 && (
               <div className="col-span-full py-72 text-center space-y-12">
-                <div className="w-48 h-48 bg-gray-50 rounded-[5rem] flex items-center justify-center mx-auto mb-12 shadow-inner relative overflow-hidden border border-gray-100">
-                  <UserIcon className="w-20 h-20 text-gray-200 relative z-10" />
+                <div className="w-48 h-48 bg-white/5 rounded-[5rem] flex items-center justify-center mx-auto mb-12 shadow-inner relative overflow-hidden border border-white/10">
+                  <UserIcon className="w-20 h-20 text-white/10 relative z-10" />
                   <div className="absolute inset-0 bg-gradient-to-tr from-ffn-primary/10 to-ffn-accent/10 animate-pulse" />
                 </div>
-                <h3 className="text-6xl font-serif italic text-gray-300 tracking-tighter">Zero Projections Found</h3>
-                <p className="text-[12px] uppercase tracking-[0.8em] text-gray-400 max-w-lg mx-auto leading-loose">Adjust your parameters to discover new nodes of artistic brilliance in our dataset.</p>
+                <h3 className="text-6xl font-serif italic text-white/20 tracking-tighter">Zero Projections Found</h3>
+                <p className="text-[12px] uppercase tracking-[0.8em] text-white/30 max-w-lg mx-auto leading-loose">Adjust your parameters to discover new nodes of artistic brilliance in our dataset.</p>
               </div>
             )}
           </div>
@@ -565,7 +571,7 @@ const TalentCard: React.FC<TalentCardProps> = ({ talent, onSelectTalent, darkThe
     exit={{ opacity: 0, scale: 0.95 }}
     whileHover={{ y: -20 }}
     onClick={() => onSelectTalent(talent.id)}
-    className={`group cursor-pointer rounded-[5rem] border transition-all overflow-hidden shadow-2xl min-w-[340px] snap-center flex-1 ${darkTheme ? 'bg-white/5 border-white/10 hover:border-white/40 hover:shadow-[0_60px_120px_rgba(0,0,0,0.6)]' : 'bg-white border-gray-100 hover:border-ffn-primary/30 hover:shadow-[0_60px_120px_rgba(99,102,241,0.15)]'}`}
+    className={`group cursor-pointer rounded-[5rem] border transition-all overflow-hidden shadow-2xl min-w-[340px] snap-center flex-1 ${darkTheme ? 'bg-white/5 border-white/10 hover:border-white/40 hover:shadow-[0_60px_120px_rgba(0,0,0,0.6)]' : 'bg-white/5 border-white/10 hover:border-white/40 hover:shadow-[0_60px_120px_rgba(255,255,255,0.1)]'}`}
   >
     <div className="aspect-[4/5] relative overflow-hidden m-5 rounded-[4rem] group-hover:shadow-2xl transition-all duration-700">
       <img
@@ -610,9 +616,10 @@ const TalentCard: React.FC<TalentCardProps> = ({ talent, onSelectTalent, darkThe
               <motion.div
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-8 h-8 bg-ffn-primary/40 backdrop-blur-2xl rounded-full flex items-center justify-center border border-white/40 shadow-2xl shadow-ffn-primary/20"
+                className="px-3 h-8 bg-ffn-primary/40 backdrop-blur-2xl rounded-full flex items-center justify-center space-x-2 border border-white/40 shadow-2xl shadow-ffn-primary/20"
               >
-                <CheckCircle className="w-5 h-5 text-white" />
+                <CheckCircle className="w-4 h-4 text-white" />
+                <span className="text-[10px] font-black text-white">{talent.trustScore || 850}</span>
               </motion.div>
             )}
           </div>
@@ -625,17 +632,31 @@ const TalentCard: React.FC<TalentCardProps> = ({ talent, onSelectTalent, darkThe
               <span className="text-[10px] uppercase tracking-[0.4em] font-black text-white">{talent.role}</span>
             </div>
           </div>
+
+          {/* AI Aesthetic Tags */}
+          <div className="flex flex-wrap gap-2 pt-2">
+            {(talent.aestheticTags || ['NEO-NOIR', 'EDITORIAL', 'AVANT-GARDE']).slice(0, 2).map(tag => (
+              <div key={tag} className="flex items-center gap-1.5 px-3 py-1 bg-ffn-primary/10 backdrop-blur-md rounded-lg border border-ffn-primary/20">
+                <Sparkles className="w-3 h-3 text-ffn-primary" />
+                <span className="text-[9px] font-black tracking-widest text-white/80">{tag}</span>
+              </div>
+            ))}
+            <div className="flex items-center gap-1.5 px-3 py-1 bg-ffn-accent/10 backdrop-blur-md rounded-lg border border-ffn-accent/20">
+              <Activity className="w-3 h-3 text-ffn-accent" />
+              <span className="text-[9px] font-black tracking-widest text-ffn-accent">{talent.aestheticMatchScore || 94}% MATCH</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div className={`p-12 flex items-center justify-between ${darkTheme ? 'text-white' : 'text-ffn-black'}`}>
+    <div className={`p-12 flex items-center justify-between text-white`}>
       <div className="space-y-3">
         <div className="flex items-center space-x-4 opacity-80">
           <ShieldCheck className="w-5 h-5 text-ffn-primary" />
           <span className="text-[11px] uppercase tracking-[0.5em] font-black">Identity Secured</span>
         </div>
-        <p className="text-[10px] text-gray-400 uppercase tracking-[0.5em] font-medium leading-none">FFN Protocol v3.0 // AR-LOCK</p>
+        <p className="text-[10px] text-white/30 uppercase tracking-[0.5em] font-medium leading-none">FFN Protocol v3.0 // AR-LOCK</p>
       </div>
       <div className="flex items-center space-x-5">
         <button

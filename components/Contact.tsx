@@ -127,7 +127,7 @@ export const ContactPage: React.FC = () => {
                 <div className="p-4 bg-gray-50 rounded-2xl text-ffn-black"><MapPin className="w-6 h-6" /></div>
                 <div className="space-y-1">
                   <p className="text-[11px] font-black uppercase tracking-widest text-ffn-black">Headquarters Hub</p>
-                  <p className="text-xs text-gray-400 font-light leading-relaxed">BKC Knowledge City, Mumbai, India &bull; Innovation Zone</p>
+                  <p className="text-xs text-gray-400 font-light leading-relaxed">D-64, MB Block, Bhagya Vihar, Rani Khera, Delhi, North West Delhi- 110081, Delhi</p>
                 </div>
               </div>
               <div className="flex items-start space-x-6">

@@ -32,12 +32,13 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ activeTab, isD
     }, []);
 
     const navItems = [
-        { id: 'home', icon: Home, label: 'Home', action: () => navigate('/') },
-        { id: 'explore', icon: Compass, label: 'Explore', action: () => navigate('/explore') },
-        { id: 'create', icon: PlusSquare, label: 'Create', action: onCreatePost },
-        { id: 'inbox', icon: MessageCircle, label: 'Inbox', action: () => navigate('/inbox') },
-        { id: 'my-profile', icon: User, label: 'Profile', action: () => navigate('/my-profile') }
+        { id: 'home', icon: Home, label: 'Nodes', action: () => navigate('/') },
+        { id: 'explore', icon: Compass, label: 'Discover', action: () => navigate('/explore') },
+        { id: 'create', icon: PlusSquare, label: 'Initialize', action: onCreatePost },
+        { id: 'inbox', icon: MessageCircle, label: 'Signal', action: () => navigate('/inbox') },
+        { id: 'my-profile', icon: User, label: 'Identity', action: () => navigate('/my-profile') }
     ];
+
 
     return (
         <AnimatePresence>
@@ -46,20 +47,22 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ activeTab, isD
                     initial={{ y: 100 }}
                     animate={{ y: 0 }}
                     exit={{ y: 100 }}
-                    transition={{ duration: 0.3, ease: 'easeInOut' }}
-                    className={`lg:hidden fixed bottom-0 left-0 right-0 h-[72px] pb-safe border-t backdrop-blur-xl z-[140] flex items-center justify-around px-2 transition-colors duration-500 ${isDarkMode ? 'bg-[#0A0A0A]/80 border-white/10' : 'bg-black/90 border-white/10 text-white'
-                        }`}
+                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                    className={`lg:hidden fixed bottom-0 left-0 right-0 h-[76px] pb-safe border-t backdrop-blur-[40px] z-[140] flex items-center justify-around px-2 transition-colors duration-500 bg-[#050505]/80 border-white/5 shadow-[0_-20px_50px_rgba(0,0,0,0.5)]`}
                     style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
                 >
+
                     {navItems.map((item) => {
                         const isActive = activeTab === item.id || (activeTab === '' && item.id === 'home');
                         return (
                             <button
                                 key={item.id}
                                 onClick={item.action}
-                                className={`flex flex-col items-center justify-center space-y-1 w-16 h-full transition-all duration-300 relative ${isActive ? 'text-ffn-primary' : 'text-gray-400 hover:text-white'
+                                title={item.label}
+                                className={`flex flex-col items-center justify-center space-y-1.5 w-16 h-full transition-all duration-500 relative ${isActive ? 'text-ffn-primary' : 'text-white/20 hover:text-white'
                                     }`}
                             >
+
                                 {isActive && item.id !== 'create' && (
                                     <motion.div
                                         layoutId="mobileNavActiveBase"

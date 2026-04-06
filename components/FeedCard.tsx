@@ -221,7 +221,18 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
               className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl overflow-hidden shadow-lg border-2 border-white p-[2px] bg-gradient-to-tr from-ffn-ig-purple via-ffn-ig-red to-ffn-ig-orange ${focusRing}`}
               aria-label={`View ${post.author.username}'s profile`}
             >
-              <img src={post.author.avatarUrl} className="w-full h-full object-cover rounded-[0.8rem]" alt="" />
+              <img
+                src={post.author.avatarUrl}
+                className="w-full h-full object-cover rounded-[0.8rem]"
+                alt=""
+                loading="lazy"
+                width="56"
+                height="56"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = '/demo/ffn_logo_placeholder.png';
+                }}
+              />
             </motion.button>
             <button
               className={`text-left rounded-lg p-1 -m-1 ${focusRing}`}
@@ -291,6 +302,8 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
                 loading={index === 0 ? "eager" : "lazy"}
                 fetchpriority={index === 0 ? "high" : "auto"}
                 decoding="async"
+                width="800"
+                height="1000"
                 className="w-full h-full object-cover transition-all duration-[2s] group-hover:scale-105"
                 alt="Editorial content"
               />

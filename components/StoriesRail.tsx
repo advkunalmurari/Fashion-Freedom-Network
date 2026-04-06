@@ -29,7 +29,7 @@ export const StoriesRail: React.FC<StoriesRailProps> = ({ onStoryClick }) => {
                     id: `story_mock_${index}`,
                     user_id: talent.id,
                     user: talent,
-                    media_url: post?.imageUrl || talent.avatar,
+                    media_url: post?.mediaUrls?.[0] || talent.avatarUrl,
                     media_type: 'image',
                     story_tag: index % 3 === 0 ? 'Behind the Shoot' : index % 4 === 0 ? 'Casting Alert' : 'None',
                 };
@@ -78,11 +78,11 @@ export const StoriesRail: React.FC<StoriesRailProps> = ({ onStoryClick }) => {
                     >
                         <div className="relative w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-ffn-primary via-purple-500 to-orange-400 group-hover:from-purple-500 group-hover:to-ffn-primary transition-all duration-300">
                             <div className="w-full h-full rounded-full border-2 border-white dark:border-[#0A0A0A] overflow-hidden bg-gray-200">
-                                <img src={story.user.avatar} alt={story.user.name} className="w-full h-full object-cover" />
+                                <img src={story.user.avatarUrl} alt={story.user.displayName} className="w-full h-full object-cover" loading="lazy" width="64" height="64" />
                             </div>
                         </div>
-                        <span className="text-[10px] font-bold text-ffn-black dark:text-white uppercase tracking-wider max-w-[64px] truncate">
-                            {story.user.name.split(' ')[0]}
+                        <span className="text-[9px] font-black uppercase tracking-widest text-ffn-black truncate max-w-[50px]">
+                            {(story.user?.displayName || 'User').split(' ')[0]}
                         </span>
                     </motion.div>
                 ))}

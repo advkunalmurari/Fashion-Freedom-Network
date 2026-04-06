@@ -30,8 +30,8 @@ export const MarketDemandHeatmap: React.FC = () => {
 
             <div className="relative aspect-[16/9] w-full bg-black/40 rounded-[2rem] border border-white/5 overflow-hidden">
                 {/* Abstract World Grid */}
-                <div className="absolute inset-0 opacity-10 pointer-events-none"
-                    style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }} />
+                <div className="absolute inset-0 opacity-10 pointer-events-none bg-grid-pattern" />
+
 
                 {/* City Pulsing Nodes */}
                 {cities.map((city, i) => (
@@ -69,10 +69,49 @@ export const MarketDemandHeatmap: React.FC = () => {
                     </motion.div>
                 ))}
 
-                {/* Global Connection Lines (Decorative) */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20">
-                    <path d="M 70% 65% Q 78% 50% 85% 40%" stroke="#FFD700" strokeWidth="1" fill="none" strokeDasharray="4 4" className="animate-[dash_20s_linear_infinite]" />
-                    <path d="M 48% 42% Q 55% 55% 70% 65%" stroke="#FFD700" strokeWidth="1" fill="none" strokeDasharray="4 4" className="animate-[dash_15s_linear_infinite]" />
+                {/* Global Connection Lines (Decorative Migration Trails) */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                    <defs>
+                        <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor="transparent" />
+                            <stop offset="50%" stopColor="#FFD700" stopOpacity="0.5" />
+                            <stop offset="100%" stopColor="transparent" />
+                        </linearGradient>
+                    </defs>
+
+                    {/* Migration Trail 1: NYC -> Paris */}
+                    <motion.path
+                        d="M 25% 38% Q 35% 30% 45% 35%"
+                        stroke="url(#lineGrad)"
+                        strokeWidth="1.5"
+                        fill="none"
+                        initial={{ pathLength: 0, opacity: 0 }}
+                        animate={{ pathLength: 1, opacity: 1 }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                    />
+
+                    {/* Migration Trail 2: Tokyo -> Mumbai */}
+                    <motion.path
+                        d="M 85% 40% Q 78% 52% 70% 65%"
+                        stroke="#FFD700"
+                        strokeWidth="0.5"
+                        strokeDasharray="4 4"
+                        fill="none"
+                        animate={{ strokeDashoffset: [0, -20] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    />
+
+                    {/* Migration Trail 3: Milan -> NYC */}
+                    <motion.path
+                        d="M 48% 42% Q 36% 45% 25% 38%"
+                        stroke="#EC4899"
+                        strokeWidth="0.5"
+                        strokeOpacity="0.3"
+                        fill="none"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ duration: 5, repeat: Infinity }}
+                    />
                 </svg>
             </div>
 

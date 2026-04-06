@@ -7,8 +7,9 @@ import {
   BookOpen, LogIn, User as UserIcon, ChevronLeft, ChevronRight,
   Camera, Briefcase as BrandIcon, Sparkles, Info, Mail, PlusCircle, BrainCircuit, MoreHorizontal
 } from 'lucide-react';
-import { LOGO_SVG, BRAND_SOCIALS } from '../constants';
-import { CreatePostModal } from './CreatePostModal';
+import { BRAND_SOCIALS } from '../constants';
+import { Logo } from './icons/Logo';
+import { ContentStudio } from './ContentStudio';
 import { SettingsOverlay } from './SettingsOverlay';
 import { MobileBottomNav } from './MobileBottomNav';
 import { NotificationCenter } from './NotificationCenter';
@@ -31,8 +32,7 @@ export const Layout: React.FC<LayoutProps> = ({
   const location = useLocation();
   const navigate = useNavigate();
   // Derive activeTab from pathname (e.g., /home -> home)
-  const pathname = location.pathname.substring(1);
-  const activeTab = pathname === '' ? 'home' : pathname.split('/')[0];
+  const activeTab = location.pathname.substring(1).split('/')?.[0] || 'discover';
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -49,7 +49,7 @@ export const Layout: React.FC<LayoutProps> = ({
     return () => { document.body.style.overflow = ''; };
   }, [isMobileMenuOpen]);
 
-  if (pathname === 'login' || pathname === 'register-professional') {
+  if (location.pathname.substring(1) === 'login' || location.pathname.substring(1) === 'register-professional') {
     return <>{children}</>;
   }
 
@@ -114,7 +114,9 @@ export const Layout: React.FC<LayoutProps> = ({
         <div className={`flex flex-col h-full ${isSidebarCollapsed ? 'p-4' : 'p-8'}`}>
           <div className="mb-10 flex items-center justify-between">
             <div className="flex items-center space-x-4 cursor-pointer overflow-hidden" onClick={() => navigate('/')}>
-              <motion.div whileHover={{ rotate: 360, scale: 1.1 }} className={`drop-shadow-lg flex-none ${isDarkMode ? 'text-white' : 'text-ffn-black'}`}>{LOGO_SVG}</motion.div>
+              <motion.div whileHover={{ rotate: 360, scale: 1.1 }} className={`drop-shadow-lg flex-none ${isDarkMode ? 'text-white' : 'text-ffn-black'}`} aria-hidden="true">
+                <Logo />
+              </motion.div>
               {!isSidebarCollapsed && (
                 <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="flex flex-col leading-none">
                   <span className={`font-serif font-bold text-2xl tracking-tighter ${isDarkMode ? 'text-white' : 'text-ffn-black'}`}>ffn</span>
@@ -123,8 +125,15 @@ export const Layout: React.FC<LayoutProps> = ({
               )}
             </div>
             {!isSidebarCollapsed && (
-              <button onClick={() => setIsSidebarCollapsed(true)} className={`p-2 rounded-xl transition-colors focus:outline-none ${isDarkMode ? 'text-white/20 hover:text-white' : 'text-gray-400 hover:text-ffn-black'}`}><ChevronLeft className="w-5 h-5" /></button>
+              <button
+                onClick={() => setIsSidebarCollapsed(true)}
+                title="Collapse Sidebar"
+                className={`p-2 rounded-xl transition-colors focus:outline-none ${isDarkMode ? 'text-white/20 hover:text-white' : 'text-gray-400 hover:text-ffn-black'}`}
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
             )}
+
           </div>
 
           {currentUser && (
@@ -144,6 +153,7 @@ export const Layout: React.FC<LayoutProps> = ({
           <div className="mb-8">
             <button
               onClick={() => setIsSearchOpen(true)}
+              aria-label="Search the network"
               className={`w-full flex items-center justify-between p-4 rounded-2xl border transition-all group focus:outline-none ${isDarkMode ? 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10 hover:text-white' : 'bg-gray-50 border-gray-100 text-gray-500 hover:bg-gray-100 hover:text-ffn-black'}`}
             >
               <div className={`flex items-center ${isSidebarCollapsed ? 'justify-center' : 'space-x-4'}`}>
@@ -192,6 +202,7 @@ export const Layout: React.FC<LayoutProps> = ({
           <div className={`mt-4 space-y-3 pt-6 border-t overflow-hidden ${isDarkMode ? 'border-white/5' : 'border-gray-50'}`}>
             <button
               onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+              aria-label="More options"
               className={`flex items-center w-full text-left p-3 rounded-2xl transition-all group focus:outline-none ${isDarkMode ? 'text-white/80 hover:text-white' : 'text-gray-400 hover:text-ffn-black'} ${isSidebarCollapsed ? 'justify-center' : 'space-x-4'}`}
             >
               <MoreHorizontal className="w-5 h-5 group-hover:rotate-90 transition-transform" />
@@ -212,7 +223,7 @@ export const Layout: React.FC<LayoutProps> = ({
                 {!isSidebarCollapsed && (
                   <div className="flex flex-col leading-tight overflow-hidden">
                     <span className={`text-[8px] font-bold uppercase tracking-widest truncate ${isDarkMode && activeTab !== 'my-profile' ? 'text-white' : ''}`}>
-                      {currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0]}
+                      {currentUser.user_metadata?.full_name || currentUser.email?.split('@')?.[0]}
                     </span>
                     <span className={`text-[6px] uppercase font-black ${isDarkMode && activeTab !== 'my-profile' ? 'text-white/40' : 'text-gray-400'}`}>Identity Ready</span>
                   </div>
@@ -247,9 +258,9 @@ export const Layout: React.FC<LayoutProps> = ({
 
       <AnimatePresence>
         {isCreateModalOpen && (
-          <CreatePostModal
+          <ContentStudio
             onClose={() => setIsCreateModalOpen(false)}
-            onPostCreated={(post) => {
+            onPublished={(content) => {
               setIsCreateModalOpen(false);
               navigate('/feed');
             }}
@@ -274,11 +285,17 @@ export const Layout: React.FC<LayoutProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20">
                 <div className="space-y-8">
                   <div className="flex items-center space-x-4">
-                    <div className="w-10 h-10">{LOGO_SVG}</div>
+                    <div className="w-10 h-10"><Logo /></div>
                     <span className={`font-serif font-bold text-2xl tracking-tighter ${isDarkMode ? 'text-white' : 'text-ffn-black'}`}>ffn</span>
                   </div>
                   <p className="text-gray-400 text-xs leading-relaxed max-w-xs font-light italic">
                     The global identity infrastructure for the modern fashion professional. Elevating talent through visual sovereignty.
+                  </p>
+                  <p className="text-gray-500 text-[10px] leading-relaxed max-w-xs font-medium uppercase tracking-wider">
+                    Managed by Kalantara Productions India Private Limited
+                  </p>
+                  <p className="text-gray-500 text-[9px] leading-relaxed max-w-xs font-light">
+                    D-64, MB Block, Bhagya Vihar, Rani Khera, Delhi-110081
                   </p>
                 </div>
                 {footerLinks.map((column) => (
@@ -303,89 +320,124 @@ export const Layout: React.FC<LayoutProps> = ({
         </motion.main>
       </div>
 
-      <header className={`lg:hidden w-full h-24 border-b flex items-center justify-between px-8 fixed top-0 backdrop-blur-3xl z-[200] shadow-sm transition-colors duration-500 ${isDarkMode ? 'bg-[#0A0A0A]/95 border-white/5' : 'bg-white/95 border-gray-50'}`}>
-        <div onClick={() => navigate('/')} className="flex items-center space-x-4"><div className="w-10 h-10 drop-shadow-md">{LOGO_SVG}</div><div className="flex flex-col leading-none"><span className={`font-serif font-bold text-2xl tracking-tighter ${isDarkMode ? 'text-white' : 'text-ffn-black'}`}>ffn</span><span className={`text-[6px] uppercase tracking-[0.6em] font-black ${isDarkMode ? 'text-white/40' : 'text-ffn-steel'}`}>Identity Lab</span></div></div>
+      <header className={`lg:hidden w-full h-24 border-b flex items-center justify-between px-8 fixed top-0 backdrop-blur-[40px] z-[200] transition-colors duration-500 bg-[#050505]/90 border-white/5 shadow-2xl`}>
+
+        <div onClick={() => navigate('/')} className="flex items-center space-x-4"><div className="w-10 h-10 drop-shadow-md"><Logo /></div><div className="flex flex-col leading-none"><span className={`font-serif font-bold text-2xl tracking-tighter ${isDarkMode ? 'text-white' : 'text-ffn-black'}`}>ffn</span><span className={`text-[6px] uppercase tracking-[0.6em] font-black ${isDarkMode ? 'text-white/40' : 'text-ffn-steel'}`}>Identity Lab</span></div></div>
         <div className="flex items-center space-x-4">
           <div className="hidden sm:block">
             <GlobalSearch isDarkMode={isDarkMode} />
           </div>
-          <button onClick={() => setIsSettingsOpen(true)} className={`p-2 transition-colors ${isDarkMode ? 'text-white/60 hover:text-white' : 'text-gray-400 hover:text-ffn-primary'}`}><MoreHorizontal className="w-5 h-5" /></button>
-          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className={`p-3.5 rounded-2xl transition-colors focus:outline-none ${isDarkMode ? 'text-white bg-white/5' : 'text-ffn-black bg-gray-50'}`}>{isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}</button>
+          <button
+            onClick={() => setIsSettingsOpen(true)}
+            title="Open System Protocol"
+            className={`p-2 transition-colors ${isDarkMode ? 'text-white/60 hover:text-white' : 'text-gray-400 hover:text-ffn-primary'}`}
+          >
+            <MoreHorizontal className="w-5 h-5" />
+          </button>
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            title={isMobileMenuOpen ? "Close Network Menu" : "Open Network Menu"}
+            className={`p-3.5 rounded-[1.2rem] transition-all duration-500 focus:outline-none ${isDarkMode ? 'text-white bg-white/5 border border-white/10' : 'text-ffn-black bg-gray-50 border border-black/5'}`}
+          >
+            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+
         </div>
       </header>
 
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className={`fixed inset-0 z-[150] pt-28 pb-32 overflow-y-auto lg:hidden ${isDarkMode ? 'bg-[#0A0A0A]' : 'bg-white'}`}
+            initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+            animate={{ opacity: 1, backdropFilter: 'blur(40px)' }}
+            exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+            className={`fixed inset-0 z-[150] lg:hidden flex flex-col bg-[#050505]/60`}
           >
-            <div className="px-8 space-y-6">
-              {currentUser && (
-                <button
-                  onClick={() => { setIsCreateModalOpen(true); setIsMobileMenuOpen(false); }}
-                  className={`w-full py-4 rounded-xl flex items-center justify-center space-x-3 shadow-lg ${isDarkMode ? 'bg-white text-black' : 'bg-ffn-black text-white'}`}
-                >
-                  <PlusCircle className="w-5 h-5" />
-                  <span className="font-bold uppercase tracking-widest text-xs">Create Mastery</span>
-                </button>
-              )}
+            <div className="flex-1 overflow-y-auto no-scrollbar pt-32 pb-40 px-8">
+              <div className="space-y-12">
+                <div className="space-y-4">
+                  <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-ffn-primary">Network Navigation</h2>
+                  <h1 className="text-5xl font-serif italic text-white leading-none">Global Pulse</h1>
+                </div>
 
-              <nav className="space-y-2">
-                {navItems.map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => { navigate('/' + item.id); setIsMobileMenuOpen(false); }}
-                    className={`flex items-center w-full p-4 rounded-xl transition-all ${activeTab === item.id
-                      ? (isDarkMode ? 'bg-white/10 text-white font-bold' : 'bg-gray-100 text-ffn-black font-bold')
-                      : (isDarkMode ? 'text-white/60 hover:text-white' : 'text-gray-500 hover:text-ffn-black')
-                      }`}
+                {currentUser && (
+                  <motion.button
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.1 }}
+                    onClick={() => { setIsCreateModalOpen(true); setIsMobileMenuOpen(false); }}
+                    className="w-full py-6 rounded-[2rem] flex items-center justify-center space-x-3 bg-white text-black shadow-[0_0_30px_rgba(255,255,255,0.1)] border border-white/20"
                   >
-                    <item.icon className={`w-5 h-5 mr-4 ${activeTab === item.id ? 'text-ffn-primary' : ''}`} />
-                    <span className="text-sm font-bold uppercase tracking-widest">{item.label}</span>
-                  </button>
-                ))}
-              </nav>
-
-              <div className={`pt-6 border-t ${isDarkMode ? 'border-white/10' : 'border-gray-100'}`}>
-                {currentUser ? (
-                  <button
-                    onClick={() => { navigate('/my-profile'); setIsMobileMenuOpen(false); }}
-                    className={`flex items-center justify-between w-full p-4 rounded-xl ${isDarkMode ? 'bg-white/5 text-white' : 'bg-gray-50 text-ffn-black'}`}
-                  >
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 rounded-full overflow-hidden mr-4">
-                        {currentUser.user_metadata?.avatar_url ? (
-                          <img src={currentUser.user_metadata.avatar_url} className="w-full h-full object-cover" alt="" />
-                        ) : (
-                          <div className="w-full h-full bg-ffn-primary flex items-center justify-center text-white font-bold">
-                            {currentUser.email?.[0].toUpperCase()}
-                          </div>
-                        )}
-                      </div>
-                      <div className="text-left">
-                        <div className="text-xs font-bold uppercase tracking-widest truncate max-w-[150px]">{currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0]}</div>
-                        <div className="text-[10px] uppercase font-black text-ffn-primary mt-1">View Profile</div>
-                      </div>
-                    </div>
-                    <ChevronRight className="w-5 h-5 opacity-50" />
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => { navigate('/login'); setIsMobileMenuOpen(false); }}
-                    className={`flex items-center justify-center w-full p-4 rounded-xl shadow-lg ${isDarkMode ? 'bg-white text-black' : 'bg-ffn-black text-white'}`}
-                  >
-                    <LogIn className="w-5 h-5 mr-3" />
-                    <span className="font-bold uppercase tracking-widest text-xs">Login</span>
-                  </button>
+                    <PlusCircle className="w-5 h-5" />
+                    <span className="font-black uppercase tracking-[0.2em] text-[10px]">Initialize Mastery</span>
+                  </motion.button>
                 )}
+
+                <nav className="space-y-1">
+                  {navItems.map((item, idx) => (
+                    <motion.button
+                      key={item.id}
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.2 + idx * 0.05 }}
+                      onClick={() => { navigate('/' + item.id); setIsMobileMenuOpen(false); }}
+                      className={`flex items-center w-full p-5 rounded-2xl transition-all border border-transparent
+                        ${activeTab === item.id
+                          ? 'bg-white/10 text-white font-bold border-white/5 shadow-xl'
+                          : 'text-white/40 hover:text-white hover:bg-white/5'
+                        }`}
+                    >
+                      <item.icon className={`w-5 h-5 mr-6 ${activeTab === item.id ? 'text-ffn-primary' : ''}`} />
+                      <span className="text-[11px] font-black uppercase tracking-[0.3em]">{item.label}</span>
+                    </motion.button>
+                  ))}
+                </nav>
+
+                <div className="pt-12 border-t border-white/5 space-y-6">
+                  {currentUser ? (
+                    <motion.button
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.8 }}
+                      onClick={() => { navigate('/my-profile'); setIsMobileMenuOpen(false); }}
+                      className="flex items-center justify-between w-full p-6 rounded-[2.5rem] bg-white/5 border border-white/5 text-white"
+                    >
+                      <div className="flex items-center">
+                        <div className="w-12 h-12 rounded-2xl overflow-hidden mr-5 border-2 border-white/10">
+                          {currentUser.user_metadata?.avatar_url ? (
+                            <img src={currentUser.user_metadata.avatar_url} className="w-full h-full object-cover" alt="" />
+                          ) : (
+                            <div className="w-full h-full bg-ffn-primary flex items-center justify-center text-white font-black">
+                              {currentUser.email?.[0].toUpperCase()}
+                            </div>
+                          )}
+                        </div>
+                        <div className="text-left">
+                          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/90">{currentUser.user_metadata?.full_name || currentUser.email?.split('@')?.[0]}</p>
+                          <div className="text-[9px] uppercase font-black text-ffn-primary mt-1 tracking-widest">Protocol Identified</div>
+                        </div>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-white/20" />
+                    </motion.button>
+                  ) : (
+                    <motion.button
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.8 }}
+                      onClick={() => { navigate('/login'); setIsMobileMenuOpen(false); }}
+                      className="flex items-center justify-center w-full p-6 rounded-[2.5rem] bg-white text-black border border-white/20 shadow-xl"
+                    >
+                      <LogIn className="w-5 h-5 mr-3" />
+                      <span className="font-black uppercase tracking-[0.4em] text-[10px]">Secure Access</span>
+                    </motion.button>
+                  )}
+                </div>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
 
       <main className="lg:hidden flex-1 min-h-screen relative pt-32 pb-24">
         <div className="max-w-7xl mx-auto px-6">

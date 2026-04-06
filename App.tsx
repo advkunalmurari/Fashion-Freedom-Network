@@ -1,4 +1,5 @@
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, Component } from 'react';
+
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { Layout } from './components/Layout';
@@ -58,7 +59,8 @@ const ProjectWarRoom = React.lazy(() => import('./components/ProjectWarRoom').th
 const AgencyCommandCenter = React.lazy(() => import('./components/AgencyCommandCenter').then(m => ({ default: m.AgencyCommandCenter })));
 const TrendLab = React.lazy(() => import('./components/TrendLab').then(m => ({ default: m.TrendLab })));
 const SavedHub = React.lazy(() => import('./components/SavedHub').then(m => ({ default: m.SavedHub })));
-const VerifiedCertificate = React.lazy(() => import('./components/VerifiedCertificate').then(m => ({ default: m.VerifiedCertificate })));
+const CertificatePage = React.lazy(() => import('./pages/CertificatePage').then(m => ({ default: m.CertificatePage })));
+
 
 // Loading Fallback Spinner
 const PageLoader = () => (
@@ -68,11 +70,9 @@ const PageLoader = () => (
 );
 
 // Error Boundary — catches runtime crashes and shows a friendly error instead of blank screen
-class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error: string }> {
-  constructor(props: any) {
-    super(props);
-    this.state = { hasError: false, error: '' };
-  }
+class ErrorBoundary extends Component<{ children: React.ReactNode }, { hasError: boolean; error: string }> {
+  state = { hasError: false, error: '' };
+
   static getDerivedStateFromError(err: Error) {
     return { hasError: true, error: err.message };
   }
@@ -177,7 +177,8 @@ const Application: React.FC = () => {
               <Route path="/war-room/:projectId" element={<ProjectWarRoom />} />
               <Route path="/agency-dashboard" element={<AgencyCommandCenter />} />
               <Route path="/saved" element={<SavedHub />} />
-              <Route path="/certificate/:id" element={<VerifiedCertificate user={MOCK_TALENT_POOL[0]} verificationDate="2025-03-01" trustScore={942} />} />
+              <Route path="/certificate/:id" element={<CertificatePage />} />
+
 
               <Route path="/editorial" element={<Editorial />} />
               <Route path="/settings" element={<Settings user={user} onLogout={handleLogout} />} />
@@ -199,7 +200,7 @@ const Application: React.FC = () => {
               <Route path="/pricing" element={<PricingPage onRegister={() => navigate('/register-professional')} />} />
               <Route path="/verification" element={<VerificationPage />} />
               <Route path="/portfolio-audit" element={<PortfolioAudit />} />
-              <Route path="/profile-view/:id" element={<ProfilePage user={MOCK_TALENT_POOL[0]} onBack={() => navigate('/directory')} />} />
+              <Route path="/profile-view/:id" element={<ProfilePage onBack={() => navigate('/directory')} />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </ErrorBoundary>

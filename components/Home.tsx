@@ -35,7 +35,7 @@ export const Home: React.FC<{ onApply: () => void; onDirectory: () => void; onRe
   const [activeStoryViewer, setActiveStoryViewer] = React.useState<{ index: number, stories: Story[] } | null>(null);
 
   return (
-    <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-32 md:space-y-48 pb-32 md:pb-64">
+    <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-32 md:space-y-48 pb-32 md:pb-64 bg-ffn-black min-h-screen text-white selection:bg-ffn-primary/30">
       {/* Mobile-Only Stories Rail */}
       <div className="lg:hidden block pt-4">
         <StoriesRail onStoryClick={(story, index, allStories) => setActiveStoryViewer({ index, stories: allStories })} />
@@ -64,7 +64,7 @@ export const Home: React.FC<{ onApply: () => void; onDirectory: () => void; onRe
           </motion.div>
           <motion.h1
             variants={itemVariants}
-            className="text-6xl md:text-[10rem] lg:text-[11rem] font-serif italic leading-[0.9] tracking-tighter text-ffn-black relative"
+            className="text-6xl md:text-[10rem] lg:text-[11rem] font-serif italic leading-[0.9] tracking-tighter text-white relative"
           >
             <motion.span
               animate={{ y: [0, -10, 0] }}
@@ -88,7 +88,7 @@ export const Home: React.FC<{ onApply: () => void; onDirectory: () => void; onRe
                 whileHover={{ scale: 1.05, boxShadow: "0 30px 60px rgba(99, 102, 241, 0.4)" }}
                 whileTap={{ scale: 0.98 }}
                 onClick={onRegisterProfessional}
-                className="w-80 bg-ffn-black text-white py-8 rounded-[2.5rem] text-xs font-bold uppercase tracking-[0.4em] flex items-center justify-center space-x-4 group shadow-[0_20px_40px_rgba(0,0,0,0.1)] transition-all"
+                className="w-80 bg-white text-ffn-black py-8 rounded-[2.5rem] text-xs font-bold uppercase tracking-[0.4em] flex items-center justify-center space-x-4 group shadow-[0_20px_40px_rgba(255,255,255,0.1)] transition-all hover:bg-ffn-primary hover:text-white"
               >
                 <span>Register Identity</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
@@ -97,10 +97,10 @@ export const Home: React.FC<{ onApply: () => void; onDirectory: () => void; onRe
 
             <MagneticButton strength={0.3}>
               <motion.button
-                whileHover={{ scale: 1.05, backgroundColor: "#fff" }}
+                whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.1)" }}
                 whileTap={{ scale: 0.98 }}
                 onClick={onDirectory}
-                className="w-80 bg-white/50 backdrop-blur-md border border-gray-100 text-ffn-black py-8 rounded-[2.5rem] text-xs font-bold uppercase tracking-[0.4em] shadow-sm hover:shadow-xl transition-all"
+                className="w-80 bg-white/5 backdrop-blur-md border border-white/10 text-white py-8 rounded-[2.5rem] text-xs font-bold uppercase tracking-[0.4em] shadow-sm hover:shadow-xl transition-all"
               >
                 Hire Mastery
               </motion.button>
@@ -122,11 +122,11 @@ export const Home: React.FC<{ onApply: () => void; onDirectory: () => void; onRe
               <Zap className="w-5 h-5 fill-ffn-accent" />
               <span className="text-[10px] font-bold uppercase tracking-[0.6em]">Premium Featured Talent</span>
             </div>
-            <h2 className="text-4xl md:text-6xl font-serif italic text-ffn-black leading-none">Global <br /> <span className="text-gradient-vibrant font-bold not-italic">Headliners.</span></h2>
+            <h2 className="text-4xl md:text-6xl font-serif italic text-white leading-none">Global <br /> <span className="text-gradient-vibrant font-bold not-italic">Headliners.</span></h2>
           </div>
           <button onClick={onDirectory} className="flex items-center space-x-4 group">
-            <span className="text-[10px] font-black uppercase tracking-widest text-ffn-black border-b border-ffn-black pb-1">View Talent Graph</span>
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+            <span className="text-[10px] font-black uppercase tracking-widest text-white border-b border-white/20 pb-1 group-hover:border-ffn-primary transition-all">View Talent Graph</span>
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform text-white" />
           </button>
         </div>
 
@@ -138,10 +138,10 @@ export const Home: React.FC<{ onApply: () => void; onDirectory: () => void; onRe
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              className="group cursor-pointer relative aspect-[4/5] rounded-[3.5rem] overflow-hidden shadow-2xl bg-gray-100"
+              className="group cursor-pointer relative aspect-[4/5] rounded-[3.5rem] overflow-hidden shadow-2xl bg-white/5 border border-white/10"
               onClick={() => onDirectory()}
             >
-              <img src={talent.avatarUrl} className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" alt="" />
+              <img src={talent.avatarUrl} className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" alt={talent.displayName} loading="lazy" width="600" height="750" />
               <div className="absolute inset-0 bg-gradient-to-t from-ffn-black via-ffn-black/20 to-transparent p-12 flex flex-col justify-end">
                 <div className="space-y-4 translate-y-4 group-hover:translate-y-0 transition-transform">
                   <div className="flex items-center space-x-3">
@@ -166,7 +166,7 @@ export const Home: React.FC<{ onApply: () => void; onDirectory: () => void; onRe
       </section>
 
       {/* Standard Sections... */}
-      <section className="bg-ffn-black rounded-[4rem] p-16 md:p-32 text-center space-y-12 relative overflow-hidden mx-4 shadow-3xl">
+      <section className="bg-white/5 backdrop-blur-3xl rounded-[4rem] p-16 md:p-32 text-center space-y-12 relative overflow-hidden mx-4 border border-white/10 shadow-3xl">
         <div className="absolute top-0 right-0 w-96 h-96 bg-ffn-primary/20 blur-[120px] rounded-full animate-float"></div>
         <div className="relative z-10 space-y-8">
           <h2 className="text-4xl md:text-7xl font-serif italic text-white leading-tight tracking-tighter">Identity Meets <br /> Opportunity.</h2>

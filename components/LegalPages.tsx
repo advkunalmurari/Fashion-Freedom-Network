@@ -30,7 +30,7 @@ export const PrivacyPolicy: React.FC = () => (
   >
     <section className="space-y-4">
       <h3 className="text-2xl font-serif italic text-ffn-black">1. Information Collection</h3>
-      <p className="text-sm text-gray-500 leading-relaxed">At Fashion Freedom Network (FFN), we collect information that establishes your professional identity. This includes your name, professional email, high-fidelity portfolio media, and professional category mastery. When you register, we also process payment identifiers strictly for verification and accounting purposes.</p>
+      <p className="text-sm text-gray-500 leading-relaxed">At Fashion Freedom Network (FFN), managed by Kalantara Productions India Private Limited, we collect information that establishes your professional identity. This includes your name, professional email, high-fidelity portfolio media, and professional category mastery. When you register, we also process payment identifiers strictly for verification and accounting purposes.</p>
     </section>
     <section className="space-y-4">
       <h3 className="text-2xl font-serif italic text-ffn-black">2. How We Use Data</h3>
@@ -41,7 +41,7 @@ export const PrivacyPolicy: React.FC = () => (
       <p className="text-sm text-gray-500 leading-relaxed">We employ enterprise-grade encryption for all stored assets. Payment data is never stored on our local servers and is handled exclusively by encrypted providers like PayPal and Stripe.</p>
     </section>
     <section className="space-y-4 border-t border-gray-50 pt-8">
-      <p className="text-[10px] uppercase tracking-widest font-black text-gray-300 text-center">Last Updated: May 2025 &bull; FFN Compliance Hub</p>
+      <p className="text-[10px] uppercase tracking-widest font-black text-gray-300 text-center">Last Updated: April 2026 &bull; Kalantara Productions India Private Limited</p>
     </section>
   </LegalContainer>
 );
@@ -54,7 +54,7 @@ export const TermsAndConditions: React.FC = () => (
   >
     <section className="space-y-4">
       <h3 className="text-2xl font-serif italic text-ffn-black">1. Professional Eligibility</h3>
-      <p className="text-sm text-gray-500 leading-relaxed">By establishing an account on FFN, you affirm that you are a professional operating within the creative fashion industry. You are responsible for maintaining the authenticity of your mastery claims and portfolio media.</p>
+      <p className="text-sm text-gray-500 leading-relaxed">By accessing Fashion Freedom Network (FFN), a product of Kalantara Productions India Private Limited, you affirm that you are a professional operating within the creative fashion industry. You are responsible for maintaining the authenticity of your mastery claims and portfolio media.</p>
     </section>
     <section className="space-y-4">
       <h3 className="text-2xl font-serif italic text-ffn-black">2. Identity Hub Sovereignty</h3>
@@ -63,6 +63,9 @@ export const TermsAndConditions: React.FC = () => (
     <section className="space-y-4">
       <h3 className="text-2xl font-serif italic text-ffn-black">3. Transactional Integrity</h3>
       <p className="text-sm text-gray-500 leading-relaxed">Fees for profile activation and boosts are non-recurring. Any misuse of the platform's professional inquiry system for harassment or non-professional solicitation will result in immediate identity termination without refund.</p>
+    </section>
+    <section className="space-y-4 border-t border-gray-50 pt-8">
+      <p className="text-[10px] uppercase tracking-widest font-black text-gray-300 text-center">Last Updated: April 2026 &bull; Kalantara Productions India Private Limited</p>
     </section>
   </LegalContainer>
 );
@@ -75,11 +78,14 @@ export const RefundPolicy: React.FC = () => (
   >
     <section className="space-y-4">
       <h3 className="text-2xl font-serif italic text-ffn-black">1. Profile Activation Fees</h3>
-      <p className="text-sm text-gray-500 leading-relaxed">Registration fees cover the one-time indexing and verification of your professional hub. Once the identity is established and published to the directory, the fee is considered earned and non-refundable.</p>
+      <p className="text-sm text-gray-500 leading-relaxed">Registration fees cover the one-time indexing and verification of your professional hub performed by Kalantara Productions India Private Limited. Once the identity is established and published to the directory, the fee is considered earned and non-refundable.</p>
     </section>
     <section className="space-y-4">
       <h3 className="text-2xl font-serif italic text-ffn-black">2. Exceptional Circumstances</h3>
       <p className="text-sm text-gray-500 leading-relaxed">If a technical failure prevents your hub from being established after payment, FFN will issue a full refund within 7-10 business days of the reported incident.</p>
+    </section>
+    <section className="space-y-4 border-t border-gray-50 pt-8">
+      <p className="text-[10px] uppercase tracking-widest font-black text-gray-300 text-center">Last Updated: April 2026 &bull; Kalantara Productions India Private Limited</p>
     </section>
   </LegalContainer>
 );
@@ -90,6 +96,12 @@ export const CookiePolicy: React.FC = () => (
     subtitle="Tracking and Analytics Transparency"
     icon={<Info className="w-8 h-8" />}
   >
-    <p className="text-sm text-gray-500 leading-relaxed">FFN uses minimal, essential cookies to maintain your session security and remember your professional preferences. We utilize anonymized analytics to improve the global creative graph's efficiency.</p>
+    <section className="space-y-4">
+      <h3 className="text-2xl font-serif italic text-ffn-black">1. Essential Protocol</h3>
+      <p className="text-sm text-gray-500 leading-relaxed">FFN, a product of Kalantara Productions India Private Limited, uses minimal, essential cookies to maintain your session security and remember your professional preferences. We utilize anonymized analytics to improve the global creative graph's efficiency.</p>
+    </section>
+    <section className="space-y-4 border-t border-gray-50 pt-8">
+      <p className="text-[10px] uppercase tracking-widest font-black text-gray-300 text-center">Last Updated: April 2026 &bull; Kalantara Productions India Private Limited</p>
+    </section>
   </LegalContainer>
 );

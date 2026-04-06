@@ -18,10 +18,9 @@ interface FeedProps {
 
 export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [activeStoryUser, setActiveStoryUser] = useState<User | null>(null);
+  const [userIndexWithStories, setUserIndexWithStories] = useState<number | null>(null);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(true);
-
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
@@ -139,7 +138,8 @@ export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
       </div>
 
       {/* Stories Tray */}
-      <div className="flex space-x-10 overflow-x-auto pb-10 no-scrollbar border-b border-gray-100 px-2">
+      <div className="flex space-x-6 md:space-x-10 overflow-x-auto pb-10 no-scrollbar border-b border-white/5 px-4">
+
         <motion.div
           whileHover={{ scale: 1.05 }}
           className="flex flex-col items-center space-y-4 flex-none cursor-pointer group"
@@ -149,19 +149,28 @@ export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
           </div>
           <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold group-hover:text-ffn-black">Your Story</span>
         </motion.div>
-        {MOCK_TALENT_POOL.map((talent, idx) => (
+        {MOCK_TALENT_POOL.slice(0, 8).map((talent, idx) => (
           <motion.div
             key={talent.id}
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: idx * 0.1 }}
             whileHover={{ scale: 1.05 }}
-            onClick={() => setActiveStoryUser(talent)}
+            onClick={() => setUserIndexWithStories(idx)}
             className="flex flex-col items-center space-y-4 flex-none cursor-pointer group"
           >
             <div className={`w-24 h-24 rounded-[2.5rem] p-[4px] transition-all duration-500 shadow-xl ${talent.isBoosted ? 'bg-gradient-to-tr from-ffn-primary via-ffn-accent to-ffn-secondary animate-gradient-xy' : 'bg-gray-200'}`}>
               <div className="w-full h-full rounded-[2.2rem] overflow-hidden border-4 border-white">
-                <img src={talent.avatarUrl} className="w-full h-full object-cover transition-all group-hover:scale-110" alt="" />
+                <img
+                  src={talent.avatarUrl}
+                  className="w-full h-full object-cover transition-all group-hover:scale-110"
+                  alt=""
+                  loading="eager"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = '/demo/ffn_logo_placeholder.png'; // Fallback to a placeholder if exists, or handled by CSS
+                  }}
+                />
               </div>
             </div>
             <span className="text-[10px] uppercase tracking-widest text-gray-500 font-bold group-hover:text-ffn-black truncate max-w-[80px]">{talent.username}</span>
@@ -171,10 +180,17 @@ export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
 
       {/* Story Viewer Modal */}
       <AnimatePresence>
-        {activeStoryUser && (
+        {userIndexWithStories !== null && (
           <StoryViewer
-            user={activeStoryUser}
-            onClose={() => setActiveStoryUser(null)}
+            initialUserIndex={userIndexWithStories}
+            users={MOCK_TALENT_POOL.slice(0, 8).map(u => ({
+              ...u,
+              stories: [
+                { id: `s1-${u.id}`, user_id: u.id, user: u, media_url: u.avatarUrl, media_type: 'image', story_tag: 'Production Pulse' },
+                { id: `s2-${u.id}`, user_id: u.id, user: u, media_url: u.coverUrl || u.avatarUrl, media_type: 'image', story_tag: 'BTS' }
+              ]
+            }))}
+            onClose={() => setUserIndexWithStories(null)}
           />
         )}
       </AnimatePresence>
@@ -203,8 +219,9 @@ export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="py-24 text-center flex flex-col items-center justify-center space-y-4 rounded-[2.5rem] border border-dashed border-gray-200"
+              className="py-24 text-center flex flex-col items-center justify-center space-y-6 rounded-[2.5rem] border border-dashed border-white/10"
             >
+
               <div className="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center mb-2">
                 <Sparkles className="w-6 h-6 text-gray-400" />
               </div>

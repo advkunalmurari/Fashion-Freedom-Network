@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { User, UserRole, VerificationLevel, Post } from '../types';
 import { postService } from '../services/postService';
 import {
@@ -13,7 +14,7 @@ import { messageService } from '../services/messageService';
 import { supabase } from '../supabase';
 import { SavedPosts } from './SavedPosts';
 import { PayPalButton } from './PayPalButton';
-import { MOCK_BRANDS, MOCK_CONTRACTS, MOCK_AR_MEASUREMENTS, MOCK_REELS, MOCK_MOOD_BOARDS, MOCK_CREATOR_INSIGHTS, MOCK_WAR_ROOMS } from '../constants';
+import { MOCK_BRANDS, MOCK_CONTRACTS, MOCK_AR_MEASUREMENTS, MOCK_REELS, MOCK_MOOD_BOARDS, MOCK_CREATOR_INSIGHTS, MOCK_WAR_ROOMS, MOCK_TALENT_POOL } from '../constants';
 import { MoodBoards } from './MoodBoards';
 import { MoodBoardDetail } from './MoodBoardDetail';
 import { ContractViewer } from './ContractViewer';
@@ -30,8 +31,14 @@ import { TeamNotes } from './TeamNotes';
 import { MOCK_AVAILABILITY, MOCK_TEAM_COMMENTS, MOCK_EARNINGS } from '../constants';
 import { PerformanceLedger } from './PerformanceLedger';
 import { CreatorMicroSite } from './CreatorMicroSite';
+import { AestheticPulse } from './AestheticPulse';
+import { PortfolioLayoutEditor } from './PortfolioLayoutEditor';
 
-export const ProfilePage: React.FC<{ user: User; onBack: () => void }> = ({ user, onBack }) => {
+export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ user: initialUser, onBack }) => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(initialUser || null);
+  const [isLoadingUser, setIsLoadingUser] = useState(!initialUser);
   const [showModelCard, setShowModelCard] = useState(false);
   const [showHireModal, setShowHireModal] = useState(false);
   const [isGeneratingCard, setIsGeneratingCard] = useState(false);
@@ -45,22 +52,96 @@ export const ProfilePage: React.FC<{ user: User; onBack: () => void }> = ({ user
   const [activeView, setActiveView] = useState<'portfolio' | 'reels' | 'saved' | 'reviews' | 'collaborations' | 'moodboards' | 'contracts' | 'measurements' | 'insights' | 'workspaces' | 'availability' | 'team_notes' | 'ledger'>('portfolio');
   const [showAddToBoardModal, setShowAddToBoardModal] = useState(false);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [currentUserRole, setCurrentUserRole] = useState<UserRole | null>(null);
   const [portfolioPosts, setPortfolioPosts] = useState<Post[]>([]);
   const [isPortfolioLoading, setIsPortfolioLoading] = useState(true);
   const [viewingContractId, setViewingContractId] = useState<string | null>(null);
   const [selectedMoodBoardId, setSelectedMoodBoardId] = useState<string | null>(null);
   const [showMicroSite, setShowMicroSite] = useState(false);
+  const [showLayoutEditor, setShowLayoutEditor] = useState(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (initialUser) {
+        setUser(initialUser);
+        setIsLoadingUser(false);
+        return;
+      }
+
+      if (!id) {
+        setIsLoadingUser(false);
+        return;
+      }
+
+      setIsLoadingUser(true);
+      // 1. Check Mock Pool
+      const mockUser = MOCK_TALENT_POOL.find(u => u.id === id || u.username === id);
+      if (mockUser) {
+        setUser(mockUser);
+        setIsLoadingUser(false);
+        return;
+      }
+
+      // 2. Check Supabase
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (!error && data) {
+          const mappedUser: User = {
+            id: data.id,
+            username: data.username || data.full_name?.replace(/\s+/g, '').toLowerCase() || 'user',
+            displayName: data.full_name || 'Anonymous User',
+            avatarUrl: data.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.full_name || 'User')}&background=random`,
+            coverUrl: data.cover_url || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop',
+            role: (data.profile_type as UserRole) || UserRole.MODEL,
+            verificationLevel: data.is_premium ? VerificationLevel.PREMIUM : (data.is_verified ? VerificationLevel.APPROVED : VerificationLevel.BASIC),
+            isVerified: !!data.is_verified,
+            isBoosted: !!data.is_premium,
+            bio: data.bio || 'Rising talent on FFN.',
+            followersCount: 0,
+            followingCount: 0,
+            location: data.location || 'Global',
+            instagramUrl: data.instagram_url,
+            completionScore: data.completion_score,
+            isPremium: data.is_premium,
+            brandCollaborationsCount: data.brand_collaborations_count || 0,
+          };
+          setUser(mappedUser);
+        }
+      } catch (err) {
+        console.error("Error fetching user:", err);
+      } finally {
+        setIsLoadingUser(false);
+      }
+    };
+
+    fetchUser();
+  }, [id, initialUser]);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setCurrentUserId(session?.user.id || null);
+      if (session?.user) {
+        setCurrentUserId(session.user.id);
+        const fetchCurrentRole = async () => {
+          const { data } = await supabase.from('profiles').select('role').eq('id', session.user.id).single();
+          if (data) setCurrentUserRole(data.role as UserRole);
+        };
+        fetchCurrentRole();
+      }
     });
-    checkNetworkStatus();
-  }, [user.id]);
+    if (user?.id) {
+      checkNetworkStatus();
+    }
+  }, [user?.id]);
 
-  const isOwnProfile = currentUserId === user.id;
+  const isOwnProfile = currentUserId === user?.id;
 
   const checkNetworkStatus = async () => {
+    if (!user?.id) return;
     const [following, connStatus] = await Promise.all([
       networkService.getFollowStatus(user.id),
       networkService.getConnectionStatus(user.id)
@@ -71,6 +152,7 @@ export const ProfilePage: React.FC<{ user: User; onBack: () => void }> = ({ user
 
   useEffect(() => {
     const fetchPortfolio = async () => {
+      if (!user?.id) return;
       setIsPortfolioLoading(true);
       const res = await postService.getUserPosts(user.id);
       if (res.success && res.data) {
@@ -79,7 +161,7 @@ export const ProfilePage: React.FC<{ user: User; onBack: () => void }> = ({ user
       setIsPortfolioLoading(false);
     };
     fetchPortfolio();
-  }, [user.id]);
+  }, [user?.id]);
 
   const handleFollow = async () => {
     setIsActionLoading(true);
@@ -128,6 +210,30 @@ export const ProfilePage: React.FC<{ user: User; onBack: () => void }> = ({ user
     ];
     return badges[level] || null;
   };
+
+  if (isLoadingUser) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ffn-primary"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="flex h-screen w-full flex-col items-center justify-center gap-6 text-center px-8">
+        <X className="w-16 h-16 text-gray-200" />
+        <h2 className="text-2xl font-serif italic">Identity Not Found</h2>
+        <p className="text-gray-400 text-sm max-w-md uppercase tracking-widest">The requested professional protocol is not active in our dataset.</p>
+        <button
+          className="px-8 py-3 bg-ffn-black text-white text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-ffn-primary transition-all"
+          onClick={onBack}
+        >
+          Return to Registry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="animate-in fade-in duration-700 pb-32">
@@ -365,7 +471,7 @@ export const ProfilePage: React.FC<{ user: User; onBack: () => void }> = ({ user
                 <Calendar className="w-3.5 h-3.5" />
                 <span>Schedule</span>
               </button>
-              {!isOwnProfile && (
+              {!isOwnProfile && (currentUserRole === UserRole.BRAND || currentUserRole === UserRole.AGENCY) && (
                 <button
                   onClick={() => setActiveView('team_notes')}
                   className={`transition-all pb-10 -mb-[41px] flex items-center space-x-2 ${activeView === 'team_notes' ? 'text-ffn-black border-b-2 border-ffn-black' : 'hover:text-ffn-black'}`}
@@ -399,30 +505,49 @@ export const ProfilePage: React.FC<{ user: User; onBack: () => void }> = ({ user
               >
                 {isPortfolioLoading ? (
                   <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-ffn-primary" /></div>
-                ) : portfolioPosts.length > 0 ? (
-                  <div className="editorial-grid pt-4">
-                    {portfolioPosts.map(post => (
-                      <div key={post.id} className="aspect-[3/4] overflow-hidden group rounded-[2.5rem] border border-gray-100 cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500 relative">
-                        <img src={post.mediaUrls[0]} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="" />
-                        {post.type === 'VIDEO' && (
-                          <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md p-2 rounded-full">
-                            <Play className="w-4 h-4 text-white fill-white" />
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
                 ) : (
-                  <div className="bg-gray-50 rounded-[4rem] p-32 text-center space-y-8 border-2 border-dashed border-gray-200">
-                    <div className="flex justify-center">
-                      <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center text-gray-200 shadow-xl">
-                        <Grid className="w-10 h-10" />
+                  <div className="space-y-12">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-3xl font-serif italic text-ffn-black">Visual Narrative</h3>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-ffn-primary mt-2">Curated Professional Works</p>
                       </div>
+                      {isOwnProfile && (
+                        <button
+                          onClick={() => setShowLayoutEditor(true)}
+                          className="flex items-center gap-2 px-6 py-2 bg-ffn-primary/10 border border-ffn-primary/20 rounded-full text-ffn-primary text-[10px] font-black tracking-widest hover:bg-ffn-primary hover:text-white transition-all"
+                        >
+                          <Grid className="w-4 h-4" />
+                          LAYOUT EDIT
+                        </button>
+                      )}
                     </div>
-                    <div className="space-y-4">
-                      <h3 className="text-3xl font-serif italic text-gray-400">Empty Portfolio</h3>
-                      <p className="text-xs text-gray-400 uppercase tracking-widest max-w-sm mx-auto leading-relaxed">This talent hasn't published any work yet. Check back soon for their latest shoots and campaigns.</p>
-                    </div>
+                    {portfolioPosts.length > 0 ? (
+                      <div className="editorial-grid pt-4">
+                        {portfolioPosts.map(post => (
+                          <div key={post.id} className="aspect-[3/4] overflow-hidden group rounded-[2.5rem] border border-gray-100 cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500 relative">
+                            <img src={post.mediaUrls[0]} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" alt="" />
+                            {post.type === 'VIDEO' && (
+                              <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md p-2 rounded-full">
+                                <Play className="w-4 h-4 text-white fill-white" />
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="bg-gray-50 rounded-[4rem] p-32 text-center space-y-8 border-2 border-dashed border-gray-200">
+                        <div className="flex justify-center">
+                          <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center text-gray-200 shadow-xl">
+                            <Grid className="w-10 h-10" />
+                          </div>
+                        </div>
+                        <div className="space-y-4">
+                          <h3 className="text-3xl font-serif italic text-gray-400">Empty Portfolio</h3>
+                          <p className="text-xs text-gray-400 uppercase tracking-widest max-w-sm mx-auto leading-relaxed">This talent hasn't published any work yet. Check back soon for their latest shoots and campaigns.</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </motion.div>
@@ -666,7 +791,10 @@ export const ProfilePage: React.FC<{ user: User; onBack: () => void }> = ({ user
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
               >
-                <CreatorInsights insights={MOCK_CREATOR_INSIGHTS} />
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                  <CreatorInsights insights={MOCK_CREATOR_INSIGHTS} />
+                  <AestheticPulse />
+                </div>
               </motion.div>
             ) : activeView === 'availability' ? (
               <motion.div

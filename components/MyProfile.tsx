@@ -7,7 +7,9 @@ import {
   BarChart3, FileCheck, CreditCard, ChevronRight, PieChart, MousePointer2, Search, Loader2, CheckCircle,
   Lock, LogOut, Moon, Sun, Maximize2, Activity, Bell, Eye, EyeOff
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { ProfileHero } from './ProfileHero';
+
 import { PRICING } from '../constants';
 import { SubscriptionType } from '../types';
 import { supabase } from '../supabase';
@@ -15,7 +17,9 @@ import { PayPalButton } from './PayPalButton';
 import { useProfile } from '../hooks/useProfile';
 
 export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user, onLogout }) => {
+  const navigate = useNavigate();
   const { profile, loading: profileLoading, saving, updateProfile, uploadAvatar } = useProfile();
+
 
   const [activeTab, setActiveTab] = useState<'overview' | 'business' | 'marketing' | 'analytics'>('overview');
   const [isSubscribing, setIsSubscribing] = useState<SubscriptionType | null>(null);
@@ -30,12 +34,12 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
   const [showExitConfirm, setShowExitConfirm] = useState(false);
 
   // Merge real profile data with auth user metadata as fallback
-  const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User';
+  const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split('@')?.[0] || 'User';
   const displayAvatar = profile?.avatar_url || user?.user_metadata?.avatar_url || '';
   const displayBio = profile?.bio || user?.user_metadata?.bio || '';
   const displayLocation = profile?.location || user?.user_metadata?.location || 'India';
   const displayCategory = profile?.category || user?.user_metadata?.category || 'Creative Professional';
-  const displayUsername = profile?.username || user?.user_metadata?.username || user?.email?.split('@')[0] || 'user';
+  const displayUsername = profile?.username || user?.user_metadata?.username || user?.email?.split('@')?.[0] || 'user';
 
   const stats = [
     { label: 'Profile Views', value: '4,820', icon: Eye, color: 'text-ffn-primary' },
@@ -159,7 +163,22 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
       <AnimatePresence mode="wait">
         {activeTab === 'overview' && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-16">
-            <div className="bg-white rounded-[4rem] p-12 border border-gray-100 shadow-xl relative overflow-hidden"><ProfileHero user={user} /></div>
+            <div className="bg-white rounded-[4rem] p-4 md:p-12 border border-gray-100 shadow-xl relative overflow-hidden">
+              <ProfileHero user={{
+                ...user,
+                ...profile,
+                displayName: profile?.full_name || user?.user_metadata?.full_name || user?.email?.split('@')?.[0] || 'User',
+                avatarUrl: profile?.avatar_url || user?.user_metadata?.avatar_url || '',
+                bio: profile?.bio || user?.user_metadata?.bio || '',
+                location: profile?.location || user?.user_metadata?.location || 'India',
+                role: profile?.category || user?.user_metadata?.category || 'Creative Professional',
+                username: profile?.username || user?.user_metadata?.username || user?.email?.split('@')?.[0] || 'user',
+                followersCount: profile?.followersCount || 0,
+                followingCount: profile?.followingCount || 0,
+                isVerified: !!profile?.is_verified,
+                isPremium: !!profile?.is_premium,
+              } as any} />
+            </div>
           </motion.div>
         )}
 
@@ -217,9 +236,19 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
                     <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-400">Verified Professional Proof</p>
                   </div>
                 </div>
-                <button className="flex items-center space-x-3 px-6 py-3 bg-ffn-black text-white rounded-full text-[9px] uppercase font-black tracking-widest hover:bg-ffn-primary transition-all">
-                  <Plus className="w-3 h-3" /> <span>Submit Credit</span>
-                </button>
+                <div className="flex items-center space-x-4">
+                  {profile?.is_verified && (
+                    <button
+                      onClick={() => navigate(`/certificate/${user.id}`)}
+                      className="flex items-center space-x-3 px-6 py-3 bg-white border border-gray-100 text-ffn-black rounded-full text-[9px] uppercase font-black tracking-widest hover:border-ffn-primary transition-all shadow-sm"
+                    >
+                      <Award className="w-3 h-3" /> <span>Official Certificate</span>
+                    </button>
+                  )}
+                  <button className="flex items-center space-x-3 px-6 py-3 bg-ffn-black text-white rounded-full text-[9px] uppercase font-black tracking-widest hover:bg-ffn-primary transition-all shadow-xl">
+                    <Plus className="w-3 h-3" /> <span>Submit Credit</span>
+                  </button>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

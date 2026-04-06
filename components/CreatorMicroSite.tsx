@@ -28,9 +28,9 @@ export const CreatorMicroSite: React.FC<CreatorMicroSiteProps> = ({ creator, onC
                 </div>
 
                 <div className="flex items-center space-x-8">
-                    {creator.socialLinks?.instagram && (
+                    {creator.instagramUrl && (
                         <a
-                            href={`https://instagram.com/${creator.socialLinks.instagram}`}
+                            href={creator.instagramUrl}
                             target="_blank"
                             rel="noreferrer"
                             className="text-gray-400 hover:text-ffn-black transition-colors"
@@ -57,7 +57,7 @@ export const CreatorMicroSite: React.FC<CreatorMicroSiteProps> = ({ creator, onC
                     <img
                         src={creator.coverUrl || creator.avatarUrl}
                         className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-1000"
-                        alt={creator.name}
+                        alt={creator.displayName}
                     />
                 </div>
 
@@ -77,8 +77,8 @@ export const CreatorMicroSite: React.FC<CreatorMicroSiteProps> = ({ creator, onC
                         transition={{ delay: 0.1 }}
                         className="text-8xl md:text-[10rem] font-serif italic text-ffn-black leading-[0.8] tracking-tighter"
                     >
-                        {creator.name.split(' ')[0]} <br />
-                        <span className="ml-24">{creator.name.split(' ')[1]}</span>
+                        {(creator.displayName || 'Creator').split(' ')[0]} <br />
+                        <span className="ml-24">{(creator.displayName || '').split(' ')[1] || ''}</span>
                     </motion.h1>
 
                     <motion.div
@@ -95,7 +95,7 @@ export const CreatorMicroSite: React.FC<CreatorMicroSiteProps> = ({ creator, onC
                             <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Global Ranking</p>
                             <div className="flex items-center space-x-2">
                                 <Star className="w-5 h-5 text-ffn-primary fill-current" />
-                                <p className="text-xl font-medium text-ffn-black">{creator.rating}</p>
+                                <p className="text-xl font-medium text-ffn-black">{creator.avgRating || 0}</p>
                             </div>
                         </div>
                     </motion.div>
@@ -238,7 +238,7 @@ export const CreatorMicroSite: React.FC<CreatorMicroSiteProps> = ({ creator, onC
 
             {/* Footer Nodes */}
             <footer className="p-12 border-t border-gray-100 flex items-center justify-between bg-white text-gray-400">
-                <p className="text-[10px] font-black uppercase tracking-widest">© 2024 FFN IDENTITY ARCHIVE • {creator.name}</p>
+                <p className="text-[10px] font-black uppercase tracking-widest">© 2024 FFN IDENTITY ARCHIVE • {creator.displayName}</p>
                 <div className="flex items-center space-x-8">
                     <p className="text-[10px] font-bold uppercase tracking-[0.3em]">Built with Fashion Freedom Network</p>
                     <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Clock, DollarSign, ArrowRight, ShieldCheck, Briefcase, X, CheckCircle, Award, Sparkles, FileText, Send, User, Loader2, Plus, Building2, Mail, Calendar, Zap, BrainCircuit, Video } from 'lucide-react';
+import { MapPin, Clock, DollarSign, ArrowRight, ShieldCheck, Briefcase, X, CheckCircle, Award, Sparkles, FileText, Send, User, Loader2, Plus, Building2, Mail, Calendar, Zap, BrainCircuit, Video, SlidersHorizontal } from 'lucide-react';
 import { UserRole } from '../types';
 import { PRICING, MOCK_TALENT_POOL } from '../constants';
 import { castingService } from '../services/castingService';
@@ -124,22 +124,59 @@ export const Castings: React.FC = () => {
 
   return (
     <div className="space-y-16 animate-in fade-in duration-700 pb-32">
-      <header className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-gray-100 pb-12">
-        <div className="space-y-4">
-          <div className="flex items-center space-x-3 text-ffn-accent">
-            <Briefcase className="w-5 h-5" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Professional Hiring Infrastructure</span>
+      {/* Cinematic Header Overlay */}
+      <div className="relative h-[50vh] min-h-[400px] w-full rounded-[4rem] overflow-hidden group mb-12 shadow-3xl">
+        <img
+          src="/demo/castings_header_bg_1772537115562.png"
+          className="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-75 transition-all duration-[3s] ease-out scale-105 group-hover:scale-100"
+          alt="Casting Hub Background"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-ffn-black via-ffn-black/20 to-transparent" />
+
+        <div className="absolute bottom-16 left-16 right-16 flex flex-col md:flex-row md:items-end justify-between gap-10">
+          <div className="space-y-6">
+            <div className="flex items-center space-x-4">
+              <motion.div
+                animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="w-3 h-3 bg-ffn-accent rounded-full shadow-[0_0_15px_rgba(252,176,69,0.8)]"
+              />
+              <span className="text-[10px] font-black uppercase tracking-[0.6em] text-white/60">Live Opportunity Protocol</span>
+            </div>
+            <h1 className="text-7xl md:text-9xl font-serif italic tracking-tighter text-white leading-none drop-shadow-2xl">
+              Casting <span className="text-ffn-primary">Marketplace</span>
+            </h1>
+            <p className="text-sm text-white/40 uppercase tracking-[0.4em] font-medium max-w-xl">
+              Secure Talent Acquisition & Authority Discovery Infrastructure
+            </p>
           </div>
-          <h1 className="text-6xl font-serif italic tracking-tighter text-ffn-black">Casting Marketplace</h1>
+
+          <button
+            onClick={() => setShowPostModal(true)}
+            className="group relative overflow-hidden px-14 py-7 bg-white text-ffn-black rounded-3xl text-[10px] font-black uppercase tracking-[0.4em] transition-all hover:scale-105 active:scale-95 shadow-2xl"
+          >
+            <div className="absolute inset-0 bg-ffn-primary translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+            <span className="relative z-10 flex items-center space-x-4 group-hover:text-white transition-colors">
+              <Plus className="w-5 h-5" />
+              <span>Deploy Open Call</span>
+            </span>
+          </button>
         </div>
-        <button
-          onClick={() => setShowPostModal(true)}
-          className="px-10 py-5 bg-ffn-black text-white rounded-[1.5rem] text-[9px] font-bold uppercase tracking-widest shadow-xl hover:bg-ffn-primary transition-all flex items-center space-x-3"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Post Casting Call</span>
-        </button>
-      </header>
+
+        {/* Floating Metrics */}
+        <div className="absolute top-16 right-16 flex space-x-8">
+          {[
+            { label: 'Active Calls', val: castings.length },
+            { label: 'Avg Payout', val: '₹45K' },
+            { label: 'Verified', val: '100%' }
+          ].map((m, i) => (
+            <div key={i} className="glass-card-vibrant p-5 px-8 rounded-3xl border border-white/10 backdrop-blur-3xl text-center">
+              <p className="text-[8px] font-black uppercase tracking-widest text-white/40 mb-1">{m.label}</p>
+              <p className="text-xl font-serif italic text-white">{m.val}</p>
+            </div>
+          ))}
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 gap-12">
         {loading ? (
@@ -176,48 +213,98 @@ export const Castings: React.FC = () => {
       {/* Post Casting Modal (SECTION 1) */}
       <AnimatePresence>
         {showPostModal && (
-          <div className="fixed inset-0 z-[1100] flex items-center justify-center p-6 bg-ffn-black/80 backdrop-blur-xl">
-            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white w-full max-w-4xl h-[90vh] rounded-[4rem] overflow-hidden relative flex flex-col border border-white/20 shadow-3xl">
-              <button title="Close modal" onClick={() => setShowPostModal(false)} className="absolute top-10 right-10 z-50 p-4 bg-gray-100 rounded-2xl hover:bg-ffn-accent hover:text-white transition-all"><X className="w-6 h-6" /></button>
-              <div className="p-16 overflow-y-auto no-scrollbar">
-                <div className="space-y-12">
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-3 text-ffn-primary">
-                      <Building2 className="w-6 h-6" />
-                      <span className="text-[10px] font-black uppercase tracking-[0.5em]">Hiring Node Deployment</span>
+          <div className="fixed inset-0 z-[1100] flex items-center justify-center p-6 bg-ffn-black/90 backdrop-blur-2xl">
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 40 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 40 }}
+              className="bg-[#0A0A0A] w-full max-w-5xl h-[90vh] rounded-[4rem] overflow-hidden relative flex flex-col border border-white/10 shadow-[0_0_100px_rgba(0,0,0,1)]"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-ffn-primary/5 via-transparent to-ffn-accent/5 pointer-events-none" />
+
+              <button
+                title="Close modal"
+                onClick={() => setShowPostModal(false)}
+                className="absolute top-10 right-10 z-50 p-4 bg-white/5 text-white/40 rounded-2xl hover:bg-ffn-primary hover:text-white transition-all border border-white/10"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              <div className="flex-1 overflow-y-auto no-scrollbar p-16 md:p-24">
+                <div className="max-w-3xl mx-auto space-y-16">
+                  <div className="space-y-6">
+                    <div className="flex items-center space-x-4 text-ffn-primary">
+                      <div className="w-12 h-0.5 bg-ffn-primary" />
+                      <span className="text-[10px] font-black uppercase tracking-[0.6em]">Node Deployment Protocol</span>
                     </div>
-                    <h2 className="text-5xl font-serif italic text-ffn-black leading-none">Post New Casting</h2>
+                    <h2 className="text-6xl font-serif italic text-white leading-none">Initialize <span className="text-ffn-primary">Open Call</span></h2>
+                    <p className="text-sm text-gray-500 uppercase tracking-widest font-medium">Define your requirements within the global talent graph.</p>
                   </div>
 
-                  <form onSubmit={handlePostCasting} className="space-y-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <div className="space-y-2"><label className="text-[9px] uppercase tracking-widest font-black text-gray-400">Company Name</label><input required className="w-full bg-gray-50 border-none rounded-2xl p-6 text-sm" placeholder="e.g. ZARA India" value={postData.companyName} onChange={e => setPostData({ ...postData, companyName: e.target.value })} /></div>
-                      <div className="space-y-2"><label className="text-[9px] uppercase tracking-widest font-black text-gray-400">Role Title</label><input required className="w-full bg-gray-50 border-none rounded-2xl p-6 text-sm" placeholder="e.g. Lead Editorial Model" value={postData.roleTitle} onChange={e => setPostData({ ...postData, roleTitle: e.target.value })} /></div>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <div className="space-y-2">
-                        <label className="text-[9px] uppercase tracking-widest font-black text-gray-400">Talent Category</label>
-                        <select title="Talent Category" className="w-full bg-gray-50 border-none rounded-2xl p-6 text-sm appearance-none" value={postData.talentCategory} onChange={e => setPostData({ ...postData, talentCategory: e.target.value as UserRole })}>
-                          {Object.values(UserRole).map(role => <option key={role} value={role}>{role}</option>)}
-                        </select>
+                  <form onSubmit={handlePostCasting} className="space-y-12">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                      <div className="space-y-3">
+                        <label className="text-[9px] uppercase tracking-[0.4em] font-black text-white/30 ml-2">Issuing Authority</label>
+                        <input required className="w-full bg-white/5 border border-white/10 rounded-3xl p-7 text-sm text-white focus:ring-2 focus:ring-ffn-primary/20 transition-all placeholder:text-white/10" placeholder="e.g. BALENCIAGA GLOBAL" value={postData.companyName} onChange={e => setPostData({ ...postData, companyName: e.target.value })} />
                       </div>
-                      <div className="space-y-2"><label className="text-[9px] uppercase tracking-widest font-black text-gray-400">Location</label><input required className="w-full bg-gray-50 border-none rounded-2xl p-6 text-sm" placeholder="e.g. Mumbai, Studio-22" value={postData.location} onChange={e => setPostData({ ...postData, location: e.target.value })} /></div>
+                      <div className="space-y-3">
+                        <label className="text-[9px] uppercase tracking-[0.4em] font-black text-white/30 ml-2">Protocol Designation</label>
+                        <input required className="w-full bg-white/5 border border-white/10 rounded-3xl p-7 text-sm text-white focus:ring-2 focus:ring-ffn-primary/20 transition-all placeholder:text-white/10" placeholder="e.g. Lead Editorial Discovery" value={postData.roleTitle} onChange={e => setPostData({ ...postData, roleTitle: e.target.value })} />
+                      </div>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <div className="space-y-2"><label className="text-[9px] uppercase tracking-widest font-black text-gray-400">Shoot Date</label><input required type="date" className="w-full bg-gray-50 border-none rounded-2xl p-6 text-sm" value={postData.shootDate} onChange={e => setPostData({ ...postData, shootDate: e.target.value })} /></div>
-                      <div className="space-y-2"><label className="text-[9px] uppercase tracking-widest font-black text-gray-400">Budget (INR)</label><input required className="w-full bg-gray-50 border-none rounded-2xl p-6 text-sm" placeholder="e.g. 50,000" value={postData.budget} onChange={e => setPostData({ ...postData, budget: e.target.value })} /></div>
-                    </div>
-                    <div className="space-y-2"><label className="text-[9px] uppercase tracking-widest font-black text-gray-400">Description</label><textarea required className="w-full bg-gray-50 border-none rounded-2xl p-6 text-sm h-32 resize-none" placeholder="Describe the project requirements..." value={postData.description} onChange={e => setPostData({ ...postData, description: e.target.value })} /></div>
-                    <div className="space-y-2"><label className="text-[9px] uppercase tracking-widest font-black text-gray-400">Contact Email</label><input required type="email" className="w-full bg-gray-50 border-none rounded-2xl p-6 text-sm" placeholder="casting@company.com" value={postData.contactEmail} onChange={e => setPostData({ ...postData, contactEmail: e.target.value })} /></div>
 
-                    <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-10">
-                      <div className="space-y-1">
-                        <p className="text-[10px] uppercase tracking-widest font-black text-gray-400">Posting Fee</p>
-                        <p className="text-4xl font-serif italic font-bold text-ffn-black">{PRICING.CURRENCY}{PRICING.CASTING_POST}</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                      <div className="space-y-3 relative">
+                        <label className="text-[9px] uppercase tracking-[0.4em] font-black text-white/30 ml-2">Talent Class</label>
+                        <select title="Talent Class" className="w-full bg-white/5 border border-white/10 rounded-3xl p-7 text-sm text-white appearance-none focus:ring-2 focus:ring-ffn-primary/20 transition-all" value={postData.talentCategory} onChange={e => setPostData({ ...postData, talentCategory: e.target.value as UserRole })}>
+                          {Object.values(UserRole).map(role => <option key={role} value={role} className="bg-[#0A0A0A]">{role}</option>)}
+                        </select>
+                        <SlidersHorizontal className="absolute right-8 bottom-8 w-4 h-4 text-white/20 pointer-events-none" />
                       </div>
-                      <button disabled={isPaying} type="submit" className="w-full md:w-auto px-16 py-8 bg-ffn-black text-white rounded-[2rem] text-xs font-black uppercase tracking-[0.4em] shadow-3xl hover:bg-ffn-primary transition-all flex items-center justify-center space-x-4">
-                        {isPaying ? <Loader2 className="w-5 h-5 animate-spin" /> : <Zap className="w-5 h-5 text-ffn-accent" />}
-                        <span>{isPaying ? 'Processing Protocol...' : 'Authorize & Publish'}</span>
+                      <div className="space-y-3">
+                        <label className="text-[9px] uppercase tracking-[0.4em] font-black text-white/30 ml-2">Geographic Node</label>
+                        <input required className="w-full bg-white/5 border border-white/10 rounded-3xl p-7 text-sm text-white focus:ring-2 focus:ring-ffn-primary/20 transition-all placeholder:text-white/10" placeholder="e.g. NEW DELHI // STUDIO 11" value={postData.location} onChange={e => setPostData({ ...postData, location: e.target.value })} />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                      <div className="space-y-3">
+                        <label className="text-[9px] uppercase tracking-[0.4em] font-black text-white/30 ml-2">Execution Date</label>
+                        <input required type="date" className="w-full bg-white/5 border border-white/10 rounded-3xl p-7 text-sm text-white focus:ring-2 focus:ring-ffn-primary/20 transition-all" value={postData.shootDate} onChange={e => setPostData({ ...postData, shootDate: e.target.value })} />
+                      </div>
+                      <div className="space-y-3">
+                        <label className="text-[9px] uppercase tracking-[0.4em] font-black text-white/30 ml-2">Resource Allocation (INR)</label>
+                        <input required className="w-full bg-white/5 border border-white/10 rounded-3xl p-7 text-sm text-white font-serif italic text-xl focus:ring-2 focus:ring-ffn-primary/20 transition-all placeholder:text-white/10 uppercase" placeholder="e.G. 1,50,000" value={postData.budget} onChange={e => setPostData({ ...postData, budget: e.target.value })} />
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <label className="text-[9px] uppercase tracking-[0.4em] font-black text-white/30 ml-2">Operational Brief</label>
+                      <textarea required className="w-full bg-white/5 border border-white/10 rounded-[2.5rem] p-8 text-sm text-white h-48 resize-none focus:ring-2 focus:ring-ffn-primary/20 transition-all placeholder:text-white/10 leading-relaxed" placeholder="Describe the creative vision and technical requirements..." value={postData.description} onChange={e => setPostData({ ...postData, description: e.target.value })} />
+                    </div>
+
+                    <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-12">
+                      <div className="flex items-center space-x-8">
+                        <div className="space-y-1">
+                          <p className="text-[10px] uppercase tracking-[0.3em] font-black text-white/20">Protocol Fee</p>
+                          <p className="text-4xl font-serif italic font-bold text-white">{PRICING.CURRENCY}{PRICING.CASTING_POST}</p>
+                        </div>
+                        <div className="w-px h-12 bg-white/10 hidden md:block" />
+                        <div className="hidden lg:block text-[9px] uppercase tracking-widest text-white/20 font-medium max-w-[140px] leading-relaxed">
+                          Secure Escrow Included • Authority Verified
+                        </div>
+                      </div>
+
+                      <button
+                        disabled={isPaying}
+                        type="submit"
+                        className="group relative w-full md:w-auto overflow-hidden px-20 py-8 bg-ffn-primary text-white rounded-[2rem] text-[10px] font-black uppercase tracking-[0.5em] shadow-[0_20px_40px_rgba(99,102,241,0.3)] transition-all hover:scale-105 active:scale-95"
+                      >
+                        <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500 opacity-10" />
+                        <span className="relative z-10 flex items-center justify-center space-x-4">
+                          {isPaying ? <Loader2 className="w-5 h-5 animate-spin" /> : <Zap className="w-5 h-5 text-ffn-accent shadow-glow" />}
+                          <span>{isPaying ? 'Processing Protocol...' : 'Authorize & Deploy Call'}</span>
+                        </span>
                       </button>
                     </div>
                   </form>

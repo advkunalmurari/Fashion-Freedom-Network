@@ -153,7 +153,7 @@ const MatchCard: React.FC<{ match: MatchProfile; rank: number; onClick: () => vo
                 {/* Avatar */}
                 <div className="relative shrink-0">
                     <div className="w-16 h-16 rounded-2xl overflow-hidden bg-gray-100">
-                        {user.avatarUrl && <img src={user.avatarUrl} alt="" className="w-full h-full object-cover" />}
+                        {user.avatarUrl && <img src={user.avatarUrl} alt="" className="w-full h-full object-cover" loading="lazy" width="64" height="64" />}
                     </div>
                     {user.verificationLevel && user.verificationLevel !== 'NONE' && (
                         <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-ffn-primary rounded-full flex items-center justify-center">
@@ -245,7 +245,7 @@ const MatchDetail: React.FC<{ match: MatchProfile; onClose: () => void }> = ({ m
                 <div className="p-8 border-b border-gray-100 flex items-start gap-5">
                     <div className="relative shrink-0">
                         <div className="w-20 h-20 rounded-2xl overflow-hidden bg-gray-100">
-                            {user.avatarUrl && <img src={user.avatarUrl} alt="" className="w-full h-full object-cover" />}
+                            {user.avatarUrl && <img src={user.avatarUrl} alt="" className="w-full h-full object-cover" loading="lazy" width="80" height="80" />}
                         </div>
                     </div>
                     <div className="flex-1">
@@ -673,7 +673,7 @@ export const TalentMatchEngine: React.FC = () => {
                                                     {matches.slice(0, 3).map((m, i) => (
                                                         <div key={m.user.id} className="flex items-center space-x-3 bg-white p-4 rounded-2xl shadow-sm">
                                                             <div className="w-10 h-10 rounded-full border-2 border-ffn-primary overflow-hidden">
-                                                                <img src={m.user.avatarUrl} alt="" className="w-full h-full object-cover" />
+                                                                <img src={m.user.avatarUrl} alt="" className="w-full h-full object-cover" loading="lazy" width="40" height="40" />
                                                             </div>
                                                             <div>
                                                                 <p className="text-[10px] font-black uppercase tracking-widest text-ffn-black">{m.user.displayName}</p>

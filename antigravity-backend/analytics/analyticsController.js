@@ -14,6 +14,16 @@ const analyticsController = {
         }
     },
 
+    async getMyStats(req, res) {
+        const userId = req.user.id;
+        try {
+            const stats = await analyticsService.getStats(userId);
+            res.status(200).json({ success: true, data: stats });
+        } catch (error) {
+            res.status(500).json({ success: false, message: error.message });
+        }
+    },
+
     async getProfileStats(req, res) {
         const { userId } = req.params;
         try {

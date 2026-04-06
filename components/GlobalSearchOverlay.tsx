@@ -33,7 +33,8 @@ export const GlobalSearchOverlay: React.FC<{ isOpen: boolean; onClose: () => voi
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh] px-4 backdrop-blur-2xl bg-black/80"
+                    className="fixed inset-0 z-[100] flex items-start justify-center pt-10 md:pt-[15vh] px-4 backdrop-blur-2xl bg-black/80"
+
                     onClick={onClose}
                 >
                     <motion.div
@@ -49,11 +50,12 @@ export const GlobalSearchOverlay: React.FC<{ isOpen: boolean; onClose: () => voi
                             <input
                                 autoFocus
                                 type="text"
-                                placeholder="Search Identities, Brands, or Castings..."
-                                className="flex-1 bg-transparent border-none text-2xl font-serif italic text-white placeholder:text-white/20 focus:ring-0 outline-none"
+                                placeholder="Search Identities..."
+                                className="flex-1 bg-transparent border-none text-lg md:text-2xl font-serif italic text-white placeholder:text-white/20 focus:ring-0 outline-none"
                                 value={query}
                                 onChange={e => setQuery(e.target.value)}
                             />
+
                             <div className="flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10">
                                 <Command className="w-4 h-4 text-gray-500" />
                                 <span className="text-[10px] font-black text-gray-500">K</span>

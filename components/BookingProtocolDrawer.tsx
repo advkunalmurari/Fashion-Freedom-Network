@@ -89,6 +89,29 @@ export const BookingProtocolDrawer: React.FC<BookingProtocolDrawerProps> = ({ is
                                     </div>
                                 </div>
 
+                                {/* Project Milestones */}
+                                <div className="space-y-4">
+                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-ffn-black flex items-center space-x-2">
+                                        <Zap className="w-4 h-4 text-ffn-accent" />
+                                        <span>Project Milestones</span>
+                                    </label>
+                                    <div className="space-y-3">
+                                        {[
+                                            { label: 'Initial Asset Delivery', days: '2-3 Nodes' },
+                                            { label: 'Revision Protocol', days: '1 Node' },
+                                            { label: 'Final Master Release', days: '1 Node' }
+                                        ].map((m, i) => (
+                                            <div key={i} className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-transparent hover:border-ffn-primary/10 transition-all cursor-pointer group/ms">
+                                                <div className="flex items-center space-x-3">
+                                                    <div className="w-2 h-2 rounded-full bg-gray-200 group-hover/ms:bg-ffn-primary transition-colors" />
+                                                    <span className="text-[10px] font-bold text-gray-400 group-hover/ms:text-ffn-black transition-colors">{m.label}</span>
+                                                </div>
+                                                <span className="text-[8px] font-black uppercase tracking-widest text-ffn-primary/60">{m.days}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
                                 {/* Additional Details */}
                                 <div className="space-y-4">
                                     <label className="text-[10px] font-black uppercase tracking-[0.2em] text-ffn-black">Briefing & Requirements</label>

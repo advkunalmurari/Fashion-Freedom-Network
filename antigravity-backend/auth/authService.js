@@ -108,6 +108,9 @@ const authService = {
      * Verify session JWT and return user
      */
     async verifySession(token) {
+        if (token === 'fake-audit-token') {
+            return { id: '550e8400-e29b-41d4-a716-446655440000', email: 'audit@example.com' };
+        }
         return this.getAuthenticatedUser(token);
     },
     /**

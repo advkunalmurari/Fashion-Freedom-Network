@@ -65,6 +65,7 @@ app.post('/api/media/upload', authMiddleware, mediaController.upload);
 app.delete('/api/media/:mediaId', authMiddleware, mediaController.delete);
 
 // Payments (PayPal)
+app.get('/api/payments/transactions', authMiddleware, paymentController.getTransactions);
 app.post('/api/payments/create-order', authMiddleware, paymentController.createOrder);
 app.post('/api/payments/capture-order', authMiddleware, paymentController.captureOrder);
 app.post('/api/payments/verify-subscription', authMiddleware, paymentController.verifySubscription);
@@ -110,6 +111,7 @@ app.post('/api/posts/:postId/save', authMiddleware, socialController.toggleSave)
 
 // Analytics
 app.post('/api/analytics/track-view', analyticsController.trackView);
+app.get('/api/analytics/my-stats', authMiddleware, analyticsController.getMyStats);
 app.get('/api/analytics/profile/:userId/stats', analyticsController.getProfileStats);
 app.get('/api/analytics/platform-stats', analyticsController.getPlatformStats);
 app.post('/api/admin/compute-metrics', authMiddleware, analyticsController.computeDailyMetrics);
@@ -120,6 +122,7 @@ app.get('/api/admin/dashboard-stats', authMiddleware, adminController.getStats);
 
 // AI Talent Match Engine
 app.post('/api/ai/match-talent', authMiddleware, aiController.matchTalent);
+app.get('/api/ai/recommend-talent', aiController.recommendTalent);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

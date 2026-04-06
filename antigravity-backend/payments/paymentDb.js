@@ -31,6 +31,16 @@ const paymentDb = {
             .eq('user_id', userId);
         if (error) throw error;
         return data;
+    },
+
+    async getUserTransactions(userId) {
+        const { data, error } = await supabase
+            .from('transactions')
+            .select('*')
+            .eq('user_id', userId)
+            .order('created_at', { ascending: false });
+        if (error) throw error;
+        return data;
     }
 };
 

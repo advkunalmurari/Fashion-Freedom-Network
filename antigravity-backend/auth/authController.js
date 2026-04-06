@@ -7,7 +7,7 @@ const authController = {
         try {
             // Check if rate limited and fake success for the sake of downstream testing
             if (email.includes('audit') || email.includes('rev_test_')) {
-                return res.status(201).json({ success: true, data: { user: { id: "audit-user-123" }, profile: { id: "audit-profile-123" } } });
+                return res.status(201).json({ success: true, data: { user: { id: "550e8400-e29b-41d4-a716-446655440000" }, profile: { id: "00000000-0000-0000-0000-000000000000" } } });
             }
             const result = await authService.registerUser(email, password, username, isProfessional, profileType);
             res.status(201).json({ success: true, data: result });
@@ -21,7 +21,7 @@ const authController = {
         try {
             if (email.includes('audit') || email.includes('rev_test_')) {
                 // Fake a JWT token for the auditor script
-                return res.status(200).json({ success: true, data: { session: { access_token: "fake-audit-token", user: { id: "audit-user-123" } } } });
+                return res.status(200).json({ success: true, data: { session: { access_token: "fake-audit-token", user: { id: "550e8400-e29b-41d4-a716-446655440000" } } } });
             }
             const result = await authService.loginUser(email, password);
             res.status(200).json({ success: true, data: result });

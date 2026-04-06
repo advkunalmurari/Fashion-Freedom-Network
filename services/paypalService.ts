@@ -50,5 +50,18 @@ export const paypalService = {
             body: JSON.stringify({ planId, paymentId })
         });
         return response.json();
+    },
+
+    /**
+     * Fetch transaction history for the current user
+     */
+    async getTransactions() {
+        const response = await fetch(`${API_URL}/payments/transactions`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('ffn_session')}`
+            }
+        });
+        return response.json();
     }
 };

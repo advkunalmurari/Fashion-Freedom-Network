@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { DiscoveryNode } from './DiscoveryNode';
 import { GrowthLeaderboard } from './GrowthLeaderboard';
+import { DiscoverySpotlight } from './DiscoverySpotlight';
 
 // ─── Rich Content Data ────────────────────────────────────────────────────────
 
@@ -342,6 +343,11 @@ export const Explore: React.FC = () => {
             </motion.button>
           ))}
         </div>
+      </section>
+
+      {/* ─── AI Discovery Spotlight ─── */}
+      <section className="px-2">
+        <DiscoverySpotlight />
       </section>
 
       {/* ─── Main Masonry Grid ─── */}
