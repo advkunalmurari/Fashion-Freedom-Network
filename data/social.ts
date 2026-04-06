@@ -92,7 +92,7 @@ export const MOCK_POSTS: Post[] = [
         authorId: 't1',
         author: MOCK_TALENT_POOL[0],
         type: 'IMAGE',
-        mediaUrls: ['https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800%27%5D%2C&auto=format%2Ccompress&fm=webp&q=80
+        mediaUrls: ['https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format,compress&fm=webp&q=80'],
         caption: 'Sustainability is not a trend, it is a protocol. #EcoFashion #FFN',
         likes: 1240,
         comments: 42,
@@ -108,7 +108,7 @@ export const MOCK_REELS: Post[] = [
         author: MOCK_TALENT_POOL[0],
         type: 'REEL',
         mediaUrls: ['https://assets.mixkit.co/videos/preview/mixkit-fashion-model-posing-in-neon-light-33314-large.mp4'],
-        thumbnailUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400%27%2C&auto=format%2Ccompress&fm=webp&q=80
+        thumbnailUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format,compress&fm=webp&q=80',
         caption: 'Neon Protocol SS26 BTS',
         likes: 8500,
         comments: 156,

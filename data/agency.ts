@@ -4,8 +4,8 @@ import { MOCK_TALENT_POOL } from './talentPool';
 export const MOCK_AGENCY: AgencyProfile = {
     id: 'agency_1',
     name: 'Elite Talent Management India',
-    logoUrl: 'https://images.unsplash.com/photo-1549421263-54948a3e0b2a?w=100%27%2C&auto=format%2Ccompress&fm=webp&q=80
-    coverImage: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200%27%2C&auto=format%2Ccompress&fm=webp&q=80
+    logoUrl: 'https://images.unsplash.com/photo-1549421263-54948a3e0b2a?w=100&auto=format,compress&fm=webp&q=80',
+    coverImage: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&auto=format,compress&fm=webp&q=80',
     description: 'Premier talent agency representing the top 1% of creative professionals in South Asia. Specializing in high-fashion, commercial, and runway.',
     location: 'Mumbai, HQ',
     website: 'www.elite-india.com',

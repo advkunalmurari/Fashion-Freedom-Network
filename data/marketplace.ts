@@ -6,7 +6,7 @@ export const MOCK_MARKETPLACE_ITEMS: MarketplaceItem[] = [
         title: 'Professional Lookbook Shoot',
         price: '₹25,000',
         rating: 4.9,
-        image: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800%27%2C&auto=format%2Ccompress&fm=webp&q=80
+        image: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&auto=format,compress&fm=webp&q=80',
         author: 'Vikram Seth',
         role: 'PHOTOGRAPHER',
         description: 'Complete 8-hour session with 10 retouched editorials.',
@@ -26,7 +26,7 @@ export const MOCK_BOUTIQUE_SPOTLIGHTS: BoutiqueSpotlight[] = [
         id: 'bs1',
         title: 'The Artisan Lab',
         subtitle: 'Heritage Craft Reconstruction',
-        imageUrl: 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=800%27%2C&auto=format%2Ccompress&fm=webp&q=80
+        imageUrl: 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=800&auto=format,compress&fm=webp&q=80',
         description: 'A specialized unit for experimental textile manipulation.',
         specialization: ['Hand-Weaving', 'Natural Dyes'],
         capacity: 'Small Batch',
@@ -54,7 +54,7 @@ export const MOCK_ESCROW_TRANSACTIONS: EscrowTransaction[] = [
         brandName: 'Nykaa Fashion',
         brandLogoUrl: 'https://logo.clearbit.com/nykaa.com',
         talentName: 'Priya Singh',
-        talentAvatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100%27%2C&auto=format%2Ccompress&fm=webp&q=80
+        talentAvatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format,compress&fm=webp&q=80',
         campaignTitle: 'Summer Solstice SS26',
         shootDate: '2025-03-20',
         amount: 125000,
@@ -93,7 +93,7 @@ export const MOCK_RENTAL_LISTINGS: RentalListing[] = [
         category: 'Studio Space',
         pricePerDay: 15000,
         location: 'Salt Lake, Kolkata',
-        images: ['https://images.unsplash.com/photo-1549497538-30122aaadecc?w=800%27%5D%2C&auto=format%2Ccompress&fm=webp&q=80
+        images: ['https://images.unsplash.com/photo-1549497538-30122aaadecc?w=800&auto=format,compress&fm=webp&q=80'],
         isAvailable: true,
         rating: 4.8,
         reviewCount: 12,
@@ -110,7 +110,7 @@ export const MOCK_MASTERCLASSES: Masterclass[] = [
         format: 'Live Webinar',
         level: 'Advanced',
         category: 'Photography',
-        coverImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800%27%2C&auto=format%2Ccompress&fm=webp&q=80
+        coverImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format,compress&fm=webp&q=80',
         price: 4999,
         enrolledCount: 142,
         rating: 4.9,

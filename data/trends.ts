@@ -10,7 +10,7 @@ export const MOCK_TREND_SIGNALS: TrendSignal[] = [
         weeklyChange: 12.5,
         description: 'Focus on quality materials, minimal branding, and timeless silhouettes. Exploding in Tier-1 metros.',
         tags: ['Minimalism', 'Premium', 'Timeless'],
-        coverImage: 'https://images.unsplash.com/photo-1549497538-30122aaadecc?auto=format%2Ccompress&fit=crop&q=80&w=800%27%2C&fm=webp
+        coverImage: 'https://images.unsplash.com/photo-1549497538-30122aaadecc?auto=format,compress&fit=crop&q=80&w=800&fm=webp',
         sparkline: [
             { week: 'W1', score: 45 },
             { week: 'W2', score: 55 },
@@ -27,7 +27,7 @@ export const MOCK_TREND_SIGNALS: TrendSignal[] = [
         weeklyChange: 24.8,
         description: 'Traditional Indian weaves reimagined for street style. High engagement on Reels.',
         tags: ['Heritage', 'Streetwear', 'Z-Gen'],
-        coverImage: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format%2Ccompress&fit=crop&q=80&w=800%27%2C&fm=webp
+        coverImage: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format,compress&fit=crop&q=80&w=800&fm=webp',
         sparkline: [
             { week: 'W1', score: 30 },
             { week: 'W2', score: 60 },
@@ -48,7 +48,7 @@ export const MOCK_EMERGING_AESTHETICS: AestheticSpotlight[] = [
         id: 'ea1',
         title: 'Raw Concrete',
         subtitle: 'Post-Industrial Minimalism',
-        imageUrl: 'https://images.unsplash.com/photo-1549497538-30122aaadecc?auto=format%2Ccompress&fit=crop&q=80&w=800%27%2C&fm=webp
+        imageUrl: 'https://images.unsplash.com/photo-1549497538-30122aaadecc?auto=format,compress&fit=crop&q=80&w=800&fm=webp',
         description: 'Structural focus with neutral tones and heavy textures.',
         demandGrowth: 94,
         topNodes: ['London', 'Mumbai', 'Berlin']
@@ -57,7 +57,7 @@ export const MOCK_EMERGING_AESTHETICS: AestheticSpotlight[] = [
         id: 'ea2',
         title: 'Solar Punk',
         subtitle: 'Bright Sustainability',
-        imageUrl: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format%2Ccompress&fit=crop&q=80&w=800%27%2C&fm=webp
+        imageUrl: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format,compress&fit=crop&q=80&w=800&fm=webp',
         description: 'Optimistic sustainability with bright, organic textures.',
         demandGrowth: 82,
         topNodes: ['Portland', 'Bangalore', 'Melbourne']

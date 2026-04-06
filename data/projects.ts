@@ -53,7 +53,7 @@ export const MOCK_COLLABORATION_PROJECTS: CollaborationProject[] = [
         creator: {
             id: 't4',
             displayName: 'Elena Rossi',
-            avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100%27%2C&auto=format%2Ccompress&fm=webp&q=80
+            avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format,compress&fm=webp&q=80',
             role: 'PHOTOGRAPHER'
         },
         status: 'OPEN',
@@ -69,7 +69,7 @@ export const MOCK_COLLABORATION_PROJECTS: CollaborationProject[] = [
         creator: {
             id: 't1',
             displayName: 'Aarav Sharma',
-            avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100%27%2C&auto=format%2Ccompress&fm=webp&q=80
+            avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format,compress&fm=webp&q=80',
             role: 'DESIGNER'
         },
         status: 'IN_PROGRESS',
@@ -93,7 +93,7 @@ export const MOCK_WAR_ROOMS: WarRoom[] = [
         talent: {
             id: 't2',
             name: 'Priya Singh',
-            avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100%27&auto=format%2Ccompress&fm=webp&q=80
+            avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format,compress&fm=webp&q=80',
         },
         messages: [
             { id: 'm1', senderId: 't4', senderName: 'Elena Rossi', content: 'Lighting tests are looking good for the evening sequence.', timestamp: new Date(Date.now() - 3600000).toISOString() },
@@ -132,7 +132,7 @@ export const MOCK_EDITORIALS: Editorial[] = [
     {
         id: 'ed1',
         title: 'The Silent Silk',
-        media_url: 'https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=800%27%2C&auto=format%2Ccompress&fm=webp&q=80
+        media_url: 'https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=800&auto=format,compress&fm=webp&q=80',
         photographer_name: 'Vikram Seth',
         category: 'Haute Couture',
         created_at: '2024-12-01'
@@ -140,7 +140,7 @@ export const MOCK_EDITORIALS: Editorial[] = [
     {
         id: 'ed2',
         title: 'Cyber-Kolkata',
-        media_url: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800%27%2C&auto=format%2Ccompress&fm=webp&q=80
+        media_url: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&auto=format,compress&fm=webp&q=80',
         photographer_name: 'Elena Rossi',
         category: 'Experimental',
         created_at: '2025-01-15'

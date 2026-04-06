@@ -6,7 +6,7 @@ export const MOCK_PRESS_RELEASES: PressRelease[] = [
         title: "FFN Launches 'Identity Hub' - Phase 80 Complete",
         excerpt: 'Introducing the first-ever on-chain professional identity system for the fashion industry. Verified measurements, work-credits, and trust scores.',
         content: 'Long form content about the launch details and technology stack.',
-        imageUrl: 'https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format%2Ccompress&fit=crop&q=80&w=800%27%2C&fm=webp
+        imageUrl: 'https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format,compress&fit=crop&q=80&w=800&fm=webp',
         date: '2025-02-15',
         category: 'PRODUCT'
     },
@@ -15,7 +15,7 @@ export const MOCK_PRESS_RELEASES: PressRelease[] = [
         title: 'Sabyasachi Studios Joins FFN Elite',
         excerpt: 'Iconic luxury brand Sabyasachi officially integrates with our Casting Protocol for its SS26 international campaign.',
         content: 'Detailed deep dive into the Sabyasachi x FFN integration.',
-        imageUrl: 'https://images.unsplash.com/photo-1581044777550-4cfa60707c03?auto=format%2Ccompress&fit=crop&q=80&w=800%27%2C&fm=webp
+        imageUrl: 'https://images.unsplash.com/photo-1581044777550-4cfa60707c03?auto=format,compress&fit=crop&q=80&w=800&fm=webp',
         date: '2025-02-10',
         category: 'PARTNERSHIP'
     }
@@ -28,7 +28,7 @@ export const MOCK_PROTOCOL_MESSAGES: ProtocolMessage[] = [
         sender: {
             id: 'SYSTEM',
             name: 'FFN Protocol',
-            avatar: 'https://images.unsplash.com/photo-1549421263-54948a3e0b2a?w=100%27%2C&auto=format%2Ccompress&fm=webp&q=80
+            avatar: 'https://images.unsplash.com/photo-1549421263-54948a3e0b2a?w=100&auto=format,compress&fm=webp&q=80',
             role: UserRole.BRAND
         },
         lastMessage: 'Your Identity Hub profile is now 95% complete. Verify measurements to reach 100%.',
