@@ -1,4 +1,3 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
 import { createHash } from 'crypto';
 
@@ -7,50 +6,44 @@ const PAYU_MERCHANT_KEY = process.env.PAYU_MERCHANT_KEY || 'Ti9upR';
 const PAYU_MERCHANT_SALT = process.env.PAYU_MERCHANT_SALT || 'DcmyOWQcTXApY8aOT0RBKJgLxJvOQ6DJ';
 
 const supabase = createClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-function verifyReverseHash(params: Record<string, string>): boolean {
+function verifyReverseHash(params) {
     const {
         key, txnid, amount, productinfo, firstname, email,
         udf1 = '', udf2 = '', udf3 = '', udf4 = '', udf5 = '',
         status, hash: receivedHash
     } = params;
-
     const hashString = `${PAYU_MERCHANT_SALT}|${status}|${udf5}|${udf4}|${udf3}|${udf2}|${udf1}|${email}|${firstname}|${productinfo}|${amount}|${txnid}|${key}`;
-    const expectedHash = createHash('sha512').update(hashString).digest('hex');
-    return expectedHash === receivedHash;
+    return createHash('sha512').update(hashString).digest('hex') === receivedHash;
 }
 
-async function parseFormBody(req: VercelRequest): Promise<Record<string, string>> {
+function parseFormBody(req) {
     return new Promise((resolve) => {
         let body = '';
         req.on('data', chunk => { body += chunk.toString(); });
         req.on('end', () => {
-            const params: Record<string, string> = {};
+            const params = {};
             new URLSearchParams(body).forEach((v, k) => { params[k] = v; });
             resolve(params);
         });
     });
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-    if (req.method !== 'POST') {
-        return res.status(405).send('Method Not Allowed');
-    }
+export default async function handler(req, res) {
+    if (req.method !== 'POST') return res.status(405).send('Method Not Allowed');
 
     const params = await parseFormBody(req);
     const { txnid, mihpayid, amount, productinfo } = params;
 
     try {
-        // 1. Verify reverse hash
         if (!verifyReverseHash(params)) {
             console.error('PayU hash mismatch for txnid:', txnid);
             return res.redirect(302, `${FRONTEND_URL}/payment-failure?txnid=${txnid}&reason=hash_mismatch`);
         }
 
-        // 2. Update transaction to successful
         const { data: txn } = await supabase
             .from('transactions')
             .update({ status: 'successful', payu_mihpayid: mihpayid, updated_at: new Date().toISOString() })
@@ -58,7 +51,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             .select('user_id')
             .single();
 
-        // 3. Upgrade profile if it's a subscription payment
         const userId = txn?.user_id;
         if (userId && productinfo) {
             const info = productinfo.toLowerCase();
@@ -67,10 +59,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
             if (isAnnual || isMonthly) {
                 const expiresAt = new Date();
-                isAnnual
-                    ? expiresAt.setFullYear(expiresAt.getFullYear() + 1)
-                    : expiresAt.setMonth(expiresAt.getMonth() + 1);
-
+                isAnnual ? expiresAt.setFullYear(expiresAt.getFullYear() + 1) : expiresAt.setMonth(expiresAt.getMonth() + 1);
                 await supabase.from('profiles').update({
                     is_premium: true,
                     subscription_tier: isAnnual ? 'PREMIUM' : 'PROFESSIONAL',
@@ -84,7 +73,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         return res.redirect(302, `${FRONTEND_URL}/payment-success?txnid=${txnid}&mihpayid=${mihpayid}&amount=${amount}`);
 
-    } catch (err: any) {
+    } catch (err) {
         console.error('PayU success handler error:', err);
         return res.redirect(302, `${FRONTEND_URL}/payment-failure?txnid=${txnid}&reason=server_error`);
     }
