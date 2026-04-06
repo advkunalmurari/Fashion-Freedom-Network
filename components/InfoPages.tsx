@@ -1,18 +1,18 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Star, Sparkles, Zap, Award, Target, Eye, Heart, HelpCircle, ShieldAlert, CheckCircle, ArrowRight } from 'lucide-react';
 import { PRICING } from '../constants';
-import { PayPalButton } from './PayPalButton';
-import { paypalService } from '../services/paypalService';
+import { PayUPayment } from './PayUPayment';
+import { supabase } from '../supabase';
 
 export const AboutPage: React.FC = () => (
   <div className="space-y-32 py-20 animate-in fade-in duration-1000 bg-ffn-black text-white">
     <section className="max-w-5xl mx-auto text-center space-y-12">
       <div className="flex justify-center mb-8">
-        <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 10, ease: "linear" }} className="w-24 h-24 border-2 border-ffn-primary rounded-full p-2">
+        <m.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 10, ease: "linear" }} className="w-24 h-24 border-2 border-ffn-primary rounded-full p-2">
           <div className="w-full h-full bg-ffn-black rounded-full flex items-center justify-center text-white"><Star className="w-8 h-8" /></div>
-        </motion.div>
+        </m.div>
       </div>
       <h1 className="text-7xl md:text-9xl font-serif italic text-white tracking-tighter leading-none">The Future <br /> Faces of Fashion.</h1>
       <p className="text-xl md:text-3xl text-white/40 font-light italic max-w-4xl mx-auto leading-relaxed">"FFN is more than a network; it is the global operating system for fashion's most ambitious emerging icons."</p>
@@ -95,24 +95,30 @@ export const CommunityGuidelines: React.FC = () => (
 
 export const PricingPage: React.FC<{ onRegister: () => void }> = ({ onRegister }) => {
   const [activePayment, setActivePayment] = React.useState<'listing' | 'boost' | 'pro_sub' | 'pre_sub' | null>(null);
+  const [userInfo, setUserInfo] = React.useState<{ firstName: string; email: string } | null>(null);
 
-  const handleSuccess = async (details: any) => {
-    try {
-      const orderId = details.id || details.subscriptionID;
-      if (activePayment === 'pro_sub' || activePayment === 'pre_sub') {
-        const planId = activePayment === 'pro_sub' ? 'PROFESSIONAL' : 'PREMIUM';
-        await paypalService.verifySubscription(planId, orderId);
-      } else {
-        await paypalService.verifyPayment(orderId);
+  React.useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        setUserInfo({
+          firstName: user.user_metadata?.first_name || user.user_metadata?.full_name?.split(' ')[0] || 'User',
+          email: user.email || ''
+        });
       }
-      alert("Payment Successful! Your protocol status has been updated.");
-    } catch (error: any) {
-      console.error("Payment verification failed:", error);
-      alert(`Payment verification failed: ${error.message}`);
-    } finally {
-      setActivePayment(null);
-    }
-  };
+    });
+  }, []);
+
+  const renderPayU = (amount: number, productInfo: string, key: typeof activePayment) => (
+    activePayment === key ? (
+      <PayUPayment
+        amount={amount}
+        productInfo={productInfo}
+        firstName={userInfo?.firstName || 'User'}
+        email={userInfo?.email || ''}
+        onCancel={() => setActivePayment(null)}
+      />
+    ) : null
+  );
 
   return (
     <div className="py-20 space-y-24 animate-in fade-in duration-1000 bg-ffn-black text-white">
@@ -136,15 +142,10 @@ export const PricingPage: React.FC<{ onRegister: () => void }> = ({ onRegister }
               <li key={i} className="flex items-center space-x-4 text-[10px] font-bold uppercase tracking-widest text-white/40"><div className="w-1.5 h-1.5 bg-ffn-primary rounded-full" /> {f}</li>
             ))}
           </ul>
-          {activePayment === 'listing' ? (
-            <PayPalButton
-              amount={PRICING.PROFILE_LISTING.toString()}
-              currency={PRICING.SYMBOL === 'INR' ? 'INR' : 'USD'}
-              onSuccess={handleSuccess}
-            />
-          ) : (
-            <button onClick={() => setActivePayment('listing')} className="w-full bg-white text-ffn-black py-8 rounded-[2rem] text-[11px] font-black uppercase tracking-[0.5em] shadow-xl hover:bg-ffn-primary hover:text-white transition-all">Activate Hub</button>
-          )}
+          {activePayment === 'listing'
+            ? renderPayU(PRICING.PROFILE_LISTING, 'Professional Listing', 'listing')
+            : <button onClick={() => setActivePayment('listing')} className="w-full bg-white text-ffn-black py-8 rounded-[2rem] text-[11px] font-black uppercase tracking-[0.5em] shadow-xl hover:bg-ffn-primary hover:text-white transition-all">Activate Hub</button>
+          }
         </div>
 
         {/* Network Boost */}
@@ -160,15 +161,10 @@ export const PricingPage: React.FC<{ onRegister: () => void }> = ({ onRegister }
               <li key={i} className="flex items-center space-x-4 text-[10px] font-bold uppercase tracking-widest text-white/40"><div className="w-1.5 h-1.5 bg-ffn-accent rounded-full" /> {f}</li>
             ))}
           </ul>
-          {activePayment === 'boost' ? (
-            <PayPalButton
-              amount={PRICING.PROFILE_BOOST.toString()}
-              currency={PRICING.SYMBOL === 'INR' ? 'INR' : 'USD'}
-              onSuccess={handleSuccess}
-            />
-          ) : (
-            <button onClick={() => setActivePayment('boost')} className="w-full bg-white text-ffn-black py-8 rounded-[2rem] text-[11px] font-black uppercase tracking-[0.5em] shadow-xl hover:bg-ffn-primary hover:text-white transition-all">Boost Identity</button>
-          )}
+          {activePayment === 'boost'
+            ? renderPayU(PRICING.PROFILE_BOOST, 'Discovery Acceleration Boost', 'boost')
+            : <button onClick={() => setActivePayment('boost')} className="w-full bg-white text-ffn-black py-8 rounded-[2rem] text-[11px] font-black uppercase tracking-[0.5em] shadow-xl hover:bg-ffn-primary hover:text-white transition-all">Boost Identity</button>
+          }
         </div>
       </div>
 
@@ -187,16 +183,10 @@ export const PricingPage: React.FC<{ onRegister: () => void }> = ({ onRegister }
                 <li key={i} className="flex items-center space-x-3 text-[10px] text-white/40 font-bold uppercase tracking-widest"><div className="w-1 h-1 bg-ffn-primary rounded-full" /> {f}</li>
               ))}
             </ul>
-            {activePayment === 'pro_sub' ? (
-              <PayPalButton
-                amount={PRICING.SUBSCRIPTION.PROFESSIONAL.toString()}
-                type="subscription"
-                planId="P-5ML4271244454362MC4S4YCA" // Mock Plan ID
-                onSuccess={handleSuccess}
-              />
-            ) : (
-              <button onClick={() => setActivePayment('pro_sub')} className="w-full py-6 bg-white text-ffn-black rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-ffn-primary hover:text-white transition-all">Subscribe Professional</button>
-            )}
+            {activePayment === 'pro_sub'
+              ? renderPayU(PRICING.SUBSCRIPTION.PROFESSIONAL, 'Professional Monthly Subscription', 'pro_sub')
+              : <button onClick={() => setActivePayment('pro_sub')} className="w-full py-6 bg-white text-ffn-black rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-ffn-primary hover:text-white transition-all">Subscribe Professional</button>
+            }
           </div>
 
           {/* Premium Subscription */}
@@ -204,23 +194,17 @@ export const PricingPage: React.FC<{ onRegister: () => void }> = ({ onRegister }
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 blur-3xl"></div>
             <h4 className="text-[10px] font-black uppercase tracking-[0.5em] text-white/60">Protocol: Premium Elite</h4>
             <div className="space-y-2">
-              <p className="text-5xl font-serif font-bold">{PRICING.CURRENCY}{PRICING.SUBSCRIPTION.PREMIUM}<span className="text-sm font-light text-white/40">/mo</span></p>
+              <p className="text-5xl font-serif font-bold">{PRICING.CURRENCY}{PRICING.SUBSCRIPTION.PREMIUM}<span className="text-sm font-light text-white/40">/yr</span></p>
             </div>
             <ul className="space-y-4">
               {["Direct Scout Concierge", "Global Featured Status", "Editorial Priority", "FFN Private Events"].map((f, i) => (
                 <li key={i} className="flex items-center space-x-3 text-[10px] text-white/60 font-bold uppercase tracking-widest"><div className="w-1 h-1 bg-white rounded-full" /> {f}</li>
               ))}
             </ul>
-            {activePayment === 'pre_sub' ? (
-              <PayPalButton
-                amount={PRICING.SUBSCRIPTION.PREMIUM.toString()}
-                type="subscription"
-                planId="P-5ML4271244454362MC4S4YCA" // Mock Plan ID
-                onSuccess={handleSuccess}
-              />
-            ) : (
-              <button onClick={() => setActivePayment('pre_sub')} className="w-full py-6 bg-white text-ffn-primary rounded-2xl text-[10px] font-black uppercase tracking-[0.3em]">Subscribe Premium</button>
-            )}
+            {activePayment === 'pre_sub'
+              ? renderPayU(PRICING.SUBSCRIPTION.PREMIUM, 'Premium Annual Subscription', 'pre_sub')
+              : <button onClick={() => setActivePayment('pre_sub')} className="w-full py-6 bg-white text-ffn-primary rounded-2xl text-[10px] font-black uppercase tracking-[0.3em]">Subscribe Premium</button>
+            }
           </div>
         </div>
       </div>
