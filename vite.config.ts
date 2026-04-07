@@ -23,6 +23,12 @@ export default defineConfig(({ mode }) => {
       }),
       VitePWA({
         registerType: 'autoUpdate',
+        injectRegister: 'auto',
+        workbox: {
+          skipWaiting: true,
+          clientsClaim: true,
+          cleanupOutdatedCaches: true,
+        },
         includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
         manifest: {
           name: 'Fashion Freedom Network',
@@ -62,8 +68,11 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks: {
-            vendor: ['react', 'react-dom', 'react-router-dom', 'framer-motion', 'lucide-react', '@supabase/supabase-js'],
-            paypal: ['@paypal/react-paypal-js']
+            'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+            'framer-vendor': ['framer-motion'],
+            'lucide-icons': ['lucide-react'],
+            'database-vendor': ['@supabase/supabase-js'],
+            'paypal-vendor': ['@paypal/react-paypal-js']
           }
         }
       }
