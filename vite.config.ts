@@ -2,7 +2,6 @@ import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
-import compression from 'vite-plugin-compression';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
@@ -13,14 +12,6 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
-      compression({
-        algorithm: 'brotliCompress',
-        ext: '.br',
-      }),
-      compression({
-        algorithm: 'gzip',
-        ext: '.gz',
-      }),
       VitePWA({
         registerType: 'autoUpdate',
         injectRegister: 'auto',
