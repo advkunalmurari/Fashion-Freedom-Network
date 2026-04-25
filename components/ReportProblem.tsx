@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { AlertCircle, Send, CheckCircle, Loader2, X } from 'lucide-react';
 
 export const ReportProblem: React.FC = () => {
@@ -31,7 +31,7 @@ export const ReportProblem: React.FC = () => {
 
       <AnimatePresence mode="wait">
         {!isSuccess ? (
-          <motion.form 
+          <m.form 
             key="report-form"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -67,9 +67,9 @@ export const ReportProblem: React.FC = () => {
               {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
               <span>{isSubmitting ? 'Syncing...' : 'Dispatch Report'}</span>
             </button>
-          </motion.form>
+          </m.form>
         ) : (
-          <motion.div 
+          <m.div 
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             className="bg-emerald-500 text-white p-20 rounded-[4rem] text-center space-y-8 shadow-2xl"
@@ -83,7 +83,7 @@ export const ReportProblem: React.FC = () => {
             >
               Back to Hub
             </button>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </div>

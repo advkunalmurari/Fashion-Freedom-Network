@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 
 export const PostSkeleton = () => (
     <div className="bg-white rounded-[3rem] p-6 space-y-6 shadow-xl border border-gray-50 opacity-80 mb-10 w-full animate-pulse">
@@ -25,7 +25,7 @@ export const ProfileSkeleton = () => (
 );
 
 export const PageTransition = ({ children }: { children: React.ReactNode }) => (
-    <motion.div
+    <m.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
@@ -33,5 +33,5 @@ export const PageTransition = ({ children }: { children: React.ReactNode }) => (
         className="w-full h-full"
     >
         {children}
-    </motion.div>
+    </m.div>
 );

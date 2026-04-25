@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Image as ImageIcon, Video, Send, Loader2 } from 'lucide-react';
 import { postService } from '../services/postService';
 
@@ -51,7 +51,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ onPostCreated, currentUs
     };
 
     return (
-        <motion.form
+        <m.form
             onSubmit={handleSubmit}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -77,7 +77,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ onPostCreated, currentUs
 
             <AnimatePresence>
                 {isFocused && (
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
@@ -167,9 +167,9 @@ export const CreatePost: React.FC<CreatePostProps> = ({ onPostCreated, currentUs
                                 )}
                             </button>
                         </div>
-                    </motion.div>
+                    </m.div>
                 )}
             </AnimatePresence>
-        </motion.form>
+        </m.form>
     );
 };

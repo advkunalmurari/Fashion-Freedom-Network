@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Globe, Users, Hash, MessageCircle, ArrowRight, Zap, UserPlus, Check, X, ShieldCheck, Loader2, Sparkles } from 'lucide-react';
 import { networkService } from '../services/networkService';
 import { MagneticButton } from './MagneticButton';
@@ -84,7 +84,7 @@ export const Network: React.FC = () => {
 
       <AnimatePresence mode="wait">
         {activeNetworkTab === 'channels' ? (
-          <motion.div
+          <m.div
             key="channels"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -132,9 +132,9 @@ export const Network: React.FC = () => {
                 </div>
               </div>
             ))}
-          </motion.div>
+          </m.div>
         ) : (
-          <motion.div
+          <m.div
             key="requests"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -162,7 +162,7 @@ export const Network: React.FC = () => {
             )}
 
             {!isLoading && requests.map((request, idx) => (
-              <motion.div
+              <m.div
                 key={request.id}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -192,9 +192,9 @@ export const Network: React.FC = () => {
                     <X className="w-5 h-5" />
                   </button>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 

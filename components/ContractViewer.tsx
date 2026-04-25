@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Contract, ContractSignature, User } from '../types';
 import { MOCK_TALENT_POOL } from '../constants';
 import { ScrollText, PenTool, CheckCircle, Clock, AlertTriangle, X } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 
 interface ContractViewerProps {
     contract: Contract;
@@ -84,7 +84,7 @@ export const ContractViewer: React.FC<ContractViewerProps> = ({ contract, curren
 
     return (
         <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm">
-            <motion.div
+            <m.div
                 initial={{ x: '100%' }}
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
@@ -196,7 +196,7 @@ export const ContractViewer: React.FC<ContractViewerProps> = ({ contract, curren
                     </div>
                 )}
 
-            </motion.div>
+            </m.div>
         </div>
     );
 };

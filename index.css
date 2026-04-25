@@ -306,3 +306,84 @@ body.dark-protocol ::-webkit-scrollbar-thumb {
 .animate-scan-horizontal {
     animation: scan-horizontal 3s linear infinite;
 }
+
+/* --- Phase 2: Premium Visual Expansion --- */
+
+.premium-iridescent {
+    position: relative;
+    background: #000;
+    z-index: 0;
+}
+
+.premium-iridescent::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: conic-gradient(from 0deg,
+            transparent 0deg,
+            #ff3366 45deg,
+            #ff00cc 90deg,
+            #833ab4 135deg,
+            #5851db 180deg,
+            #405de6 225deg,
+            #285aeb 270deg,
+            #ff00cc 315deg,
+            transparent 360deg);
+    border-radius: inherit;
+    z-index: -1;
+    animation: spin 8s linear infinite;
+    opacity: 0.3;
+    filter: blur(8px);
+}
+
+.studio-lighting {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(255, 51, 102, 0.15) 0%,
+            rgba(131, 58, 180, 0.05) 25%,
+            transparent 60%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.editorial-masthead {
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.05em;
+    font-weight: 900;
+    line-height: 0.8;
+    text-transform: uppercase;
+}
+
+.fluid-indicator {
+    position: absolute;
+    background: #ff3366;
+    border-radius: 9999px;
+    filter: blur(12px);
+    opacity: 0.4;
+    mix-blend-mode: plus-lighter;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Mastery Scroll - Velocity Responsive */
+.mastery-scroll-container {
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.premium-card-depth {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.premium-card-content {
+    transform: translateZ(20px);
+}

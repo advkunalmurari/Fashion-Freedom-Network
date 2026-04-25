@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
     Camera, X, Zap, ShieldCheck,
     RotateCcw, Sparkles, Smartphone,
@@ -57,7 +57,7 @@ export const ARTryOnOverlay: React.FC<ARTryOnOverlayProps> = ({ item, onClose })
                 {/* Garment Overlay Simulation */}
                 <AnimatePresence>
                     {!isCalibrating && isInitialized && (
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             className="absolute inset-0 z-20 flex items-center justify-center p-24"
@@ -82,7 +82,7 @@ export const ARTryOnOverlay: React.FC<ARTryOnOverlayProps> = ({ item, onClose })
                                     ))}
                                 </div>
                             </div>
-                        </motion.div>
+                        </m.div>
                     )}
                 </AnimatePresence>
 
@@ -111,7 +111,7 @@ export const ARTryOnOverlay: React.FC<ARTryOnOverlayProps> = ({ item, onClose })
                     <div className="flex flex-col items-center space-y-8">
                         <AnimatePresence>
                             {isCalibrating ? (
-                                <motion.div
+                                <m.div
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -20 }}
@@ -119,9 +119,9 @@ export const ARTryOnOverlay: React.FC<ARTryOnOverlayProps> = ({ item, onClose })
                                 >
                                     <RotateCcw className="w-5 h-5 text-ffn-primary animate-spin" />
                                     <span className="text-[10px] font-black uppercase tracking-widest text-white">Calibrating Wardrobe Surface...</span>
-                                </motion.div>
+                                </m.div>
                             ) : (
-                                <motion.div
+                                <m.div
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     className="flex items-center space-x-6"
@@ -133,7 +133,7 @@ export const ARTryOnOverlay: React.FC<ARTryOnOverlayProps> = ({ item, onClose })
                                     <div className="px-6 py-3 bg-white/10 backdrop-blur-xl rounded-xl border border-white/10">
                                         <span className="text-[10px] font-bold text-white uppercase tracking-[0.2em]">Confidence: {confidence}%</span>
                                     </div>
-                                </motion.div>
+                                </m.div>
                             )}
                         </AnimatePresence>
 

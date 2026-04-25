@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
     TrendingUp, Target, Users, Zap, Brain, ArrowRight,
     BarChart3, PieChart, Activity, Info, X, CheckCircle2,
@@ -84,7 +84,7 @@ export const PredictiveCasting: React.FC<PredictiveCastingProps> = ({ selectedTa
             <div className="p-10">
                 <AnimatePresence mode="wait">
                     {isSimulating ? (
-                        <motion.div
+                        <m.div
                             key="simulating"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -92,12 +92,12 @@ export const PredictiveCasting: React.FC<PredictiveCastingProps> = ({ selectedTa
                             className="py-20 flex flex-col items-center justify-center space-y-8"
                         >
                             <div className="relative">
-                                <motion.div
+                                <m.div
                                     animate={{ rotate: 360 }}
                                     transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
                                     className="w-32 h-32 border-t-4 border-l-4 border-ffn-primary rounded-full"
                                 />
-                                <motion.div
+                                <m.div
                                     animate={{ rotate: -360 }}
                                     transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                                     className="absolute inset-4 border-b-4 border-r-4 border-gray-200 rounded-full"
@@ -108,9 +108,9 @@ export const PredictiveCasting: React.FC<PredictiveCastingProps> = ({ selectedTa
                                 <h3 className="text-xl font-serif italic font-bold">Analysing Market Intersections</h3>
                                 <p className="text-sm text-gray-400">Processing reach across {selectedTalentIds.length || 12} content nodes...</p>
                             </div>
-                        </motion.div>
+                        </m.div>
                     ) : metrics && (
-                        <motion.div
+                        <m.div
                             key="results"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -168,7 +168,7 @@ export const PredictiveCasting: React.FC<PredictiveCastingProps> = ({ selectedTa
                                     </div>
                                     <div className="h-32 flex items-end justify-between gap-1">
                                         {[40, 65, 45, 80, 55, 90, 70, 85, 95].map((h, i) => (
-                                            <motion.div
+                                            <m.div
                                                 key={i}
                                                 initial={{ height: 0 }}
                                                 animate={{ height: `${h}%` }}
@@ -176,7 +176,7 @@ export const PredictiveCasting: React.FC<PredictiveCastingProps> = ({ selectedTa
                                                 className="w-full bg-ffn-primary/20 rounded-t-lg relative group"
                                             >
                                                 <div className="absolute inset-0 bg-ffn-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-bottom" />
-                                            </motion.div>
+                                            </m.div>
                                         ))}
                                     </div>
                                     <div className="flex justify-between mt-4">
@@ -202,7 +202,7 @@ export const PredictiveCasting: React.FC<PredictiveCastingProps> = ({ selectedTa
                                     </button>
                                 </div>
                             </div>
-                        </motion.div>
+                        </m.div>
                     )}
                 </AnimatePresence>
             </div>

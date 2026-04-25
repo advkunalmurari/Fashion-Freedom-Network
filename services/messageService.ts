@@ -1,6 +1,3 @@
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
-
 import { supabase } from '../supabase';
 
 export const messageService = {
@@ -25,7 +22,7 @@ export const messageService = {
             // 2. Fetch the latest messages for these chats to sort them
             const { data: messages, error: msgError } = await supabase
                 .from('messages')
-                .select('chat_id, text, created_at')
+                .select('chat_id, content, created_at')
                 .in('chat_id', chatIds)
                 .order('created_at', { ascending: false });
 
@@ -42,7 +39,7 @@ export const messageService = {
             // 3. Fetch the OTHER users in these chats
             const { data: otherParticipants, error: otherError } = await supabase
                 .from('chat_participants')
-                .select('chat_id, user_id, profiles!inner(id, full_name, avatar_url, role)')
+                .select('chat_id, user_id, profiles!inner(id, full_name, avatar_url, category)')
                 .in('chat_id', chatIds)
                 .neq('user_id', myId);
 
@@ -55,10 +52,10 @@ export const messageService = {
                 return {
                     id: p.chat_id,
                     participants: [profileInfo],
-                    name: (profileInfo as any)?.full_name,
-                    avatar: (profileInfo as any)?.avatar_url,
-                    role: (profileInfo as any)?.role,
-                    lastMsg: latestMsg ? latestMsg.text : 'No messages yet',
+                    name: (profileInfo as any)?.full_name || 'Unknown',
+                    avatar: (profileInfo as any)?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80',
+                    role: (profileInfo as any)?.category || 'MODEL',
+                    lastMsg: latestMsg ? latestMsg.content : 'No messages yet',
                     timestamp: latestMsg ? new Date(latestMsg.created_at).getTime() : 0,
                     time: latestMsg ? new Date(latestMsg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '',
                     status: 'Offline' // Would need presence tracking for real status
@@ -93,7 +90,7 @@ export const messageService = {
             const formatted = data.map(msg => ({
                 id: msg.id,
                 sender: msg.sender_id === myId ? 'me' : 'them',
-                text: msg.text,
+                text: msg.content,
                 time: new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             }));
 
@@ -166,22 +163,19 @@ export const messageService = {
                 .insert([{
                     chat_id: activeChatId,
                     sender_id: myId,
-                    text: content
+                    content: content
                 }])
                 .select()
                 .single();
 
             if (msgErr) throw msgErr;
 
-            // Update the chat updated_at
-            await supabase.from('chats').update({ updated_at: new Date().toISOString() }).eq('id', activeChatId);
-
             return {
                 success: true,
                 data: {
                     id: newMsg.id,
                     sender: 'me',
-                    text: newMsg.text,
+                    text: newMsg.content,
                     time: new Date(newMsg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                 },
                 chatId: activeChatId

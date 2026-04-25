@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { X, Send, Calendar, DollarSign, Briefcase, Zap } from 'lucide-react';
 import { User } from '../types';
 
@@ -14,14 +14,14 @@ export const BookingProtocolDrawer: React.FC<BookingProtocolDrawerProps> = ({ is
         <AnimatePresence>
             {isOpen && (
                 <>
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
                         className="fixed inset-0 bg-ffn-black/20 backdrop-blur-sm z-[150]"
                     />
-                    <motion.div
+                    <m.div
                         initial={{ x: '100%' }}
                         animate={{ x: 0 }}
                         exit={{ x: '100%' }}
@@ -123,7 +123,7 @@ export const BookingProtocolDrawer: React.FC<BookingProtocolDrawerProps> = ({ is
                             </div>
 
                             <div className="pt-10">
-                                <motion.button
+                                <m.button
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
                                     className="w-full bg-ffn-black text-white p-8 rounded-[2rem] font-black uppercase tracking-[0.3em] text-[10px] flex items-center justify-center space-x-4 shadow-2xl hover:bg-ffn-primary transition-all group"
@@ -131,13 +131,13 @@ export const BookingProtocolDrawer: React.FC<BookingProtocolDrawerProps> = ({ is
                                     <Zap className="w-5 h-5 text-ffn-primary group-hover:text-white" />
                                     <span>Execute Protocol Request</span>
                                     <Send className="w-4 h-4" />
-                                </motion.button>
+                                </m.button>
                                 <p className="text-center text-[8px] text-gray-400 font-black uppercase tracking-widest mt-6">
                                     Requests are verified through the FFN Secure Escrow Protocol
                                 </p>
                             </div>
                         </div>
-                    </motion.div>
+                    </m.div>
                 </>
             )}
         </AnimatePresence>

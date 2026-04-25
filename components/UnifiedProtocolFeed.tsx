@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
     Search, Filter, Inbox, Send, Briefcase,
     Target, ShieldCheck, Clock, CheckCircle2,
@@ -101,7 +101,7 @@ export const UnifiedProtocolFeed: React.FC = () => {
                 <div className="lg:col-span-6 space-y-6">
                     <AnimatePresence mode="popLayout">
                         {filteredMessages.map((msg) => (
-                            <motion.div
+                            <m.div
                                 key={msg.id}
                                 layout
                                 initial={{ opacity: 0, scale: 0.95 }}
@@ -144,7 +144,7 @@ export const UnifiedProtocolFeed: React.FC = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </motion.div>
+                            </m.div>
                         ))}
                     </AnimatePresence>
 
@@ -207,7 +207,7 @@ export const UnifiedProtocolFeed: React.FC = () => {
             <AnimatePresence>
                 {selectedProtocol && (
                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-ffn-black/80 backdrop-blur-xl">
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, scale: 0.9, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -221,7 +221,7 @@ export const UnifiedProtocolFeed: React.FC = () => {
                             </button>
 
                             <ProtocolDetailView protocol={selectedProtocol} onClose={() => setSelectedProtocol(null)} />
-                        </motion.div>
+                        </m.div>
                     </div>
                 )}
             </AnimatePresence>

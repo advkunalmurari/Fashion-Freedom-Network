@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { CheckCircle2, Circle, PlayCircle, Loader2 } from 'lucide-react';
 
 export type PipelinePhase = 'INCEPTION' | 'CAPTURE' | 'POST_PROD' | 'DELIVERY';
@@ -36,7 +36,7 @@ export const ProjectPipeline: React.FC<ProjectPipelineProps> = ({ currentPhase, 
             <div className="relative flex justify-between items-start">
                 {/* Connector Line */}
                 <div className="absolute top-5 left-0 right-0 h-0.5 bg-gray-50 z-0">
-                    <motion.div
+                    <m.div
                         initial={{ width: 0 }}
                         animate={{ width: `${(currentIdx / (PHASES.length - 1)) * 100}%` }}
                         className="h-full bg-ffn-primary"

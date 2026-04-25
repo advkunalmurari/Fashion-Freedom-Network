@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Wallet, Landmark, Receipt, Clock, CheckCircle2, AlertCircle, TrendingUp, ShieldCheck } from 'lucide-react';
 import { ProjectFinancials, PerformanceLedgerEntry } from '../types';
 
@@ -34,7 +34,7 @@ export const PerformanceLedger: React.FC<PerformanceLedgerProps> = ({ financials
         <div className="space-y-8">
             {/* Financial Summary Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <motion.div
+                <m.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-white/40 backdrop-blur-xl border border-gray-100 p-8 rounded-[2.5rem] space-y-4 shadow-xl shadow-gray-200/20"
@@ -52,9 +52,9 @@ export const PerformanceLedger: React.FC<PerformanceLedgerProps> = ({ financials
                             <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Defined Strategy</span>
                         </div>
                     </div>
-                </motion.div>
+                </m.div>
 
-                <motion.div
+                <m.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
@@ -73,9 +73,9 @@ export const PerformanceLedger: React.FC<PerformanceLedgerProps> = ({ financials
                             <span className="text-[9px] font-bold text-ffn-primary uppercase tracking-widest">{financials.status.replace('_', ' ')}</span>
                         </div>
                     </div>
-                </motion.div>
+                </m.div>
 
-                <motion.div
+                <m.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
@@ -97,7 +97,7 @@ export const PerformanceLedger: React.FC<PerformanceLedgerProps> = ({ financials
                             <span className="text-[9px] font-bold text-white/60 uppercase tracking-widest">Settle in Progress</span>
                         </div>
                     </div>
-                </motion.div>
+                </m.div>
             </div>
 
             {/* Detailed Ledger Table */}
@@ -127,7 +127,7 @@ export const PerformanceLedger: React.FC<PerformanceLedgerProps> = ({ financials
                             {financials.ledger.map((entry, idx) => {
                                 const Icon = getTypeIcon(entry.type);
                                 return (
-                                    <motion.tr
+                                    <m.tr
                                         key={entry.id}
                                         initial={{ opacity: 0, x: -10 }}
                                         animate={{ opacity: 1, x: 0 }}
@@ -165,7 +165,7 @@ export const PerformanceLedger: React.FC<PerformanceLedgerProps> = ({ financials
                                                 </span>
                                             </div>
                                         </td>
-                                    </motion.tr>
+                                    </m.tr>
                                 );
                             })}
                         </tbody>

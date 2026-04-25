@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 
 interface DiscoveryNodeProps {
     id: string;
@@ -18,7 +18,7 @@ export const DiscoveryNode: React.FC<DiscoveryNodeProps> = ({
     onClick
 }) => {
     return (
-        <motion.button
+        <m.button
             whileHover={{ scale: 1.05, y: -5 }}
             whileTap={{ scale: 0.95 }}
             onClick={onClick}
@@ -26,7 +26,7 @@ export const DiscoveryNode: React.FC<DiscoveryNodeProps> = ({
         >
             <div className="relative">
                 {isPulse && (
-                    <motion.div
+                    <m.div
                         className="absolute inset-0 rounded-full border-2 border-ffn-primary"
                         animate={{ scale: [1, 1.2, 1], opacity: [1, 0, 1] }}
                         transition={{ duration: 2, repeat: Infinity }}
@@ -48,6 +48,6 @@ export const DiscoveryNode: React.FC<DiscoveryNodeProps> = ({
             <span className="text-[8px] font-bold uppercase tracking-widest text-gray-400 group-hover:text-ffn-black transition-colors">
                 @{username}
             </span>
-        </motion.button>
+        </m.button>
     );
 };

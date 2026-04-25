@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Search, Eye, Sparkles, CheckCircle, BarChart3, Scan, Shield, AlertTriangle, Layers, Maximize2 } from 'lucide-react';
 
 export const PortfolioAuditEngine: React.FC = () => {
@@ -76,7 +76,7 @@ export const PortfolioAuditEngine: React.FC = () => {
                                             fill="transparent"
                                             className="text-white/5"
                                         />
-                                        <motion.circle
+                                        <m.circle
                                             cx="96"
                                             cy="96"
                                             r="88"
@@ -108,7 +108,7 @@ export const PortfolioAuditEngine: React.FC = () => {
                                             <span className="text-[10px] font-black text-ffn-primary uppercase tracking-widest">{metric.status}</span>
                                         </div>
                                         <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
-                                            <motion.div
+                                            <m.div
                                                 className="h-full bg-ffn-primary"
                                                 initial={{ width: 0 }}
                                                 animate={{ width: auditComplete ? `${metric.score}%` : 0 }}
@@ -133,7 +133,7 @@ export const PortfolioAuditEngine: React.FC = () => {
 
                             {/* Scanning Beam */}
                             {isScanning && (
-                                <motion.div
+                                <m.div
                                     className="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-ffn-primary to-transparent z-20 shadow-[0_0_20px_rgba(255,215,0,0.5)]"
                                     animate={{ top: ['0%', '100%'] }}
                                     transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
@@ -145,7 +145,7 @@ export const PortfolioAuditEngine: React.FC = () => {
                                 <div className="w-full h-full bg-black/60 flex items-center justify-center flex-col space-y-6 relative overflow-hidden">
                                     <AnimatePresence mode="wait">
                                         {!isScanning && !auditComplete && (
-                                            <motion.button
+                                            <m.button
                                                 initial={{ opacity: 0, scale: 0.9 }}
                                                 animate={{ opacity: 1, scale: 1 }}
                                                 exit={{ opacity: 0, scale: 0.9 }}
@@ -154,11 +154,11 @@ export const PortfolioAuditEngine: React.FC = () => {
                                             >
                                                 <div className="absolute inset-0 bg-white group-hover/btn:translate-x-full transition-transform duration-500" />
                                                 <span className="relative text-[11px] font-black uppercase tracking-[0.4em] text-black">Initiate High-Res Scan</span>
-                                            </motion.button>
+                                            </m.button>
                                         )}
 
                                         {isScanning && (
-                                            <motion.div
+                                            <m.div
                                                 initial={{ opacity: 0 }}
                                                 animate={{ opacity: 1 }}
                                                 className="text-center space-y-4"
@@ -168,11 +168,11 @@ export const PortfolioAuditEngine: React.FC = () => {
                                                     <p className="text-[10px] font-black uppercase tracking-[0.4em] text-ffn-primary">Neural Synchronization</p>
                                                     <p className="text-gray-500 text-[8px] font-bold tracking-widest uppercase">Depth Analysis: Frame {Math.floor(scanProgress * 2.4)}</p>
                                                 </div>
-                                            </motion.div>
+                                            </m.div>
                                         )}
 
                                         {auditComplete && (
-                                            <motion.div
+                                            <m.div
                                                 initial={{ opacity: 0, y: 10 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 className="text-center space-y-6"
@@ -184,7 +184,7 @@ export const PortfolioAuditEngine: React.FC = () => {
                                                     <h4 className="text-2xl font-serif italic text-white">Visual Authenticity Verified</h4>
                                                     <p className="text-gray-500 text-[9px] font-black uppercase tracking-widest">Global Protocol Standards Met</p>
                                                 </div>
-                                            </motion.div>
+                                            </m.div>
                                         )}
                                     </AnimatePresence>
 
@@ -195,7 +195,7 @@ export const PortfolioAuditEngine: React.FC = () => {
                                             <span className="text-[7px] font-black uppercase tracking-[0.3em]">Latent Space Analysis</span>
                                         </div>
                                         <div className="w-24 h-0.5 bg-white/5 overflow-hidden">
-                                            <motion.div className="h-full bg-white/20" animate={{ x: ['-100%', '100%'] }} transition={{ duration: 1, repeat: Infinity }} />
+                                            <m.div className="h-full bg-white/20" animate={{ x: ['-100%', '100%'] }} transition={{ duration: 1, repeat: Infinity }} />
                                         </div>
                                     </div>
                                     <div className="absolute bottom-8 right-8 text-right underline underline-offset-8 decoration-ffn-primary/30">

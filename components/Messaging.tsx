@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, Send, Image, Smile, Phone, Video, Info, MoreVertical, Paperclip, Mic, Loader2, CheckCircle, Check, Briefcase, FileText } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { messageService } from '../services/messageService';
 import { supabase } from '../supabase';
 import { PayPalButton } from './PayPalButton';
@@ -165,7 +165,7 @@ export const Messaging: React.FC = () => {
           {loading ? (
             <div className="flex items-center justify-center p-10"><Loader2 className="w-6 h-6 animate-spin text-ffn-primary" /></div>
           ) : threads.map((t, idx) => (
-            <motion.div
+            <m.div
               key={t.id}
               whileHover={{ x: 8 }}
               onClick={() => setActiveThreadIndex(idx)}
@@ -191,7 +191,7 @@ export const Messaging: React.FC = () => {
                   {idx === 0 && isTyping ? <span className="text-ffn-primary animate-pulse tracking-widest">TRANSMITTING...</span> : (t.lastMsg || 'Pulse detected')}
                 </p>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>
@@ -255,7 +255,7 @@ export const Messaging: React.FC = () => {
 
           <AnimatePresence>
             {messages.map((m, index) => (
-              <motion.div
+              <m.div
                 key={m.id || index}
                 initial={{ opacity: 0, y: 20, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -284,12 +284,12 @@ export const Messaging: React.FC = () => {
                     )}
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
 
             {/* Typing Relay */}
             {isTyping && activeThreadIndex === 0 && (
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
@@ -300,7 +300,7 @@ export const Messaging: React.FC = () => {
                   <div className="w-2 h-2 bg-ffn-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
                   <div className="w-2 h-2 bg-ffn-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                 </div>
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
           <div ref={messagesEndRef} />

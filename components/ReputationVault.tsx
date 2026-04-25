@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Review } from '../types';
 import { Star, ShieldCheck, Quote, BarChart3 } from 'lucide-react';
 
@@ -10,7 +10,7 @@ const CategoryBar: React.FC<{ label: string; value: number; color: string }> = (
             <span className="text-[10px] font-bold text-ffn-black">{value}/5</span>
         </div>
         <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
-            <motion.div
+            <m.div
                 initial={{ width: 0 }}
                 whileInView={{ width: `${(value / 5) * 100}%` }}
                 transition={{ duration: 1.5, ease: "easeOut" }}
@@ -36,7 +36,7 @@ export const ReputationVault: React.FC<{ reviews: Review[] }> = ({ reviews }) =>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {reviews.map((review, idx) => (
-                    <motion.div
+                    <m.div
                         key={review.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -87,7 +87,7 @@ export const ReputationVault: React.FC<{ reviews: Review[] }> = ({ reviews }) =>
                                 <p className="text-xs text-gray-500">"{review.brandResponse}"</p>
                             </div>
                         )}
-                    </motion.div>
+                    </m.div>
                 ))}
             </div>
         </div>

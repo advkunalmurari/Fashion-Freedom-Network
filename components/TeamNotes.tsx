@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
     MessageSquare, Send, Tag, Clock, User as UserIcon,
     MoreHorizontal, Trash2, Edit3, Lock, Shield

@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { TrendSignal, TrendMomentum } from '../types';
 import { MOCK_TREND_SIGNALS } from '../constants';
@@ -72,7 +72,7 @@ const ScoreGauge: React.FC<{ score: number }> = ({ score }) => {
     return (
         <div className="flex items-center gap-3">
             <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-                <motion.div
+                <m.div
                     initial={{ width: 0 }}
                     animate={{ width: `${score}%` }}
                     transition={{ duration: 1, ease: 'easeOut' }}
@@ -97,7 +97,7 @@ const TrendCard: React.FC<{ trend: TrendSignal; onClick: () => void }> = ({ tren
     const isDown = trend.weeklyChange < 0;
 
     return (
-        <motion.div
+        <m.div
             layout
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -159,7 +159,7 @@ const TrendCard: React.FC<{ trend: TrendSignal; onClick: () => void }> = ({ tren
                     )}
                 </div>
             </div>
-        </motion.div>
+        </m.div>
     );
 };
 
@@ -170,14 +170,14 @@ const TrendDrawer: React.FC<{ trend: TrendSignal; onClose: () => void }> = ({ tr
 
     return (
         <AnimatePresence>
-            <motion.div
+            <m.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex justify-end"
                 onClick={onClose}
             >
-                <motion.div
+                <m.div
                     initial={{ x: '100%' }}
                     animate={{ x: 0 }}
                     exit={{ x: '100%' }}
@@ -240,7 +240,7 @@ const TrendDrawer: React.FC<{ trend: TrendSignal; onClose: () => void }> = ({ tr
                                         <div key={pt.week} className="flex-1 flex flex-col items-center gap-1">
                                             <span className="text-[8px] font-bold text-gray-400">{pt.score}</span>
                                             <div className="w-full h-[72px] flex flex-col justify-end">
-                                                <motion.div
+                                                <m.div
                                                     initial={{ height: 0 }}
                                                     animate={{ height: `${pct}%` }}
                                                     transition={{ duration: 0.6, delay: i * 0.08 }}
@@ -300,8 +300,8 @@ const TrendDrawer: React.FC<{ trend: TrendSignal; onClose: () => void }> = ({ tr
                             </button>
                         </div>
                     </div>
-                </motion.div>
-            </motion.div>
+                </m.div>
+            </m.div>
         </AnimatePresence>
     );
 };
@@ -408,11 +408,11 @@ export const TrendForecaster: React.FC = () => {
                         <p className="font-serif italic text-xl">No signals match your filters</p>
                     </div>
                 ) : (
-                    <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <m.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {filtered.map(trend => (
                             <TrendCard key={trend.id} trend={trend} onClick={() => setSelectedTrend(trend)} />
                         ))}
-                    </motion.div>
+                    </m.div>
                 )}
             </div>
 

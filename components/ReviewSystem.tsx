@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Review, RatingSummary } from '../types';
 import { MOCK_REVIEWS, MOCK_RATING_SUMMARY } from '../constants';
 import {
@@ -54,7 +54,7 @@ const CategoryBar: React.FC<{ label: string; score: number }> = ({ label, score 
                 <span className="text-sm font-black font-mono text-ffn-black">{score.toFixed(1)}</span>
             </div>
             <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }}
+                <m.div initial={{ width: 0 }} animate={{ width: `${pct}%` }}
                     transition={{ duration: 0.8, ease: 'easeOut' }}
                     className={`h-full rounded-full ${color}`} />
             </div>
@@ -77,7 +77,7 @@ const RatingDistribution: React.FC<{ summary: RatingSummary }> = ({ summary }) =
                             <Star className="w-2.5 h-2.5 text-amber-400 fill-amber-400" />
                         </div>
                         <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-                            <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }}
+                            <m.div initial={{ width: 0 }} animate={{ width: `${pct}%` }}
                                 transition={{ duration: 0.8, delay: (5 - star) * 0.05 }}
                                 className="h-full bg-amber-400 rounded-full" />
                         </div>
@@ -98,7 +98,7 @@ const ReviewCard: React.FC<{ review: Review; onHelpful: (id: string) => void; he
     const isLong = review.body.length > SHORT_LEN;
 
     return (
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+        <m.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
             className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm p-7 space-y-5">
             {/* Reviewer header */}
             <div className="flex items-start justify-between gap-4">
@@ -195,7 +195,7 @@ const ReviewCard: React.FC<{ review: Review; onHelpful: (id: string) => void; he
                     <span>{helpfulClicked.has(review.id) ? 'Helpful ✓' : `Helpful (${review.helpfulCount})`}</span>
                 </button>
             </div>
-        </motion.div>
+        </m.div>
     );
 };
 
@@ -213,9 +213,9 @@ const LeaveReviewModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         setCategories(prev => ({ ...prev, [key]: val }));
 
     return (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-4">
-            <motion.div initial={{ y: 80, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 80, opacity: 0 }}
+            <m.div initial={{ y: 80, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 80, opacity: 0 }}
                 className="bg-white rounded-[2.5rem] w-full max-w-lg shadow-2xl overflow-hidden">
                 {/* Header */}
                 <div className="flex items-center justify-between px-7 pt-7 pb-4">
@@ -234,7 +234,7 @@ const LeaveReviewModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
                 <div className="px-7 pb-7">
                     {step === 'done' ? (
-                        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+                        <m.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
                             className="text-center py-8 space-y-4">
                             <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto">
                                 <CheckCircle2 className="w-9 h-9 text-emerald-500" />
@@ -244,7 +244,7 @@ const LeaveReviewModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                             <button onClick={onClose} className="mt-4 px-8 py-3 bg-ffn-black text-white rounded-2xl text-[9px] uppercase tracking-widest font-black hover:bg-ffn-primary transition-all">
                                 Close
                             </button>
-                        </motion.div>
+                        </m.div>
                     ) : step === 'rate' ? (
                         <div className="space-y-6">
                             {/* Overall star rating */}
@@ -317,8 +317,8 @@ const LeaveReviewModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                         </div>
                     )}
                 </div>
-            </motion.div>
-        </motion.div>
+            </m.div>
+        </m.div>
     );
 };
 

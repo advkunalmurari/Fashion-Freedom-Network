@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Endorsement } from '../types';
 import { CheckCircle } from 'lucide-react';
 
@@ -14,7 +14,7 @@ export const EndorsementCloud: React.FC<{ endorsements: Endorsement[] }> = ({ en
             <div className="flex items-center space-x-12 animate-marquee whitespace-nowrap px-10">
                 {/* Duplicate for infinite effect */}
                 {[...endorsements, ...endorsements].map((endorsement, idx) => (
-                    <motion.div
+                    <m.div
                         key={`${endorsement.id}-${idx}`}
                         className="flex items-center space-x-4 group cursor-default"
                         whileHover={{ scale: 1.05 }}
@@ -33,7 +33,7 @@ export const EndorsementCloud: React.FC<{ endorsements: Endorsement[] }> = ({ en
                             </div>
                             <span className="text-[9px] text-gray-400 font-medium italic">"{endorsement.content}"</span>
                         </div>
-                    </motion.div>
+                    </m.div>
                 ))}
             </div>
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Home, Users, Search, MessageCircle, ShoppingBag, Compass,
@@ -104,7 +104,7 @@ export const Layout: React.FC<LayoutProps> = ({
   return (
     <div className={`min-h-screen font-sans selection:bg-ffn-primary selection:text-white flex flex-col lg:flex-row overflow-x-hidden ${isDarkMode ? 'bg-[#0A0A0A] text-white' : 'bg-ffn-bg text-ffn-black'}`}>
       {/* Desktop Sidebar */}
-      <motion.aside
+      <m.aside
         initial="expanded"
         animate={isSidebarCollapsed ? "collapsed" : "expanded"}
         variants={sidebarVariants}
@@ -114,14 +114,14 @@ export const Layout: React.FC<LayoutProps> = ({
         <div className={`flex flex-col h-full ${isSidebarCollapsed ? 'p-4' : 'p-8'}`}>
           <div className="mb-10 flex items-center justify-between">
             <div className="flex items-center space-x-4 cursor-pointer overflow-hidden" onClick={() => navigate('/')}>
-              <motion.div whileHover={{ rotate: 360, scale: 1.1 }} className={`drop-shadow-lg flex-none ${isDarkMode ? 'text-white' : 'text-ffn-black'}`} aria-hidden="true">
+              <m.div whileHover={{ rotate: 360, scale: 1.1 }} className={`drop-shadow-lg flex-none ${isDarkMode ? 'text-white' : 'text-ffn-black'}`} aria-hidden="true">
                 <Logo />
-              </motion.div>
+              </m.div>
               {!isSidebarCollapsed && (
-                <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="flex flex-col leading-none">
+                <m.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="flex flex-col leading-none">
                   <span className={`font-serif font-bold text-2xl tracking-tighter ${isDarkMode ? 'text-white' : 'text-ffn-black'}`}>ffn</span>
                   <span className={`text-[6px] uppercase tracking-[0.4em] mt-1 font-black whitespace-nowrap ${isDarkMode ? 'text-white/40' : 'text-gray-400'}`}>Identity Hub</span>
-                </motion.div>
+                </m.div>
               )}
             </div>
             {!isSidebarCollapsed && (
@@ -138,7 +138,7 @@ export const Layout: React.FC<LayoutProps> = ({
 
           {currentUser && (
             <MagneticButton strength={0.2} className="w-full">
-              <motion.button
+              <m.button
                 onClick={() => setIsCreateModalOpen(true)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -146,7 +146,7 @@ export const Layout: React.FC<LayoutProps> = ({
               >
                 <PlusCircle className="w-5 h-5 flex-none" />
                 {!isSidebarCollapsed && <span className="text-[8px] font-black uppercase tracking-widest whitespace-nowrap">Create Mastery</span>}
-              </motion.button>
+              </m.button>
             </MagneticButton>
           )}
 
@@ -183,7 +183,7 @@ export const Layout: React.FC<LayoutProps> = ({
                         : (isDarkMode ? 'text-white/80 hover:text-white' : 'text-gray-400 hover:text-ffn-black')}`}
                   >
                     {activeTab === item.id && (
-                      <motion.div layoutId="activeTab" className={`absolute inset-0 rounded-2xl -z-10 ${isDarkMode ? 'bg-white/10' : 'bg-ffn-black'}`} transition={{ type: "spring", bounce: 0.2, duration: 0.6 }} />
+                      <m.div layoutId="activeTab" className={`absolute inset-0 rounded-2xl -z-10 ${isDarkMode ? 'bg-white/10' : 'bg-ffn-black'}`} transition={{ type: "spring", bounce: 0.2, duration: 0.6 }} />
                     )}
                     <item.icon className={`w-4 h-4 transition-all duration-300 ${activeTab === item.id ? 'scale-110' : 'group-hover:text-ffn-primary'}`} />
                     {!isSidebarCollapsed && <span className="text-[8px] font-bold uppercase tracking-[0.2em] whitespace-nowrap">{item.label}</span>}
@@ -245,7 +245,7 @@ export const Layout: React.FC<LayoutProps> = ({
             )}
           </div>
         </div>
-      </motion.aside>
+      </m.aside>
 
       <SettingsOverlay
         isOpen={isSettingsOpen}
@@ -269,16 +269,16 @@ export const Layout: React.FC<LayoutProps> = ({
       </AnimatePresence>
 
       <div className="flex-1 flex flex-col">
-        <motion.main
+        <m.main
           animate={{ marginLeft: isSidebarCollapsed ? '80px' : '260px', paddingTop: '160px' }}
           transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
           className="flex-1 min-h-screen relative lg:block hidden overflow-y-auto no-scrollbar pb-10"
         >
           <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
             <AnimatePresence mode="wait">
-              <motion.div key={activeTab} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }} transition={{ duration: 0.5 }}>
+              <m.div key={activeTab} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }} transition={{ duration: 0.5 }}>
                 {children}
-              </motion.div>
+              </m.div>
             </AnimatePresence>
 
             <footer className={`mt-64 pb-20 border-t pt-32 ${isDarkMode ? 'border-white/5' : 'border-gray-100'}`}>
@@ -317,7 +317,7 @@ export const Layout: React.FC<LayoutProps> = ({
               </div>
             </footer>
           </div>
-        </motion.main>
+        </m.main>
       </div>
 
       <header className={`lg:hidden w-full h-24 border-b flex items-center justify-between px-8 fixed top-0 backdrop-blur-[40px] z-[200] transition-colors duration-500 bg-[#050505]/90 border-white/5 shadow-2xl`}>
@@ -347,7 +347,7 @@ export const Layout: React.FC<LayoutProps> = ({
 
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
             animate={{ opacity: 1, backdropFilter: 'blur(40px)' }}
             exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
@@ -361,7 +361,7 @@ export const Layout: React.FC<LayoutProps> = ({
                 </div>
 
                 {currentUser && (
-                  <motion.button
+                  <m.button
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ delay: 0.1 }}
@@ -370,12 +370,12 @@ export const Layout: React.FC<LayoutProps> = ({
                   >
                     <PlusCircle className="w-5 h-5" />
                     <span className="font-black uppercase tracking-[0.2em] text-[10px]">Initialize Mastery</span>
-                  </motion.button>
+                  </m.button>
                 )}
 
                 <nav className="space-y-1">
                   {navItems.map((item, idx) => (
-                    <motion.button
+                    <m.button
                       key={item.id}
                       initial={{ x: -20, opacity: 0 }}
                       animate={{ x: 0, opacity: 1 }}
@@ -389,13 +389,13 @@ export const Layout: React.FC<LayoutProps> = ({
                     >
                       <item.icon className={`w-5 h-5 mr-6 ${activeTab === item.id ? 'text-ffn-primary' : ''}`} />
                       <span className="text-[11px] font-black uppercase tracking-[0.3em]">{item.label}</span>
-                    </motion.button>
+                    </m.button>
                   ))}
                 </nav>
 
                 <div className="pt-12 border-t border-white/5 space-y-6">
                   {currentUser ? (
-                    <motion.button
+                    <m.button
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.8 }}
@@ -418,9 +418,9 @@ export const Layout: React.FC<LayoutProps> = ({
                         </div>
                       </div>
                       <ChevronRight className="w-5 h-5 text-white/20" />
-                    </motion.button>
+                    </m.button>
                   ) : (
-                    <motion.button
+                    <m.button
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.8 }}
@@ -429,12 +429,12 @@ export const Layout: React.FC<LayoutProps> = ({
                     >
                       <LogIn className="w-5 h-5 mr-3" />
                       <span className="font-black uppercase tracking-[0.4em] text-[10px]">Secure Access</span>
-                    </motion.button>
+                    </m.button>
                   )}
                 </div>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 
@@ -442,9 +442,9 @@ export const Layout: React.FC<LayoutProps> = ({
       <main className="lg:hidden flex-1 min-h-screen relative pt-32 pb-24">
         <div className="max-w-7xl mx-auto px-6">
           <AnimatePresence mode="wait">
-            <motion.div key={activeTab} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <m.div key={activeTab} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               {children}
-            </motion.div>
+            </m.div>
           </AnimatePresence>
         </div>
       </main>

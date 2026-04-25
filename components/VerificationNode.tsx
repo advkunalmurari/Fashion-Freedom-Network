@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Shield, FileCheck, Search, CheckCircle, Upload, ArrowRight, Camera, Globe, Award, Sparkles, Building, AlertCircle } from 'lucide-react';
 
 type VerificationStage = 'identity' | 'professional' | 'audit' | 'status';
@@ -81,7 +81,7 @@ export const VerificationNode: React.FC = () => {
 
                         <AnimatePresence mode="wait">
                             {stage === 'identity' && (
-                                <motion.div
+                                <m.div
                                     key="identity"
                                     initial={{ opacity: 0, x: 20 }}
                                     animate={{ opacity: 1, x: 0 }}
@@ -114,7 +114,7 @@ export const VerificationNode: React.FC = () => {
                                                         <span>{progress}%</span>
                                                     </div>
                                                     <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden">
-                                                        <motion.div
+                                                        <m.div
                                                             className="h-full bg-ffn-primary"
                                                             initial={{ width: 0 }}
                                                             animate={{ width: `${progress}%` }}
@@ -132,11 +132,11 @@ export const VerificationNode: React.FC = () => {
                                             )}
                                         </div>
                                     </div>
-                                </motion.div>
+                                </m.div>
                             )}
 
                             {stage === 'professional' && (
-                                <motion.div
+                                <m.div
                                     key="professional"
                                     initial={{ opacity: 0, x: 20 }}
                                     animate={{ opacity: 1, x: 0 }}
@@ -179,11 +179,11 @@ export const VerificationNode: React.FC = () => {
                                             </button>
                                         </div>
                                     </div>
-                                </motion.div>
+                                </m.div>
                             )}
 
                             {stage === 'audit' && (
-                                <motion.div
+                                <m.div
                                     key="audit"
                                     initial={{ opacity: 0, x: 20 }}
                                     animate={{ opacity: 1, x: 0 }}
@@ -212,7 +212,7 @@ export const VerificationNode: React.FC = () => {
                                                     <span className="text-ffn-primary">{stat.val}%</span>
                                                 </div>
                                                 <div className="h-0.5 w-full bg-white/5 rounded-full overflow-hidden">
-                                                    <motion.div
+                                                    <m.div
                                                         className="h-full bg-ffn-primary"
                                                         initial={{ width: 0 }}
                                                         animate={{ width: `${stat.val}%` }}
@@ -228,11 +228,11 @@ export const VerificationNode: React.FC = () => {
                                     >
                                         Complete Audit
                                     </button>
-                                </motion.div>
+                                </m.div>
                             )}
 
                             {stage === 'status' && (
-                                <motion.div
+                                <m.div
                                     key="status"
                                     initial={{ opacity: 0, scale: 0.95 }}
                                     animate={{ opacity: 1, scale: 1 }}
@@ -264,7 +264,7 @@ export const VerificationNode: React.FC = () => {
                                             While pending, you can still apply for castings, but verified nodes receive priority placement in the discovery graph.
                                         </p>
                                     </div>
-                                </motion.div>
+                                </m.div>
                             )}
                         </AnimatePresence>
 

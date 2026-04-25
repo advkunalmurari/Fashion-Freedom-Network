@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { CastingCall, CastingRole, CastingCompensation, CastingStatus } from '../types';
 import { MOCK_CASTING_CALLS } from '../constants';
 import {
@@ -47,7 +47,7 @@ const ApplicantBar: React.FC<{ count: number; max: number }> = ({ count, max }) 
     return (
         <div className="space-y-1">
             <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
-                <motion.div
+                <m.div
                     initial={{ width: 0 }}
                     animate={{ width: `${pct}%` }}
                     transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -67,7 +67,7 @@ const CastingCard: React.FC<{ casting: CastingCall; onClick: () => void }> = ({ 
     const StatusIcon = status.icon;
 
     return (
-        <motion.div
+        <m.div
             layout
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -171,7 +171,7 @@ const CastingCard: React.FC<{ casting: CastingCall; onClick: () => void }> = ({ 
                     </div>
                 </div>
             </div>
-        </motion.div>
+        </m.div>
     );
 };
 
@@ -186,14 +186,14 @@ const ApplicationDrawer: React.FC<{ casting: CastingCall; onClose: () => void }>
 
     return (
         <AnimatePresence>
-            <motion.div
+            <m.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex justify-end"
                 onClick={onClose}
             >
-                <motion.div
+                <m.div
                     initial={{ x: '100%' }}
                     animate={{ x: 0 }}
                     exit={{ x: '100%' }}
@@ -343,7 +343,7 @@ const ApplicationDrawer: React.FC<{ casting: CastingCall; onClose: () => void }>
                                 )}
                             </div>
                         ) : (
-                            <motion.div
+                            <m.div
                                 initial={{ scale: 0.9, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
                                 className="bg-emerald-50 border border-emerald-100 rounded-3xl p-8 text-center"
@@ -355,11 +355,11 @@ const ApplicationDrawer: React.FC<{ casting: CastingCall; onClose: () => void }>
                                 <p className="text-sm text-emerald-600">
                                     {casting.brandName} will review your application and reach out via FFN messages. You'll get a notification instantly.
                                 </p>
-                            </motion.div>
+                            </m.div>
                         )}
                     </div>
-                </motion.div>
-            </motion.div>
+                </m.div>
+            </m.div>
         </AnimatePresence>
     );
 };

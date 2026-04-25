@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
     X, Camera, MapPin, ArrowRight, Loader2, Sparkles,
     Briefcase, Tag, Target, SwitchCamera, Film,
@@ -16,10 +16,25 @@ interface ContentStudioProps {
 
 type ContentFormat = 'POST' | 'STORY' | 'REEL' | 'DROP';
 
-export const ContentStudio: React.FC<ContentStudioProps> = ({ onClose, onPublished }) => {
+export const ContentStudio: React.FC<ContentStudioProps> = ({ onClose, onPublished }) => {    // Selection State
     const [format, setFormat] = useState<ContentFormat>('POST');
     const [step, setStep] = useState(1);
     const [isPublishing, setIsPublishing] = useState(false);
+
+    // Mouse Tracking for Studio Lighting
+    const studioRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            if (!studioRef.current) return;
+            const { left, top, width, height } = studioRef.current.getBoundingClientRect();
+            const x = ((e.clientX - left) / width) * 100;
+            const y = ((e.clientY - top) / height) * 100;
+            studioRef.current.style.setProperty('--mouse-x', `${x}%`);
+            studioRef.current.style.setProperty('--mouse-y', `${y}%`);
+        };
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, []);
 
     // Media State
     const [mediaPreviews, setMediaPreviews] = useState<{ url: string, type: 'IMAGE' | 'VIDEO' }[]>([]);
@@ -69,43 +84,49 @@ export const ContentStudio: React.FC<ContentStudioProps> = ({ onClose, onPublish
         setIsPublishing(false);
     };
 
-    const formats: { id: ContentFormat, label: string, icon: any, desc: string }[] = [
-        { id: 'POST', label: 'Editorial Post', icon: ImageIcon, desc: 'High-fidelity static or carousel narratives.' },
-        { id: 'STORY', label: 'Identity Story', icon: Plus, desc: '24-hour transient professional pulses.' },
-        { id: 'REEL', label: 'Motion Reel', icon: PlayCircle, desc: 'Immersive vertical video portfolios.' },
-        { id: 'DROP', label: 'Market Drop', icon: Briefcase, desc: 'Direct-to-network service or asset release.' },
+    const formats: { id: ContentFormat, label: string, icon: any, desc: string, color: string }[] = [
+        { id: 'POST', label: 'Editorial Post', icon: ImageIcon, desc: 'High-fidelity static or carousel narratives.', color: 'from-blue-500 to-cyan-400' },
+        { id: 'STORY', label: 'Identity Story', icon: Plus, desc: '24-hour transient professional pulses.', color: 'from-ffn-primary to-rose-400' },
+        { id: 'REEL', label: 'Motion Reel', icon: PlayCircle, desc: 'Immersive vertical video portfolios.', color: 'from-ffn-accent to-amber-400' },
+        { id: 'DROP', label: 'Market Drop', icon: Briefcase, desc: 'Direct-to-network service or asset release.', color: 'from-emerald-500 to-teal-400' },
     ];
 
     return (
         <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-10 bg-[#050505]/95 backdrop-blur-[40px]">
-            <motion.div
+            <m.div
+                ref={studioRef}
                 initial={{ scale: 0.95, opacity: 0, y: 30 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
-                className="bg-[#111111] w-full max-w-6xl h-[90vh] md:h-[85vh] rounded-[3rem] overflow-hidden relative shadow-[0_0_100px_rgba(0,0,0,0.5)] border border-white/5 flex flex-col md:flex-row"
+                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                className="bg-[#111111] w-full max-w-6xl h-[90vh] md:h-[85vh] rounded-[3rem] overflow-hidden relative shadow-[0_0_100px_rgba(0,0,0,1)] border border-white/5 flex flex-col md:flex-row premium-card-depth"
             >
+                {/* Studio Lighting Layer */}
+                <div className="studio-lighting opacity-60" />
+
                 {/* Header/Close */}
                 <button
                     title="Exit Studio"
                     onClick={onClose}
-                    className="absolute top-8 right-8 z-[60] p-4 bg-white/5 hover:bg-white/10 rounded-2xl text-white/40 hover:text-white transition-all backdrop-blur-xl border border-white/10"
+                    className="absolute top-8 right-8 z-[60] p-4 bg-white/5 hover:bg-white/10 rounded-2xl text-white/40 hover:text-white transition-all backdrop-blur-xl border border-white/10 group active:scale-95"
                 >
-                    <X className="w-6 h-6" />
+                    <X className="w-6 h-6 group-hover:rotate-90 transition-transform duration-500" />
                 </button>
 
                 {/* Left: Media & Stage */}
-                <div className="md:w-1/2 bg-[#0A0A0A] relative flex items-center justify-center p-8 border-r border-white/5 overflow-hidden">
+                <div className="md:w-1/2 bg-[#0A0A0A] relative flex items-center justify-center p-8 border-r border-white/5 overflow-hidden premium-card-content">
                     {/* Background Ambient Glow */}
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-ffn-primary/5 blur-[120px] rounded-full" />
 
                     <AnimatePresence mode="wait">
                         {mediaPreviews.length > 0 ? (
-                            <motion.div
+                            <m.div
                                 key="preview"
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 1.1 }}
                                 className="relative z-10 w-full h-full max-h-[700px] flex flex-col items-center justify-center"
                             >
-                                <div className={`relative w-full h-full rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 ${format === 'STORY' || format === 'REEL' ? 'aspect-[9/16]' : 'aspect-square'}`}>
+                                <div className={`relative w-full h-full rounded-[2.5rem] overflow-hidden shadow-[0_40px_80px_rgba(0,0,0,0.8)] border border-white/10 transition-all duration-700 ${format === 'STORY' || format === 'REEL' ? 'aspect-[9/16] scale-95' : 'aspect-square'}`}>
                                     {mediaPreviews[currentMediaIndex].type === 'VIDEO' ? (
                                         <video src={mediaPreviews[currentMediaIndex].url} className="w-full h-full object-cover" autoPlay loop muted playsInline />
                                     ) : (
@@ -113,7 +134,7 @@ export const ContentStudio: React.FC<ContentStudioProps> = ({ onClose, onPublish
                                     )}
 
                                     {/* Format Badge Overlay */}
-                                    <div className="absolute top-6 left-6 px-4 py-2 bg-black/40 backdrop-blur-md rounded-full border border-white/10 flex items-center space-x-2">
+                                    <div className="absolute top-6 left-6 px-4 py-2 bg-black/60 backdrop-blur-xl rounded-full border border-white/10 flex items-center space-x-2">
                                         {(() => {
                                             const F = formats.find(f => f.id === format);
                                             const Icon = F?.icon;
@@ -125,56 +146,70 @@ export const ContentStudio: React.FC<ContentStudioProps> = ({ onClose, onPublish
                                             );
                                         })()}
                                     </div>
+
+                                    {/* Glass Overlay for depth */}
+                                    <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
                                 </div>
 
                                 {mediaPreviews.length > 1 && (
-                                    <div className="mt-6 flex space-x-2">
+                                    <div className="mt-8 flex space-x-3">
                                         {mediaPreviews.map((_, idx) => (
                                             <button
                                                 key={idx}
                                                 title={`Switch to slide ${idx + 1}`}
                                                 onClick={() => setCurrentMediaIndex(idx)}
-                                                className={`w-2 h-2 rounded-full transition-all ${idx === currentMediaIndex ? 'bg-ffn-primary w-6' : 'bg-white/20'}`}
+                                                className={`h-1.5 rounded-full transition-all duration-500 ${idx === currentMediaIndex ? 'bg-ffn-primary w-12' : 'bg-white/10 w-3 hover:bg-white/30'}`}
                                             />
                                         ))}
                                     </div>
                                 )}
 
-                                <button
+                                <m.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
                                     onClick={() => { setMediaPreviews([]); setStep(1); }}
-                                    className="mt-8 text-[10px] font-black uppercase tracking-[0.3em] text-white/40 hover:text-ffn-accent transition-colors"
+                                    className="mt-10 px-8 py-3 bg-white/5 border border-white/5 rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-white/40 hover:text-ffn-accent hover:border-ffn-accent/20 transition-all"
                                 >
                                     Reset Sequence
-                                </button>
-                            </motion.div>
+                                </m.button>
+                            </m.div>
                         ) : (
-                            <motion.div
+                            <m.div
                                 key="empty"
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                className="text-center space-y-10 relative z-10"
+                                className="text-center space-y-12 relative z-10"
                             >
                                 <div className="relative inline-block">
-                                    <div className="w-32 h-32 bg-gradient-to-tr from-ffn-primary/20 to-ffn-accent/20 rounded-[3rem] animate-pulse blur-xl absolute inset-0" />
-                                    <div
+                                    <m.div 
+                                        animate={{ 
+                                            scale: [1, 1.2, 1],
+                                            rotate: [0, 90, 180, 270, 360]
+                                        }}
+                                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                                        className="w-40 h-40 bg-gradient-to-tr from-ffn-primary/30 to-ffn-accent/30 rounded-[3.5rem] blur-3xl absolute inset-0 -translate-x-4 -translate-y-4" 
+                                    />
+                                    <m.div
+                                        whileHover={{ scale: 1.05, rotate: 5 }}
+                                        whileTap={{ scale: 0.95 }}
                                         onClick={() => fileInputRef.current?.click()}
-                                        className="relative w-32 h-32 bg-white/5 border border-white/10 rounded-[3rem] flex items-center justify-center text-ffn-primary cursor-pointer hover:scale-110 hover:border-ffn-primary/50 transition-all group"
+                                        className="relative w-36 h-36 bg-white/5 border border-white/10 rounded-[3.5rem] flex items-center justify-center text-ffn-primary cursor-pointer shadow-2xl backdrop-blur-md hover:border-ffn-primary/50 transition-all group"
                                     >
-                                        <Plus className="w-10 h-10 group-hover:rotate-90 transition-transform duration-500" />
-                                    </div>
+                                        <Plus className="w-12 h-12 group-hover:rotate-180 transition-transform duration-700 ease-out" />
+                                    </m.div>
                                 </div>
-                                <div className="space-y-4">
-                                    <h3 className="text-3xl font-serif italic text-white">Content Studio</h3>
-                                    <p className="text-[10px] uppercase tracking-[0.5em] text-white/40 font-black">Identity Asset Input Stage</p>
+                                <div className="space-y-4 px-10">
+                                    <h3 className="text-5xl editorial-masthead italic text-white leading-none">Content Studio</h3>
+                                    <p className="text-[10px] uppercase tracking-[0.8em] text-white/30 font-black">Identity Input Stage</p>
                                 </div>
-                                <div className="grid grid-cols-2 gap-4 max-w-sm mx-auto">
-                                    {['Editorial (4:5)', 'Motion (9:16)', 'Portfolio (1:1)', 'Asset Cloud'].map((spec) => (
-                                        <div key={spec} className="px-4 py-3 rounded-2xl bg-white/5 border border-white/5 text-[9px] font-bold text-white/30 uppercase tracking-widest">
+                                <div className="flex flex-wrap justify-center gap-4 max-w-sm mx-auto">
+                                    {['4:5 Editorial', '9:16 Motion', 'Global Asset'].map((spec) => (
+                                        <div key={spec} className="px-6 py-3 rounded-full bg-white/5 border border-white/5 text-[9px] font-bold text-white/20 uppercase tracking-widest">
                                             {spec}
                                         </div>
                                     ))}
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )}
                     </AnimatePresence>
 
@@ -190,20 +225,27 @@ export const ContentStudio: React.FC<ContentStudioProps> = ({ onClose, onPublish
                 </div>
 
                 {/* Right: Meta & Controls */}
-                <div className="md:w-1/2 p-8 md:p-16 flex flex-col h-full overflow-y-auto no-scrollbar bg-[#111111]">
+                <div className="md:w-1/2 p-8 md:p-16 flex flex-col h-full overflow-y-auto no-scrollbar bg-[#111111]/80 backdrop-blur-md relative z-10">
                     <div className="mb-12 flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                            <div className="w-2 h-2 rounded-full bg-ffn-primary animate-pulse" />
-                            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white/60">Node Pulse</span>
+                        <div className="flex items-center space-x-4">
+                            <div className="w-1.5 h-1.5 rounded-full bg-ffn-primary shadow-[0_0_10px_#ff3366] animate-pulse" />
+                            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white/40">Creation Protocol Active</span>
                         </div>
                     </div>
 
                     <AnimatePresence mode="wait">
                         {step === 1 ? (
-                            <motion.div key="format" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-10">
+                            <m.div 
+                                key="format" 
+                                initial={{ opacity: 0, x: 40 }} 
+                                animate={{ opacity: 1, x: 0 }} 
+                                exit={{ opacity: 0, x: -40 }} 
+                                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                                className="space-y-12"
+                            >
                                 <div className="space-y-6">
-                                    <h2 className="text-4xl font-serif italic text-white">Select Protocol</h2>
-                                    <p className="text-sm text-white/40 font-light leading-relaxed max-w-md">Choose the distribution format for your next identity update. FFN handles cinematic encoding and professional indexing for each node.</p>
+                                    <h2 className="text-4xl editorial-masthead text-white">Select Format</h2>
+                                    <p className="text-sm text-white/30 font-light leading-relaxed max-w-md">Distribute your identity update across the network. High-fidelity encoding is applied to all entries.</p>
                                 </div>
 
                                 <div className="grid grid-cols-1 gap-4">
@@ -211,71 +253,87 @@ export const ContentStudio: React.FC<ContentStudioProps> = ({ onClose, onPublish
                                         <button
                                             key={f.id}
                                             onClick={() => setFormat(f.id)}
-                                            className={`group p-6 rounded-[2.5rem] border transition-all text-left flex items-center space-x-6 ${format === f.id ? 'bg-ffn-primary border-ffn-primary shadow-[0_0_40px_rgba(var(--ffn-primary-rgb),0.3)]' : 'bg-white/5 border-white/5 hover:border-white/20'}`}
+                                            className={`group p-6 rounded-[2.5rem] border transition-all duration-500 text-left flex items-center space-x-6 relative overflow-hidden ${format === f.id ? 'bg-ffn-primary/10 border-ffn-primary/50 shadow-[0_20px_40px_rgba(0,0,0,0.3)]' : 'bg-white/5 border-white/5 hover:border-white/20'}`}
                                         >
-                                            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-colors ${format === f.id ? 'bg-white text-ffn-primary' : 'bg-white/5 text-white/40 group-hover:text-white'}`}>
-                                                <f.icon className="w-6 h-6" />
+                                            {format === f.id && (
+                                                <m.div layoutId="activeFormatGlow" className="absolute inset-0 bg-gradient-to-r from-ffn-primary/20 to-transparent pointer-events-none" />
+                                            )}
+                                            <div className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500 ${format === f.id ? 'bg-ffn-primary text-white scale-110 shadow-lg' : 'bg-white/5 text-white/20 group-hover:text-white/60'}`}>
+                                                <f.icon className="w-7 h-7" />
                                             </div>
-                                            <div className="flex-1">
-                                                <h4 className={`text-sm font-bold uppercase tracking-widest ${format === f.id ? 'text-white' : 'text-white/90'}`}>{f.label}</h4>
-                                                <p className={`text-[10px] mt-1 font-medium ${format === f.id ? 'text-white/70' : 'text-white/30'}`}>{f.desc}</p>
+                                            <div className="flex-1 relative z-10">
+                                                <h4 className={`text-sm font-black uppercase tracking-[0.2em] transition-colors ${format === f.id ? 'text-white' : 'text-white/60'}`}>{f.label}</h4>
+                                                <p className={`text-[10px] mt-1 font-medium transition-colors ${format === f.id ? 'text-white/50' : 'text-white/20'}`}>{f.desc}</p>
                                             </div>
-                                            <ChevronRight className={`w-5 h-5 transition-transform ${format === f.id ? 'text-white translate-x-1' : 'text-white/10 group-hover:text-white/40'}`} />
+                                            <ChevronRight className={`w-5 h-5 transition-all duration-500 ${format === f.id ? 'text-ffn-primary translate-x-2' : 'text-white/10 group-hover:text-white/40'}`} />
                                         </button>
                                     ))}
                                 </div>
 
-                                <button
-                                    title="Begin Asset Sequence"
+                                <m.button
+                                    whileHover={{ scale: 1.02, backgroundColor: '#ff3366' }}
+                                    whileTap={{ scale: 0.98 }}
                                     onClick={() => fileInputRef.current?.click()}
-                                    className="w-full py-6 rounded-[2rem] bg-white text-black text-[10px] font-black uppercase tracking-[0.3em] flex items-center justify-center space-x-3 shadow-2xl hover:bg-ffn-primary transition-all group"
+                                    className="w-full py-7 rounded-[2.5rem] bg-white text-black text-[11px] font-black uppercase tracking-[0.4em] flex items-center justify-center space-x-4 shadow-[0_30px_60px_rgba(0,0,0,0.4)] transition-all group"
                                 >
-                                    <span>Begin Asset Sequence</span>
-                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
-                                </button>
-                            </motion.div>
+                                    <span>Initialize Asset</span>
+                                    <ArrowRight className="w-5 h-5 group-hover:translate-x-3 transition-transform duration-500 ease-out" />
+                                </m.button>
+                            </m.div>
                         ) : (
-                            <motion.div key="meta" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
+                            <m.div 
+                                key="meta" 
+                                initial={{ opacity: 0, x: 40 }} 
+                                animate={{ opacity: 1, x: 0 }} 
+                                exit={{ opacity: 0, x: -40 }}
+                                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                                className="space-y-8"
+                            >
                                 <div className="flex items-center space-x-4 mb-2">
-                                    <button onClick={() => setStep(1)} className="p-3 bg-white/5 rounded-xl text-white/40 hover:text-white transition-colors">
+                                    <m.button 
+                                        whileHover={{ scale: 1.1, backgroundColor: 'rgba(255,255,255,0.1)' }}
+                                        whileTap={{ scale: 0.9 }}
+                                        onClick={() => setStep(1)} 
+                                        className="p-4 bg-white/5 rounded-2xl text-white/40 hover:text-white transition-colors"
+                                    >
                                         <ChevronLeft className="w-5 h-5" />
-                                    </button>
-                                    <h2 className="text-2xl font-serif italic text-white italic">Publish Details</h2>
+                                    </m.button>
+                                    <h2 className="text-3xl editorial-masthead text-white">Narrative Deck</h2>
                                 </div>
 
-                                <div className="space-y-2">
-                                    <label className="text-[9px] uppercase tracking-[0.4em] font-black text-white/40">Editorial Narrative</label>
+                                <div className="space-y-4">
+                                    <label className="text-[10px] uppercase tracking-[0.5em] font-black text-white/20 ml-2">Editorial Pulse</label>
                                     <textarea
                                         title="Editorial Narrative"
-                                        className="w-full bg-white/5 border-white/5 rounded-[2rem] p-6 text-sm h-32 resize-none focus:ring-1 focus:ring-ffn-primary transition-all text-white placeholder:text-white/20"
-                                        placeholder="Describe your professional pulse..."
+                                        className="w-full bg-white/5 border border-white/5 rounded-[2.5rem] p-8 text-sm h-40 resize-none focus:ring-1 focus:ring-ffn-primary/50 focus:border-ffn-primary/50 transition-all text-white placeholder:text-white/10 no-scrollbar shadow-inner"
+                                        placeholder="Articulate your narrative..."
                                         value={caption}
                                         onChange={e => setCaption(e.target.value)}
                                     />
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <label className="text-[9px] uppercase tracking-[0.4em] font-black text-white/40">Location Node</label>
-                                        <div className="relative">
-                                            <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div className="space-y-3">
+                                        <label className="text-[9px] uppercase tracking-[0.5em] font-black text-white/20 ml-2">Node Entry</label>
+                                        <div className="relative group">
+                                            <MapPin className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-white/10 group-focus-within:text-ffn-primary transition-colors" />
                                             <input
                                                 title="Location"
                                                 type="text"
-                                                className="w-full bg-white/5 border-white/5 rounded-2xl py-4 pl-12 pr-4 text-xs text-white"
-                                                placeholder="Global Entry..."
+                                                className="w-full bg-white/5 border border-white/5 rounded-2xl py-5 pl-14 pr-6 text-xs text-white focus:bg-white/10 transition-all outline-none"
+                                                placeholder="Global..."
                                                 value={location}
                                                 onChange={e => setLocation(e.target.value)}
                                             />
                                         </div>
                                     </div>
-                                    <div className="space-y-2">
-                                        <label className="text-[9px] uppercase tracking-[0.4em] font-black text-white/40">Shoot Type</label>
-                                        <div className="relative">
-                                            <Target className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
+                                    <div className="space-y-3">
+                                        <label className="text-[9px] uppercase tracking-[0.5em] font-black text-white/20 ml-2">Format Type</label>
+                                        <div className="relative group">
+                                            <Target className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-white/10 group-focus-within:text-ffn-primary transition-colors" />
                                             <select
                                                 title="Shoot Type"
-                                                className="w-full bg-white/5 border-white/5 rounded-2xl py-4 pl-12 pr-4 text-xs text-white appearance-none"
+                                                className="w-full bg-white/5 border border-white/5 rounded-2xl py-5 pl-14 pr-6 text-xs text-white appearance-none focus:bg-white/10 transition-all outline-none"
                                                 value={shootType}
                                                 onChange={e => setShootType(e.target.value)}
                                             >
@@ -288,76 +346,88 @@ export const ContentStudio: React.FC<ContentStudioProps> = ({ onClose, onPublish
                                     </div>
                                 </div>
 
-                                <div className="space-y-6 p-8 bg-white/5 rounded-[2.5rem] border border-white/5">
-                                    <div className="flex items-center space-x-3 mb-2">
-                                        <Sparkles className="w-4 h-4 text-ffn-primary" />
-                                        <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/80">Professional Credits</span>
+                                <div className="space-y-8 p-10 bg-white/5 rounded-[3rem] border border-white/10 relative overflow-hidden group">
+                                    <div className="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-100 transition-opacity">
+                                        <Sparkles className="w-8 h-8 text-ffn-primary" />
+                                    </div>
+                                    
+                                    <div className="flex items-center space-x-4 mb-4">
+                                        <span className="text-[11px] font-black uppercase tracking-[0.4em] text-white">Professional Credits</span>
                                     </div>
 
-                                    <div className="space-y-4">
+                                    <div className="space-y-5">
                                         <div className="relative">
-                                            <Tag className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
+                                            <Tag className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-white/10" />
                                             <input
                                                 title="Brand Integrity"
-                                                className="w-full bg-black/20 border-white/5 rounded-xl py-4 pl-12 text-xs text-white"
-                                                placeholder="Brand Identity (@gucci)"
+                                                className="w-full bg-transparent border-b border-white/5 focus:border-ffn-primary rounded-none py-4 px-8 text-xs text-white transition-all outline-none"
+                                                placeholder="Brand Identity (@labels)"
                                                 value={brandTag}
                                                 onChange={e => setBrandTag(e.target.value)}
                                             />
                                         </div>
                                         <div className="relative">
-                                            <Camera className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
+                                            <Camera className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-white/10" />
                                             <input
                                                 title="Agency/Creator Credit"
-                                                className="w-full bg-black/20 border-white/5 rounded-xl py-4 pl-12 text-xs text-white"
-                                                placeholder="Lens Master (@vogue)"
+                                                className="w-full bg-transparent border-b border-white/5 focus:border-ffn-primary rounded-none py-4 px-8 text-xs text-white transition-all outline-none"
+                                                placeholder="Lens Master (@creatives)"
                                                 value={photographerTag}
                                                 onChange={e => setPhotographerTag(e.target.value)}
                                             />
                                         </div>
                                     </div>
 
-                                    <div
+                                    <m.div
+                                        whileHover={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
                                         onClick={() => setIsOpenForHire(!isOpenForHire)}
-                                        className={`flex items-center justify-between p-4 rounded-2xl border transition-all cursor-pointer ${isOpenForHire ? 'bg-ffn-primary/10 border-ffn-primary' : 'bg-black/20 border-white/5 hover:border-white/10'}`}
+                                        className={`flex items-center justify-between p-6 rounded-[2rem] border transition-all cursor-pointer mt-4 ${isOpenForHire ? 'bg-ffn-primary/10 border-ffn-primary/30' : 'bg-black/20 border-white/5 hover:border-white/20'}`}
                                     >
-                                        <div className="flex items-center space-x-3">
-                                            <Briefcase className={`w-4 h-4 ${isOpenForHire ? 'text-ffn-primary' : 'text-white/20'}`} />
-                                            <span className="text-[10px] font-bold uppercase tracking-widest text-white/90">Market Available</span>
+                                        <div className="flex items-center space-x-4">
+                                            <div className={`p-2 rounded-lg ${isOpenForHire ? 'bg-ffn-primary text-white' : 'bg-white/5 text-white/20'}`}>
+                                                <Briefcase className="w-4 h-4" />
+                                            </div>
+                                            <span className="text-[11px] font-black uppercase tracking-widest text-white/80">Open to Identity Inquiries</span>
                                         </div>
-                                        <div className={`w-10 h-5 rounded-full p-1 transition-colors ${isOpenForHire ? 'bg-ffn-primary' : 'bg-white/10'}`}>
-                                            <motion.div
-                                                className="w-3 h-3 bg-white rounded-full"
-                                                animate={{ x: isOpenForHire ? 20 : 0 }}
+                                        <div className={`w-12 h-6 rounded-full p-1.5 transition-all duration-500 ${isOpenForHire ? 'bg-ffn-primary shadow-[0_0_15px_#ff3366]' : 'bg-white/10'}`}>
+                                            <m.div
+                                                className="w-3 h-3 bg-white rounded-full shadow-lg"
+                                                animate={{ x: isOpenForHire ? 24 : 0 }}
+                                                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                                             />
                                         </div>
-                                    </div>
+                                    </m.div>
                                 </div>
 
-                                <div className="pt-8">
-                                    <button
+                                <div className="pt-10">
+                                    <m.button
                                         disabled={isPublishing}
+                                        whileHover={!isPublishing ? { scale: 1.02, y: -5 } : {}}
+                                        whileTap={!isPublishing ? { scale: 0.98 } : {}}
                                         onClick={handlePublish}
-                                        className="w-full bg-ffn-primary text-white py-6 rounded-[2.5rem] text-[10px] font-black uppercase tracking-[0.5em] flex items-center justify-center space-x-4 shadow-[0_20px_40px_rgba(var(--ffn-primary-rgb),0.3)] hover:scale-[1.02] transition-all disabled:opacity-50"
+                                        className="w-full bg-gradient-to-r from-ffn-primary to-ffn-accent text-white py-7 rounded-[3rem] text-[11px] font-black uppercase tracking-[0.6em] flex items-center justify-center space-x-6 shadow-[0_30px_60px_rgba(255,51,102,0.3)] transition-all disabled:opacity-50 relative overflow-hidden group"
                                     >
                                         {isPublishing ? (
                                             <>
-                                                <Loader2 className="w-5 h-5 animate-spin" />
-                                                <span>Syncing Identity...</span>
+                                                <Loader2 className="w-6 h-6 animate-spin" />
+                                                <span>Synchronizing Node...</span>
                                             </>
                                         ) : (
                                             <>
-                                                <Globe className="w-4 h-4" />
-                                                <span>Publish protocol</span>
+                                                <m.div 
+                                                    className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 skew-x-12" 
+                                                />
+                                                <Globe className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                                                <span className="relative z-10">Broadcast Protocol</span>
                                             </>
                                         )}
-                                    </button>
+                                    </m.button>
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )}
                     </AnimatePresence>
                 </div>
-            </motion.div>
+            </m.div>
         </div>
     );
 };

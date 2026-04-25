@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Eye, Bookmark, Briefcase, Zap, TrendingUp, Clock, User as UserIcon, ArrowUpRight, ArrowLeft } from 'lucide-react';
 import { CreatorInsights as CreatorInsightsType, ProfileVisitor } from '../types';
 import { AdvancedAnalytics } from './AdvancedAnalytics';
@@ -37,7 +37,7 @@ export const CreatorInsights: React.FC<CreatorInsightsProps> = ({ insights }) =>
                     { label: 'Direct Hires', value: insights.totalHires, icon: Briefcase, color: 'text-emerald-500', bg: 'bg-emerald-50' },
                     { label: 'Engagement Rate', value: `${insights.avgEngagementRate}%`, icon: Zap, color: 'text-amber-500', bg: 'bg-amber-50' },
                 ].map((stat, i) => (
-                    <motion.div
+                    <m.div
                         key={stat.label}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -49,7 +49,7 @@ export const CreatorInsights: React.FC<CreatorInsightsProps> = ({ insights }) =>
                         </div>
                         <p className="text-[10px] uppercase tracking-[0.2em] font-black text-gray-400 mb-1">{stat.label}</p>
                         <h4 className="text-3xl font-serif italic text-ffn-black">{stat.value}</h4>
-                    </motion.div>
+                    </m.div>
                 ))}
             </div>
 
@@ -74,7 +74,7 @@ export const CreatorInsights: React.FC<CreatorInsightsProps> = ({ insights }) =>
                             return (
                                 <div key={metric.date} className="flex-1 flex flex-col items-center group">
                                     <div className="relative w-full flex-1 flex flex-col justify-end">
-                                        <motion.div
+                                        <m.div
                                             initial={{ height: 0 }}
                                             animate={{ height: `${height}%` }}
                                             transition={{ duration: 1, delay: i * 0.1 }}
@@ -84,7 +84,7 @@ export const CreatorInsights: React.FC<CreatorInsightsProps> = ({ insights }) =>
                                             <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-ffn-black text-white text-[9px] font-black px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 shadow-xl">
                                                 {metric.views} Views
                                             </div>
-                                        </motion.div>
+                                        </m.div>
                                     </div>
                                     <p className="text-[9px] font-black tracking-widest text-gray-400 uppercase mt-4">
                                         {dayName}
@@ -104,7 +104,7 @@ export const CreatorInsights: React.FC<CreatorInsightsProps> = ({ insights }) =>
 
                     <div className="space-y-6">
                         {insights.recentVisitors.map((visit, i) => (
-                            <motion.div
+                            <m.div
                                 key={visit.id}
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
@@ -139,7 +139,7 @@ export const CreatorInsights: React.FC<CreatorInsightsProps> = ({ insights }) =>
                                     </div>
                                 </div>
                                 <ArrowUpRight className="w-4 h-4 text-gray-200 group-hover:text-ffn-primary transition-all group-hover:translate-x-1 group-hover:-translate-y-1" />
-                            </motion.div>
+                            </m.div>
                         ))}
                     </div>
 

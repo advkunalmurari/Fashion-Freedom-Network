@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { PRICING } from '../constants';
 import { Logo } from './icons/Logo';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { PayPalButton } from './PayPalButton';
 import { paypalService } from '../services/paypalService';
 import { supabase } from '../supabase';
@@ -161,7 +161,7 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
     <div className="fixed inset-0 z-50 bg-ffn-black overflow-hidden flex flex-col lg:flex-row">
       {/* Dynamic Background Layer */}
       <AnimatePresence mode="wait">
-        <motion.div
+        <m.div
           key={step}
           initial={{ opacity: 0, scale: 1.1 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -172,7 +172,7 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
           <img src={STEP_BACKGROUNDS[step - 1]} className="w-full h-full object-cover" alt="" />
           <div className="absolute inset-0 bg-gradient-to-r from-ffn-black via-ffn-black/80 to-transparent" />
           <div className="absolute inset-0 backdrop-blur-[2px]" />
-        </motion.div>
+        </m.div>
       </AnimatePresence>
 
       {/* Sidebar Navigation & Progress */}
@@ -196,7 +196,7 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
                   <p className={`text-[9px] uppercase tracking-[0.3em] font-black ${step >= i ? 'text-white' : 'text-white/20'}`}>
                     {i === 1 ? 'Account Construction' : i === 2 ? 'Mastery Selection' : i === 3 ? 'Identity Enrichment' : 'Protocol Activation'}
                   </p>
-                  {step === i && <motion.div layoutId="active-step-bar" className="h-[1px] bg-ffn-primary mt-2 w-12" />}
+                  {step === i && <m.div layoutId="active-step-bar" className="h-[1px] bg-ffn-primary mt-2 w-12" />}
                 </div>
               </div>
             ))}
@@ -220,7 +220,7 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
 
           <AnimatePresence mode="wait">
             {step === 1 && (
-              <motion.form
+              <m.form
                 key="step1"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -297,11 +297,11 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
                   <span>Initialize Account Configuration</span>
                   <ArrowRight className="w-6 h-6" />
                 </button>
-              </motion.form>
+              </m.form>
             )}
 
             {step === 2 && (
-              <motion.form
+              <m.form
                 key="step2"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -325,7 +325,7 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
                     >
                       <div className="relative z-10">{role}</div>
                       {formData.category === role && (
-                        <motion.div
+                        <m.div
                           layoutId="role-glow"
                           className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent pointer-events-none"
                         />
@@ -343,11 +343,11 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
                     <ArrowRight className="w-6 h-6" />
                   </button>
                 </div>
-              </motion.form>
+              </m.form>
             )}
 
             {step === 3 && (
-              <motion.form
+              <m.form
                 key="step3"
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -470,11 +470,11 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
                   </button>
                 </div>
 
-              </motion.form>
+              </m.form>
             )}
 
             {step === 4 && (
-              <motion.div
+              <m.div
                 key="step4"
                 initial={{ opacity: 0, scale: 1.1 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -544,7 +544,7 @@ export const RegisterProfessional: React.FC<RegisterProfessionalProps> = ({ onSu
                     </p>
                   </div>
                 )}
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
         </div>

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Search, Filter, CheckCircle, ArrowRight, User as UserIcon, Sparkles, SlidersHorizontal, MapPin, DollarSign, ShieldCheck, Instagram, Zap, Award, ExternalLink, Globe, Activity, Users } from 'lucide-react';
 import { MOCK_TALENT_POOL } from '../constants';
 import { UserRole, User } from '../types';
 import { supabase } from '../supabase';
 import { MagneticButton } from './MagneticButton';
 import { TalentQuickLook } from './TalentQuickLook';
+import { optimizeUnsplashUrl } from '../utils/mediaUtils';
 
 export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegisterProfessional: () => void }> = ({ onSelectTalent, onRegisterProfessional }) => {
   const [search, setSearch] = useState('');
@@ -122,14 +123,16 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
         {/* Background Visuals - Enhanced with Video-like Motion */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=2564&auto=format&fit=crop"
+            src={optimizeUnsplashUrl("https://images.unsplash.com/photo-1539109136881-3be0616acf4b", 1200)}
             className="w-full h-full object-cover opacity-50 scale-105"
             alt=""
+            loading="eager"
+            decoding="async"
           />
           <div className="absolute inset-0 bg-gradient-to-br from-ffn-black via-ffn-black/40 to-ffn-black/90 mix-blend-multiply" />
 
           {/* Animated Light Orbs */}
-          <motion.div
+          <m.div
             animate={{
               opacity: [0.1, 0.3, 0.1],
               scale: [1, 1.4, 1],
@@ -139,7 +142,7 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
             className="absolute top-0 left-0 w-[1200px] h-[1200px] bg-ffn-primary/20 blur-[250px] rounded-full"
           />
-          <motion.div
+          <m.div
             animate={{
               opacity: [0.1, 0.2, 0.1],
               scale: [1.2, 0.8, 1.2],
@@ -154,7 +157,7 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
         <div className="relative z-10 max-w-7xl mx-auto space-y-24">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-16">
             <div className="space-y-8 max-w-3xl">
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="inline-flex items-center space-x-6 px-8 py-3 rounded-full bg-white/5 backdrop-blur-3xl border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.6em] shadow-2xl"
@@ -168,7 +171,7 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
                   <span className="flex items-center space-x-1"><Users className="w-3 h-3 text-white/40" /> <b>{metrics.activeSearches}</b></span>
                   <span className="flex items-center space-x-1"><Globe className="w-3 h-3 text-white/40" /> <b>{metrics.collaborationsToday}</b></span>
                 </div>
-              </motion.div>
+              </m.div>
 
               <h1 className="text-5xl md:text-[11rem] font-serif italic text-white leading-[0.8] tracking-tighter drop-shadow-2xl">
                 The Master <br />
@@ -183,7 +186,7 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
               {/* Interactive Casting Pulse Ticker */}
               <div className="h-12 overflow-hidden relative border-l-2 border-ffn-primary pl-8">
                 <AnimatePresence mode="wait">
-                  <motion.div
+                  <m.div
                     key={castingPulse[0].id}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -193,7 +196,7 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
                     <div className="w-2 h-2 bg-ffn-primary rounded-full animate-ping" />
                     <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40">{castingPulse[0].text}</span>
                     <span className="text-[9px] font-bold text-ffn-primary/60">{castingPulse[0].time}</span>
-                  </motion.div>
+                  </m.div>
                 </AnimatePresence>
               </div>
             </div>
@@ -246,14 +249,14 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
             {/* Trending Categories */}
             <div className="flex flex-wrap gap-5">
               {['#RunwayMastery', '#EditorialFuture', '#CyberAesthetics', '#SustainableLuxe', '#MinimalistVanguard', '#NeoTraditional', '#MetaverseCouture'].map(tag => (
-                <motion.button
+                <m.button
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   key={tag}
                   className="px-8 py-4 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-[0.4em] text-white/30 hover:text-white hover:bg-white/10 hover:border-ffn-primary/60 transition-all shadow-lg shadow-black/20"
                 >
                   {tag}
-                </motion.button>
+                </m.button>
               ))}
             </div>
           </div>
@@ -261,7 +264,7 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
 
         <AnimatePresence>
           {showAdvancedFilters && (
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -322,7 +325,7 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
                       <p className="text-[9px] uppercase tracking-[0.4em] font-black text-white/20">Eye Spectrum</p>
                       <div className="flex flex-wrap gap-3">
                         {['Brown', 'Blue', 'Green', 'Hazel', 'Grey'].map(c => (
-                          <motion.button
+                          <m.button
                             whileHover={{ scale: 1.2, y: -2 }}
                             whileTap={{ scale: 0.9 }}
                             key={c}
@@ -338,7 +341,7 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
                       <p className="text-[9px] uppercase tracking-[0.4em] font-black text-white/20">Hair Spectrum</p>
                       <div className="flex flex-wrap gap-3">
                         {['Black', 'Brown', 'Blonde', 'Auburn', 'Grey'].map(c => (
-                          <motion.button
+                          <m.button
                             whileHover={{ scale: 1.2, y: -2 }}
                             whileTap={{ scale: 0.9 }}
                             key={c}
@@ -353,12 +356,12 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>
       </header>
 
-      <motion.div layout className="space-y-32">
+      <m.div layout className="space-y-32">
         {!search && activeFilter === 'ALL' && !onlyVerified ? (
           <div className="space-y-48">
             {/* Vanguard Section - Horizontal Elite Scroll */}
@@ -401,13 +404,13 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
             {/* Global Projections - Dynamic Grid */}
             <div className="space-y-24 max-w-[90rem] mx-auto px-8">
               <div className="text-center space-y-6">
-                <motion.div
+                <m.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   className="inline-block px-8 py-3 rounded-full bg-ffn-primary/10 border border-ffn-primary/20 text-ffn-primary text-[10px] font-black uppercase tracking-[0.5em]"
                 >
                   Trending Worldwide
-                </motion.div>
+                </m.div>
                 <h3 className="text-7xl md:text-8xl font-serif italic text-white tracking-tighter">Global Projections</h3>
                 <p className="text-[12px] font-black uppercase tracking-[0.6em] text-white/30 max-w-2xl mx-auto leading-relaxed">Discover the next wave of brilliance emerging from the digital fashion frontier.</p>
               </div>
@@ -420,13 +423,13 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
                 ))}
 
                 {/* Future Profile Widget - Interactive Registration Teaser */}
-                <motion.div
+                <m.div
                   whileHover={{ y: -10 }}
                   className="md:col-span-2 md:row-span-2 rounded-[5rem] bg-ffn-black relative overflow-hidden flex flex-col p-16 shadow-[0_60px_120px_rgba(0,0,0,0.4)] border border-white/10 group"
                 >
                   <div className="absolute inset-0 z-0">
                     <div className="absolute inset-0 bg-gradient-to-br from-ffn-primary/20 via-transparent to-ffn-accent/20" />
-                    <motion.div
+                    <m.div
                       animate={{
                         scale: [1, 1.2, 1],
                         rotate: [0, 5, 0],
@@ -467,7 +470,7 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
                         <div className="space-y-2">
                           <p className="text-[8px] font-black text-white/20 uppercase tracking-[0.3em]">Reliability Projection</p>
                           <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
-                            <motion.div
+                            <m.div
                               initial={{ width: 0 }}
                               whileInView={{ width: '85%' }}
                               className="h-full bg-ffn-primary shadow-[0_0_10px_rgba(99,102,241,0.5)]"
@@ -477,7 +480,7 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
                         <div className="space-y-2">
                           <p className="text-[8px] font-black text-white/20 uppercase tracking-[0.3em]">Marketability Pulse</p>
                           <div className="h-1.5 w-full bg-white/5 rounded-full">
-                            <motion.div
+                            <m.div
                               initial={{ width: 0 }}
                               whileInView={{ width: '92%' }}
                               className="h-full bg-ffn-accent shadow-[0_0_10px_rgba(252,176,69,0.5)]"
@@ -494,7 +497,7 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
                       </button>
                     </div>
                   </div>
-                </motion.div>
+                </m.div>
 
                 {liveProfiles.slice(3, 10).map((talent, idx) => (
                   <div key={talent.id} className={`${idx % 5 === 0 ? 'md:row-span-2' : ''}`}>
@@ -528,13 +531,13 @@ export const Directory: React.FC<{ onSelectTalent: (id: string) => void; onRegis
             )}
           </div>
         )}
-      </motion.div>
+      </m.div>
 
       {/* Talent QuickLook Overlay */}
       <AnimatePresence>
         {selectedQuickLook && (
           <div className="fixed inset-0 z-[150]">
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -563,7 +566,7 @@ interface TalentCardProps {
 }
 
 const TalentCard: React.FC<TalentCardProps> = ({ talent, onSelectTalent, darkTheme = false }) => (
-  <motion.div
+  <m.div
     layout
     initial={{ opacity: 0, y: 40 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -575,9 +578,11 @@ const TalentCard: React.FC<TalentCardProps> = ({ talent, onSelectTalent, darkThe
   >
     <div className="aspect-[4/5] relative overflow-hidden m-5 rounded-[4rem] group-hover:shadow-2xl transition-all duration-700">
       <img
-        src={talent.avatarUrl}
+        src={optimizeUnsplashUrl(talent.avatarUrl, 600)}
         className="w-full h-full object-cover transition-all duration-[3s] ease-out group-hover:scale-110 group-hover:rotate-1"
         alt={talent.displayName}
+        loading="lazy"
+        decoding="async"
       />
 
       {/* Holographic Projection on Hover */}
@@ -595,7 +600,7 @@ const TalentCard: React.FC<TalentCardProps> = ({ talent, onSelectTalent, darkThe
             <span className="text-2xl font-serif italic text-white">{talent.stats?.reliability || 98}%</span>
           </div>
           <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-            <motion.div
+            <m.div
               initial={{ width: 0 }}
               whileInView={{ width: `${talent.stats?.reliability || 98}%` }}
               className="h-full bg-ffn-primary shadow-[0_0_20px_rgba(99,102,241,1)]"
@@ -613,14 +618,14 @@ const TalentCard: React.FC<TalentCardProps> = ({ talent, onSelectTalent, darkThe
           <div className="flex items-center space-x-5 text-white">
             <h4 className="text-5xl font-serif italic leading-none drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]">{talent.displayName}</h4>
             {talent.isVerified && (
-              <motion.div
+              <m.div
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
                 className="px-3 h-8 bg-ffn-primary/40 backdrop-blur-2xl rounded-full flex items-center justify-center space-x-2 border border-white/40 shadow-2xl shadow-ffn-primary/20"
               >
                 <CheckCircle className="w-4 h-4 text-white" />
                 <span className="text-[10px] font-black text-white">{talent.trustScore || 850}</span>
-              </motion.div>
+              </m.div>
             )}
           </div>
           <div className="flex items-center justify-between">
@@ -681,6 +686,6 @@ const TalentCard: React.FC<TalentCardProps> = ({ talent, onSelectTalent, darkThe
         </MagneticButton>
       </div>
     </div>
-  </motion.div>
+  </m.div>
 );
 

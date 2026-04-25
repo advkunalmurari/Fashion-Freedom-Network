@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { User } from '../types';
 import { MOCK_TALENT_POOL } from '../constants';
 import {
@@ -86,7 +86,7 @@ const ScoreBar: React.FC<{ label: string; value: number; color: string }> = ({ l
             <span className="text-[9px] font-black text-gray-600">{value}%</span>
         </div>
         <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-            <motion.div
+            <m.div
                 initial={{ width: 0 }}
                 animate={{ width: `${value}%` }}
                 transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -107,7 +107,7 @@ const ScoreRing: React.FC<{ score: number }> = ({ score }) => {
         <div className="relative w-20 h-20 flex items-center justify-center shrink-0">
             <svg width="80" height="80" className="-rotate-90">
                 <circle cx="40" cy="40" r={r} fill="none" stroke="#f3f4f6" strokeWidth="5" />
-                <motion.circle
+                <m.circle
                     cx="40" cy="40" r={r} fill="none"
                     stroke={color} strokeWidth="5"
                     strokeDasharray={`${circ}`}
@@ -135,7 +135,7 @@ const MatchCard: React.FC<{ match: MatchProfile; rank: number; onClick: () => vo
             : 'bg-amber-50 text-amber-600 border-amber-100';
 
     return (
-        <motion.div
+        <m.div
             layout
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -224,7 +224,7 @@ const MatchCard: React.FC<{ match: MatchProfile; rank: number; onClick: () => vo
                     </div>
                 </div>
             )}
-        </motion.div>
+        </m.div>
     );
 };
 
@@ -234,7 +234,7 @@ const MatchDetail: React.FC<{ match: MatchProfile; onClose: () => void }> = ({ m
 
     return (
         <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm">
-            <motion.div
+            <m.div
                 initial={{ x: '100%' }}
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
@@ -348,7 +348,7 @@ const MatchDetail: React.FC<{ match: MatchProfile; onClose: () => void }> = ({ m
                         <span>Hire Now</span>
                     </button>
                 </div>
-            </motion.div>
+            </m.div>
         </div>
     );
 };
@@ -472,7 +472,7 @@ const BriefBuilder: React.FC<{
                             onClick={() => update('collaborationFocus', !filters.collaborationFocus)}
                             className={`w-10 h-6 rounded-full relative transition-colors ${filters.collaborationFocus ? 'bg-ffn-primary' : 'bg-gray-200'}`}
                         >
-                            <motion.div
+                            <m.div
                                 animate={{ x: filters.collaborationFocus ? 18 : 2 }}
                                 className="absolute top-1 w-4 h-4 bg-white rounded-full shadow-sm"
                             />
@@ -619,7 +619,7 @@ export const TalentMatchEngine: React.FC = () => {
                         {isLoading ? (
                             <div className="space-y-4">
                                 {[1, 2, 3, 4].map(i => (
-                                    <motion.div
+                                    <m.div
                                         key={i}
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: [0.4, 1, 0.4] }}
@@ -636,7 +636,7 @@ export const TalentMatchEngine: React.FC = () => {
                                             </div>
                                             <div className="w-20 h-20 rounded-full bg-gray-100" />
                                         </div>
-                                    </motion.div>
+                                    </m.div>
                                 ))}
                                 <div className="text-center py-6">
                                     <div className="flex items-center justify-center space-x-2 text-gray-400">
@@ -658,7 +658,7 @@ export const TalentMatchEngine: React.FC = () => {
                                 </div>
                                 <AnimatePresence mode="popLayout">
                                     {isSimulationMode ? (
-                                        <motion.div
+                                        <m.div
                                             initial={{ opacity: 0, scale: 0.95 }}
                                             animate={{ opacity: 1, scale: 1 }}
                                             className="space-y-8"
@@ -683,7 +683,7 @@ export const TalentMatchEngine: React.FC = () => {
                                                     ))}
                                                 </div>
                                             </div>
-                                        </motion.div>
+                                        </m.div>
                                     ) : (
                                         matches.map((match, i) => (
                                             <MatchCard

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Bookmark, Grid, Layout, List, Search, SlidersHorizontal, ArrowLeft, Loader2, Sparkles } from 'lucide-react';
 import { Post } from '../types';
 import { postService } from '../services/postService';
@@ -122,7 +122,7 @@ export const SavedPosts: React.FC<SavedPostsProps> = ({ onBack }) => {
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                     <AnimatePresence>
                         {filteredPosts.map((post, idx) => (
-                            <motion.div
+                            <m.div
                                 key={post.id}
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
@@ -133,7 +133,7 @@ export const SavedPosts: React.FC<SavedPostsProps> = ({ onBack }) => {
                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                     <Bookmark className="text-white fill-white w-8 h-8 opacity-60" />
                                 </div>
-                            </motion.div>
+                            </m.div>
                         ))}
                     </AnimatePresence>
                 </div>

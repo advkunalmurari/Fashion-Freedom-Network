@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Mail, ArrowLeft, ArrowRight, CheckCircle2, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../supabase';
@@ -40,37 +40,37 @@ const ForgotPasswordPage: React.FC = () => {
                 <div className="left-panel">
                     <div className="max-w-xl space-y-12 w-full text-left pl-12 lg:pl-24">
                         <div className="space-y-6">
-                            <motion.div
+                            <m.div
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.8 }}
                                 className="w-16 h-16 text-white mb-6 drop-shadow-2xl"
                             >
                                 {LOGO_SVG}
-                            </motion.div>
-                            <motion.h1
+                            </m.div>
+                            <m.h1
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.1 }}
                                 className="text-5xl lg:text-7xl font-bold tracking-tight text-white font-serif max-w-2xl leading-[1.1]"
                             >
                                 Secure Your Narrative
-                            </motion.h1>
-                            <motion.p
+                            </m.h1>
+                            <m.p
                                 initial={{ opacity: 0, y: 15 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.2 }}
                                 className="text-xl lg:text-2xl text-white/60 font-light"
                             >
                                 Recover your professional access to the FFN global graph.
-                            </motion.p>
+                            </m.p>
                         </div>
                     </div>
                 </div>
 
                 {/* Right Panel */}
                 <div className="right-panel">
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="w-full max-w-md p-10 lg:p-14 rounded-[3.5rem] bg-white/5 backdrop-blur-3xl border border-white/10 shadow-3xl text-center space-y-10"
@@ -121,13 +121,13 @@ const ForgotPasswordPage: React.FC = () => {
                             </>
                         ) : (
                             <div className="space-y-10 py-10">
-                                <motion.div
+                                <m.div
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
                                     className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto"
                                 >
                                     <CheckCircle2 className="text-white" size={40} />
-                                </motion.div>
+                                </m.div>
                                 <div className="space-y-4">
                                     <h2 className="text-3xl font-serif italic text-white">Recovery Link Sent</h2>
                                     <p className="text-white/40 text-sm leading-relaxed">
@@ -139,7 +139,7 @@ const ForgotPasswordPage: React.FC = () => {
                                 </Link>
                             </div>
                         )}
-                    </motion.div>
+                    </m.div>
                 </div>
             </div>
         </div>

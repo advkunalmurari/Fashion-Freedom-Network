@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
   Settings, Activity, Bookmark, Moon, Sun, AlertCircle,
   X, UserCircle, LogOut, Shield, Zap, LayoutGrid, Terminal
@@ -30,14 +30,14 @@ export const SettingsOverlay: React.FC<SettingsOverlayProps> = ({
     <AnimatePresence>
       {isOpen && (
         <>
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
             className="fixed inset-0 z-[1000] bg-ffn-black/40 backdrop-blur-sm"
           />
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.95, y: 20, rotate: -1 }}
             animate={{ opacity: 1, scale: 1, y: 0, rotate: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20, rotate: -1 }}
@@ -103,7 +103,7 @@ export const SettingsOverlay: React.FC<SettingsOverlayProps> = ({
                 </button>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </>
       )}
     </AnimatePresence>

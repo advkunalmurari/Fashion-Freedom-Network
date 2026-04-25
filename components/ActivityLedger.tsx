@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Activity, CheckCircle, Zap, MessageSquare, UserPlus, Award, Clock } from 'lucide-react';
 
 export const ActivityLedger: React.FC = () => {
@@ -24,7 +24,7 @@ export const ActivityLedger: React.FC = () => {
 
       <div className="space-y-4">
         {activities.map((item, idx) => (
-          <motion.div 
+          <m.div 
             key={item.id}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -45,7 +45,7 @@ export const ActivityLedger: React.FC = () => {
                 <Clock className="w-3 h-3 mr-2" /> {item.time}
               </span>
             </div>
-          </motion.div>
+          </m.div>
         ))}
       </div>
 

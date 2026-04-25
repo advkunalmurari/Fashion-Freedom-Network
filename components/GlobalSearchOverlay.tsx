@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Search, X, Command, User, Briefcase, Film, Globe, ArrowRight, CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { MOCK_SEARCH_RESULTS } from '../constants';
@@ -29,7 +29,7 @@ export const GlobalSearchOverlay: React.FC<{ isOpen: boolean; onClose: () => voi
     return (
         <AnimatePresence>
             {isOpen && (
-                <motion.div
+                <m.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -37,7 +37,7 @@ export const GlobalSearchOverlay: React.FC<{ isOpen: boolean; onClose: () => voi
 
                     onClick={onClose}
                 >
-                    <motion.div
+                    <m.div
                         initial={{ scale: 0.9, opacity: 0, y: 20 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -119,7 +119,7 @@ export const GlobalSearchOverlay: React.FC<{ isOpen: boolean; onClose: () => voi
                                                 </div>
                                                 <div className="grid grid-cols-1 gap-2">
                                                     {results.map((res, i) => (
-                                                        <motion.button
+                                                        <m.button
                                                             key={res.id}
                                                             initial={{ opacity: 0, y: 5 }}
                                                             animate={{ opacity: 1, y: 0 }}
@@ -152,7 +152,7 @@ export const GlobalSearchOverlay: React.FC<{ isOpen: boolean; onClose: () => voi
                                                                 </div>
                                                             </div>
                                                             <ArrowRight className="w-4 h-4 text-white/20 group-hover:text-ffn-primary group-hover:translate-x-1 transition-all" />
-                                                        </motion.button>
+                                                        </m.button>
                                                     ))}
                                                 </div>
                                             </div>
@@ -185,8 +185,8 @@ export const GlobalSearchOverlay: React.FC<{ isOpen: boolean; onClose: () => voi
                                 <span className="text-[7px] font-black uppercase tracking-[0.4em] opacity-40">FFN Neural Core v4.5</span>
                             </div>
                         </div>
-                    </motion.div>
-                </motion.div>
+                    </m.div>
+                </m.div>
             )}
         </AnimatePresence>
     );

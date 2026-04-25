@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Loader2, ArrowLeft, ShieldAlert } from 'lucide-react';
 import { VerifiedCertificate } from '../components/VerifiedCertificate';
 import { supabase } from '../supabase';

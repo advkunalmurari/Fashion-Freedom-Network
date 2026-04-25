@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { MapPin, Clock, DollarSign, ArrowRight, ShieldCheck, Briefcase, X, CheckCircle, Award, Sparkles, FileText, Send, User, Loader2, Plus, Building2, Mail, Calendar, Zap, BrainCircuit, Video, SlidersHorizontal } from 'lucide-react';
 import { UserRole } from '../types';
 import { PRICING, MOCK_TALENT_POOL } from '../constants';
@@ -136,7 +136,7 @@ export const Castings: React.FC = () => {
         <div className="absolute bottom-16 left-16 right-16 flex flex-col md:flex-row md:items-end justify-between gap-10">
           <div className="space-y-6">
             <div className="flex items-center space-x-4">
-              <motion.div
+              <m.div
                 animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 3, repeat: Infinity }}
                 className="w-3 h-3 bg-ffn-accent rounded-full shadow-[0_0_15px_rgba(252,176,69,0.8)]"
@@ -214,7 +214,7 @@ export const Castings: React.FC = () => {
       <AnimatePresence>
         {showPostModal && (
           <div className="fixed inset-0 z-[1100] flex items-center justify-center p-6 bg-ffn-black/90 backdrop-blur-2xl">
-            <motion.div
+            <m.div
               initial={{ scale: 0.9, opacity: 0, y: 40 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 40 }}
@@ -310,7 +310,7 @@ export const Castings: React.FC = () => {
                   </form>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         )}
       </AnimatePresence>
@@ -319,7 +319,7 @@ export const Castings: React.FC = () => {
       <AnimatePresence>
         {selectedCasting && (
           <div className="fixed inset-0 z-[1000] flex items-center justify-center p-6 bg-ffn-black/80 backdrop-blur-xl">
-            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white w-full max-w-4xl h-[90vh] rounded-[4rem] overflow-hidden relative shadow-2xl flex flex-col border border-white/20">
+            <m.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white w-full max-w-4xl h-[90vh] rounded-[4rem] overflow-hidden relative shadow-2xl flex flex-col border border-white/20">
               <button title="Abort Casting Protocol" onClick={() => setSelectedCasting(null)} className="absolute top-10 right-10 z-50 p-4 bg-gray-100 rounded-2xl hover:bg-ffn-black hover:text-white transition-all"><X className="w-6 h-6" /></button>
               <div className="p-16 lg:p-20 overflow-y-auto no-scrollbar flex-1">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
@@ -423,7 +423,7 @@ export const Castings: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         )}
       </AnimatePresence>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Calendar } from 'lucide-react';
 
 export const AvailabilityPulse: React.FC<{
@@ -25,7 +25,7 @@ export const AvailabilityPulse: React.FC<{
             <div className="flex items-center space-x-3">
                 <div className="relative">
                     <div className={`w-3 h-3 rounded-full ${statusColors[status]}`} />
-                    <motion.div
+                    <m.div
                         animate={{ scale: [1, 2, 1], opacity: [0.5, 0, 0.5] }}
                         transition={{ duration: 2, repeat: Infinity }}
                         className={`absolute inset-0 rounded-full ${statusColors[status]}`}

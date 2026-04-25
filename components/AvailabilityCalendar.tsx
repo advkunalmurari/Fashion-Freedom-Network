@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
     ChevronLeft, ChevronRight, Calendar as CalendarIcon,
     Lock, CheckCircle2, AlertCircle, Clock, Info
@@ -102,7 +102,7 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ slot
             }
 
             cells.push(
-                <motion.button
+                <m.button
                     key={d}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -128,7 +128,7 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ slot
                     {isToday && !slot && (
                         <div className="absolute top-4 right-4 w-1 h-1 rounded-full bg-ffn-primary" />
                     )}
-                </motion.button>
+                </m.button>
             );
         }
 
@@ -167,7 +167,7 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ slot
             {/* Selected Date Detail (Mini Drawer) */}
             <AnimatePresence>
                 {selectedDate && (
-                    <motion.div
+                    <m.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
@@ -195,7 +195,7 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ slot
                                 </button>
                             </div>
                         </div>
-                    </motion.div>
+                    </m.div>
                 )}
             </AnimatePresence>
         </div>

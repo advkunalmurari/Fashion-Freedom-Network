@@ -5,19 +5,19 @@ export const castingService = {
         try {
             const { data, error } = await supabase
                 .from('job_posts')
-                .select('*')
+                .select('*, author:profiles(full_name, company_name)')
                 .order('created_at', { ascending: false });
 
             if (error) throw error;
 
-            const formatted = data.map(job => ({
+            const formatted = data.map((job: any) => ({
                 id: job.id,
                 title: job.title,
-                brand: job.company_name,
+                brand: job.author?.company_name || job.author?.full_name || 'Independent',
                 location: job.location,
-                budget: job.budget,
-                deadline: job.shoot_date,
-                type: 'Casting Call',
+                budget: job.salary_range || 'Negotiable',
+                deadline: new Date(job.created_at).toLocaleDateString(), // Use creation date if shoot_date unavailable
+                type: job.type || 'freelance',
                 description: job.description,
                 requirements: []
             }));
@@ -67,20 +67,8 @@ export const castingService = {
         } catch (error: any) {
             console.error('Error fetching jobs:', error);
             return {
-                success: true,
-                data: [
-                    {
-                        id: 'c1',
-                        title: 'VOGUE INDIA // EDITORIAL DISCOVERY',
-                        brand: 'CONDE NAST',
-                        location: 'MUMBAI // STUDIO 22',
-                        budget: '₹75,000 - ₹1,20,000',
-                        deadline: '2024-03-25',
-                        type: 'EDITORIAL',
-                        description: 'High-concept editorial shoot focusing on neo-traditional Indian silhouettes. Seeking talent with strong movement and unique facial structure.',
-                        requirements: ['Height: 175cm+', 'Editorial Experience', 'Clean Skin']
-                    }
-                ]
+                success: false,
+                error: error.message
             };
         }
     },
@@ -90,18 +78,23 @@ export const castingService = {
             const { data: { session } } = await supabase.auth.getSession();
             if (!session) return { success: false, error: 'Unauthorized' };
 
+            // Embed extra details in the description since schema doesn't have them
+            const fullDescription = `${castingData.description}
+
+---
+Shoot Date: ${castingData.shootDate}
+Talent Category: ${castingData.talentCategory}
+Contact: ${castingData.contactEmail}`;
+
             const { data, error } = await supabase
                 .from('job_posts')
                 .insert([{
                     author_id: session.user.id,
-                    company_name: castingData.companyName,
                     title: castingData.roleTitle,
-                    talent_category: castingData.talentCategory,
+                    description: fullDescription,
                     location: castingData.location,
-                    shoot_date: castingData.shootDate,
-                    budget: castingData.budget,
-                    description: castingData.description,
-                    contact_email: castingData.contactEmail
+                    salary_range: castingData.budget,
+                    type: 'freelance' // default allowed value
                 }])
                 .select()
                 .single();
@@ -124,7 +117,8 @@ export const castingService = {
                 .insert([{
                     job_id: castingId,
                     applicant_id: session.user.id,
-                    pitch: pitch
+                    cover_letter: pitch, // Map pitch to cover_letter column
+                    status: 'pending'
                 }])
                 .select()
                 .single();

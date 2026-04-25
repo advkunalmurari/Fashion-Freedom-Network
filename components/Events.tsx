@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Calendar, MapPin, Ticket, Share2, ExternalLink, ArrowRight, Star } from 'lucide-react';
 
 export const Events: React.FC = () => {
@@ -29,7 +29,7 @@ export const Events: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         {events.map((event, idx) => (
-          <motion.div
+          <m.div
             key={idx}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -43,9 +43,9 @@ export const Events: React.FC = () => {
                   <span className="px-6 py-2 bg-white/90 backdrop-blur-md rounded-full text-[9px] font-bold uppercase tracking-widest text-ffn-black shadow-lg">{event.type}</span>
                </div>
                <div className="absolute top-8 right-8">
-                  <motion.button whileHover={{ rotate: 15 }} className="p-4 bg-ffn-primary text-white rounded-2xl shadow-xl">
+                  <m.button whileHover={{ rotate: 15 }} className="p-4 bg-ffn-primary text-white rounded-2xl shadow-xl">
                     <Star className="w-5 h-5 fill-white" />
-                  </motion.button>
+                  </m.button>
                </div>
                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                <div className="absolute bottom-10 left-10">
@@ -83,7 +83,7 @@ export const Events: React.FC = () => {
                  </button>
                </div>
             </div>
-          </motion.div>
+          </m.div>
         ))}
       </div>
     </div>

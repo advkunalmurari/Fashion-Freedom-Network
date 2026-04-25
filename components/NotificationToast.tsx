@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
     CheckCircle,
     X,
@@ -42,7 +42,7 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({ toasts, on
                     const Icon = Config.icon;
 
                     return (
-                        <motion.div
+                        <m.div
                             key={toast.id}
                             layout
                             initial={{ opacity: 0, y: 50, scale: 0.9, x: 20 }}
@@ -84,14 +84,14 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({ toasts, on
                             </button>
 
                             {/* Progress bar (optional) */}
-                            <motion.div
+                            <m.div
                                 initial={{ width: '100%' }}
                                 animate={{ width: 0 }}
                                 transition={{ duration: (toast.duration || 5000) / 1000, ease: 'linear' }}
                                 onAnimationComplete={() => onRemove(toast.id)}
                                 className={`absolute bottom-0 left-6 right-6 h-[2px] rounded-full opacity-30 ${Config.color.replace('text', 'bg')}`}
                             />
-                        </motion.div>
+                        </m.div>
                     );
                 })}
             </AnimatePresence>

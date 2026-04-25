@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { X, Send, Video, Mic, CheckCircle, Sparkles, BrainCircuit, ShieldCheck, ArrowRight, Loader2 } from 'lucide-react';
 import { AntigravityMatchPulse } from './AntigravityMatchPulse';
 
@@ -29,7 +29,7 @@ export const InterviewApplicationFlow: React.FC<InterviewApplicationFlowProps> =
         <AnimatePresence>
             {isOpen && (
                 <div className="fixed inset-0 z-[1200] flex items-center justify-center p-6 bg-ffn-black/90 backdrop-blur-2xl">
-                    <motion.div
+                    <m.div
                         initial={{ scale: 0.9, opacity: 0, y: 20 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -46,7 +46,7 @@ export const InterviewApplicationFlow: React.FC<InterviewApplicationFlowProps> =
                         <div className="flex-1 overflow-y-auto no-scrollbar p-16 lg:p-24">
                             <AnimatePresence mode="wait">
                                 {step === 1 && (
-                                    <motion.div
+                                    <m.div
                                         key="step1"
                                         initial={{ opacity: 0, x: 20 }}
                                         animate={{ opacity: 1, x: 0 }}
@@ -75,11 +75,11 @@ export const InterviewApplicationFlow: React.FC<InterviewApplicationFlowProps> =
                                                 <ArrowRight className="w-4 h-4" />
                                             </button>
                                         </div>
-                                    </motion.div>
+                                    </m.div>
                                 )}
 
                                 {step === 2 && (
-                                    <motion.div
+                                    <m.div
                                         key="step2"
                                         initial={{ opacity: 0, x: 20 }}
                                         animate={{ opacity: 1, x: 0 }}
@@ -128,11 +128,11 @@ export const InterviewApplicationFlow: React.FC<InterviewApplicationFlowProps> =
                                                 <ArrowRight className="w-4 h-4" />
                                             </button>
                                         </div>
-                                    </motion.div>
+                                    </m.div>
                                 )}
 
                                 {step === 3 && (
-                                    <motion.div
+                                    <m.div
                                         key="step3"
                                         initial={{ opacity: 0, x: 20 }}
                                         animate={{ opacity: 1, x: 0 }}
@@ -179,25 +179,25 @@ export const InterviewApplicationFlow: React.FC<InterviewApplicationFlowProps> =
                                                 </>
                                             )}
                                         </button>
-                                    </motion.div>
+                                    </m.div>
                                 )}
 
                                 {step === 4 && (
-                                    <motion.div
+                                    <m.div
                                         key="step4"
                                         initial={{ scale: 0.9, opacity: 0 }}
                                         animate={{ scale: 1, opacity: 1 }}
                                         className="space-y-12 text-center py-10"
                                     >
                                         <div className="relative inline-block">
-                                            <motion.div
+                                            <m.div
                                                 animate={{ scale: [1, 1.2, 1], rotate: [0, 5, -5, 0] }}
                                                 transition={{ duration: 4, repeat: Infinity }}
                                                 className="w-40 h-40 bg-ffn-primary rounded-full flex items-center justify-center text-white shadow-3xl"
                                             >
                                                 <CheckCircle className="w-20 h-20" />
-                                            </motion.div>
-                                            <motion.div
+                                            </m.div>
+                                            <m.div
                                                 animate={{ opacity: [0, 1, 0], scale: [1, 1.5, 2] }}
                                                 transition={{ duration: 2, repeat: Infinity }}
                                                 className="absolute inset-0 bg-ffn-primary rounded-full opacity-0"
@@ -218,11 +218,11 @@ export const InterviewApplicationFlow: React.FC<InterviewApplicationFlowProps> =
                                             <Sparkles className="w-4 h-4 text-ffn-accent" />
                                             <span>Return to Marketplace</span>
                                         </button>
-                                    </motion.div>
+                                    </m.div>
                                 )}
                             </AnimatePresence>
                         </div>
-                    </motion.div>
+                    </m.div>
                 </div>
             )}
         </AnimatePresence>

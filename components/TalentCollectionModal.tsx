@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { X, FolderPlus, Check, Search, Plus, Trash2 } from 'lucide-react';
 import { User, TalentCollection } from '../types';
 import { MOCK_TALENT_POOL } from '../constants';
@@ -52,14 +52,14 @@ export const TalentCollectionModal: React.FC<TalentCollectionModalProps> = ({
         <AnimatePresence>
             {isOpen && (
                 <>
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
                         className="fixed inset-0 bg-black/60 backdrop-blur-md z-[600]"
                     />
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -180,7 +180,7 @@ export const TalentCollectionModal: React.FC<TalentCollectionModalProps> = ({
                                 </div>
                             )}
                         </div>
-                    </motion.div>
+                    </m.div>
                 </>
             )}
         </AnimatePresence>

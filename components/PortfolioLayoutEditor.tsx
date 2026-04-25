@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, Reorder } from 'framer-motion';
+import { m, Reorder } from 'framer-motion';
 import {
     Type,
     Layout,
@@ -63,7 +63,7 @@ export const PortfolioLayoutEditor: React.FC<PortfolioLayoutEditorProps> = ({
     };
 
     return (
-        <motion.div
+        <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -226,7 +226,7 @@ export const PortfolioLayoutEditor: React.FC<PortfolioLayoutEditorProps> = ({
             `}
                     >
                         {items.map((item) => (
-                            <motion.div
+                            <m.div
                                 layout
                                 key={item.id}
                                 className={`
@@ -257,11 +257,11 @@ export const PortfolioLayoutEditor: React.FC<PortfolioLayoutEditorProps> = ({
                                         </button>
                                     </div>
                                 </div>
-                            </motion.div>
+                            </m.div>
                         ))}
                     </div>
                 </div>
             </div>
-        </motion.div>
+        </m.div>
     );
 };

@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
     Search, Users, Briefcase, Bookmark, Settings, Plus,
     Filter, MapPin, Star, ShieldCheck, CheckCircle, Zap,
@@ -135,14 +135,14 @@ export const BrandDashboard: React.FC<BrandDashboardProps> = ({ user, onLogout }
                         >
                             <tab.icon className="w-4 h-4" />
                             <span>{tab.label}</span>
-                            {activeTab === tab.id && <motion.div layoutId="brandTabLine" className="absolute bottom-[-17px] left-0 right-0 h-0.5 bg-ffn-primary shadow-[0_0_15px_rgba(99,102,241,1)]" />}
+                            {activeTab === tab.id && <m.div layoutId="brandTabLine" className="absolute bottom-[-17px] left-0 right-0 h-0.5 bg-ffn-primary shadow-[0_0_15px_rgba(99,102,241,1)]" />}
                         </button>
                     ))}
                 </div>
 
                 <AnimatePresence mode="wait">
                     {activeTab === 'overview' && (
-                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-8">
+                        <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-8">
                             <div className="bg-white/5 backdrop-blur-3xl p-12 rounded-[4rem] border border-white/10 shadow-2xl space-y-8 relative overflow-hidden group">
                                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-50 pointer-events-none"></div>
                                 <div className="relative z-10 flex justify-between items-start">
@@ -260,12 +260,12 @@ export const BrandDashboard: React.FC<BrandDashboardProps> = ({ user, onLogout }
                                     </div>
                                 </div>
                             </div>
-                        </motion.div>
+                        </m.div>
                     )}
 
                     {
                         activeTab === 'search' && (
-                            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-8">
+                            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-8">
                                 <div className="flex flex-col md:flex-row gap-4">
                                     <div className="relative flex-1 group">
                                         <Search className="absolute left-8 top-1/2 -translate-y-1/2 w-5 h-5 text-white/20 group-focus-within:text-ffn-primary transition-colors duration-500" />
@@ -291,7 +291,7 @@ export const BrandDashboard: React.FC<BrandDashboardProps> = ({ user, onLogout }
 
                                 <AnimatePresence>
                                     {showFilters && (
-                                        <motion.div
+                                        <m.div
                                             initial={{ height: 0, opacity: 0 }}
                                             animate={{ height: 'auto', opacity: 1 }}
                                             exit={{ height: 0, opacity: 0 }}
@@ -359,13 +359,13 @@ export const BrandDashboard: React.FC<BrandDashboardProps> = ({ user, onLogout }
                                                     </button>
                                                 </div>
                                             </div>
-                                        </motion.div>
+                                        </m.div>
                                     )}
                                 </AnimatePresence>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-12">
                                     {filteredTalent.map((talent) => (
-                                        <motion.div
+                                        <m.div
                                             key={talent.id}
                                             layout
                                             initial={{ opacity: 0, scale: 0.95 }}
@@ -406,7 +406,7 @@ export const BrandDashboard: React.FC<BrandDashboardProps> = ({ user, onLogout }
                                                 </div>
                                                 <button className="w-full py-4 bg-white/10 rounded-2xl text-[9px] uppercase font-black tracking-[0.4em] text-white hover:bg-white hover:text-black hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all">View Full Node</button>
                                             </div>
-                                        </motion.div>
+                                        </m.div>
                                     ))}
 
                                     {filteredTalent.length === 0 && (
@@ -419,13 +419,13 @@ export const BrandDashboard: React.FC<BrandDashboardProps> = ({ user, onLogout }
                                         </div>
                                     )}
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )
                     }
 
                     {
                         activeTab === 'moodboards' && (
-                            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+                            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
                                 {selectedMoodBoardId ? (
                                     <MoodBoardDetail
                                         boardId={selectedMoodBoardId}
@@ -440,13 +440,13 @@ export const BrandDashboard: React.FC<BrandDashboardProps> = ({ user, onLogout }
                                         />
                                     </div>
                                 )}
-                            </motion.div>
+                            </m.div>
                         )
                     }
 
                     {
                         activeTab === 'castings' && (
-                            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-8">
+                            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-8">
                                 {activeLiveCastingId ? (
                                     <div className="bg-ffn-black rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl">
                                         <LiveCastingRoom
@@ -507,13 +507,13 @@ export const BrandDashboard: React.FC<BrandDashboardProps> = ({ user, onLogout }
                                         </div>
                                     </>
                                 )}
-                            </motion.div>
+                            </m.div>
                         )
                     }
 
                     {
                         activeTab === 'contracts' && (
-                            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-8">
+                            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-8">
                                 <div className="flex justify-between items-center bg-white/5 backdrop-blur-3xl p-10 rounded-[3rem] border border-white/10 shadow-xl relative overflow-hidden">
                                     <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 blur-[80px] rounded-full mix-blend-screen pointer-events-none"></div>
                                     <div className="relative z-10 space-y-2">
@@ -551,13 +551,13 @@ export const BrandDashboard: React.FC<BrandDashboardProps> = ({ user, onLogout }
                                         </div>
                                     ))}
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )
                     }
 
                     {
                         activeTab === 'subscription' && (
-                            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-16">
+                            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-16">
                                 <div className="text-center space-y-6 mb-16 relative">
                                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-ffn-primary/10 blur-[100px] rounded-full mix-blend-screen pointer-events-none"></div>
                                     <h2 className="text-5xl md:text-6xl font-serif italic text-white drop-shadow-xl relative z-10">Brand Enterprise Protocols</h2>
@@ -625,22 +625,22 @@ export const BrandDashboard: React.FC<BrandDashboardProps> = ({ user, onLogout }
                                         </div>
                                     ))}
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )
                     }
                     {
                         activeTab === 'campaigns' && (
-                            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+                            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
                                 <div className="bg-white/5 backdrop-blur-xl p-8 rounded-[4rem] border border-white/10 relative overflow-hidden">
                                     {/* Just wrap external component in dark mode container hints if needed */}
                                     <CampaignCommandCenter />
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )
                     }
                     {
                         activeTab === 'collections' && (
-                            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-12">
+                            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-12">
                                 <div className="flex flex-col md:flex-row justify-between md:items-center gap-6 bg-white/5 backdrop-blur-3xl p-10 rounded-[3rem] border border-white/10 shadow-xl relative overflow-hidden">
                                     <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-white/5 blur-[100px] rounded-full pointer-events-none -translate-x-1/2 translate-y-1/2" />
                                     <div className="relative z-10 space-y-2">
@@ -654,7 +654,7 @@ export const BrandDashboard: React.FC<BrandDashboardProps> = ({ user, onLogout }
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                                     {MOCK_TALENT_COLLECTIONS.map((col) => (
-                                        <motion.div
+                                        <m.div
                                             key={col.id}
                                             whileHover={{ y: -10 }}
                                             className="bg-white/5 backdrop-blur-3xl rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl group cursor-pointer hover:border-white/20 transition-all duration-500"
@@ -697,28 +697,28 @@ export const BrandDashboard: React.FC<BrandDashboardProps> = ({ user, onLogout }
                                                     </button>
                                                 </div>
                                             </div>
-                                        </motion.div>
+                                        </m.div>
                                     ))}
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )
                     }
                     {
                         activeTab === 'analytics' && (
-                            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+                            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
                                 <div className="bg-white/5 backdrop-blur-xl p-8 rounded-[4rem] border border-white/10 relative overflow-hidden">
                                     <AdvancedAnalytics />
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )
                     }
                     {
                         activeTab === 'crm' && (
-                            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+                            <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
                                 <div className="bg-white/5 backdrop-blur-xl rounded-[4rem] border border-white/10 relative overflow-hidden">
                                     <BrandRecruitingCRM />
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )
                     }
                 </AnimatePresence >

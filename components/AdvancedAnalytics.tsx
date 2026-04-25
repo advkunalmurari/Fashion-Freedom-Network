@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Target, Users, TrendingUp, Activity, BarChart2, PieChart, ArrowUpRight, ArrowDownRight, Share2, Download, Filter, MapPin } from 'lucide-react';
 
 export const AdvancedAnalytics: React.FC = () => {
@@ -59,7 +59,7 @@ export const AdvancedAnalytics: React.FC = () => {
             {/* Primary KPI Cards */}
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {stats.map((stat, idx) => (
-                    <motion.div
+                    <m.div
                         key={idx}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -74,7 +74,7 @@ export const AdvancedAnalytics: React.FC = () => {
                                 {stat.trend}
                             </div>
                         </div>
-                    </motion.div>
+                    </m.div>
                 ))}
             </section>
 
@@ -102,7 +102,7 @@ export const AdvancedAnalytics: React.FC = () => {
 
                         {/* Overview Widget (Placeholder for complex chart) */}
                         {activeTab === 'overview' && (
-                            <motion.div key="overview" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="h-full flex flex-col justify-center items-center text-center space-y-6 py-20">
+                            <m.div key="overview" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="h-full flex flex-col justify-center items-center text-center space-y-6 py-20">
                                 <div className="w-32 h-32 bg-gray-50 rounded-full flex items-center justify-center">
                                     <TrendingUp className="w-12 h-12 text-gray-200" />
                                 </div>
@@ -113,7 +113,7 @@ export const AdvancedAnalytics: React.FC = () => {
                                 {/* Simulated Chart Bars */}
                                 <div className="flex items-end justify-center space-x-2 h-48 w-full max-w-2xl mt-8">
                                     {[40, 60, 45, 80, 55, 90, 75, 100, 85, 120].map((h, i) => (
-                                        <motion.div
+                                        <m.div
                                             key={i}
                                             className="w-12 bg-gray-100 rounded-t-xl relative group"
                                             initial={{ height: 0 }}
@@ -121,15 +121,15 @@ export const AdvancedAnalytics: React.FC = () => {
                                             transition={{ duration: 0.5, delay: i * 0.05 }}
                                         >
                                             <div className="absolute inset-0 bg-ffn-primary opacity-0 group-hover:opacity-100 transition-opacity rounded-t-xl" />
-                                        </motion.div>
+                                        </m.div>
                                     ))}
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )}
 
                         {/* Audience Demographics */}
                         {activeTab === 'audience' && (
-                            <motion.div key="audience" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                            <m.div key="audience" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="grid grid-cols-1 lg:grid-cols-2 gap-16">
                                 <div>
                                     <h3 className="text-2xl font-serif italic mb-8">Geographic Heatmap</h3>
                                     <div className="space-y-6">
@@ -140,7 +140,7 @@ export const AdvancedAnalytics: React.FC = () => {
                                                     <span>{data.percentage}%</span>
                                                 </div>
                                                 <div className="h-3 w-full bg-gray-50 rounded-full overflow-hidden">
-                                                    <motion.div
+                                                    <m.div
                                                         className="h-full bg-gradient-to-r from-ffn-black to-ffn-primary"
                                                         initial={{ width: 0 }}
                                                         animate={{ width: `${data.percentage}%` }}
@@ -156,12 +156,12 @@ export const AdvancedAnalytics: React.FC = () => {
                                     <h4 className="text-xl font-serif italic mb-2">Audience Segmentation</h4>
                                     <p className="text-sm text-gray-400 max-w-xs">Detailed age and gender grouping data is currently compiling for the selected time range.</p>
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )}
 
                         {/* Conversion Funnel */}
                         {activeTab === 'conversion' && (
-                            <motion.div key="conversion" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="max-w-4xl mx-auto py-10">
+                            <m.div key="conversion" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="max-w-4xl mx-auto py-10">
                                 <h3 className="text-2xl font-serif italic mb-12 text-center">Engagement to Booking Pathway</h3>
                                 <div className="space-y-4">
                                     {conversionFunnel.map((step, idx) => {
@@ -178,7 +178,7 @@ export const AdvancedAnalytics: React.FC = () => {
                                                     </div>
                                                 )}
 
-                                                <motion.div
+                                                <m.div
                                                     className={`h-24 ${step.color} rounded-2xl flex items-center justify-between px-8 text-white shadow-xl relative z-10`}
                                                     initial={{ width: 0, opacity: 0 }}
                                                     animate={{ width: `${Math.max(widthPercent, 20)}%`, opacity: 1 }}
@@ -186,12 +186,12 @@ export const AdvancedAnalytics: React.FC = () => {
                                                 >
                                                     <span className="text-xs font-bold uppercase tracking-widest truncate max-w-[50%]">{step.stage}</span>
                                                     <span className="text-2xl font-serif italic">{step.count.toLocaleString()}</span>
-                                                </motion.div>
+                                                </m.div>
                                             </div>
                                         )
                                     })}
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )}
 
                     </AnimatePresence>

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { MapPin, Users, Zap, TrendingUp } from 'lucide-react';
 
 export const MarketDemandHeatmap: React.FC = () => {
@@ -35,7 +35,7 @@ export const MarketDemandHeatmap: React.FC = () => {
 
                 {/* City Pulsing Nodes */}
                 {cities.map((city, i) => (
-                    <motion.div
+                    <m.div
                         key={city.name}
                         initial={{ scale: 0, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
@@ -44,7 +44,7 @@ export const MarketDemandHeatmap: React.FC = () => {
                         className="absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer group/node"
                     >
                         <div className="relative">
-                            <motion.div
+                            <m.div
                                 animate={{ scale: [1, 1.5, 1], opacity: [0.6, 0.2, 0.6] }}
                                 transition={{ duration: 2, repeat: Infinity }}
                                 className="absolute inset-0 w-8 h-8 -translate-x-1/4 -translate-y-1/4 rounded-full"
@@ -66,7 +66,7 @@ export const MarketDemandHeatmap: React.FC = () => {
                                 </div>
                             </div>
                         </div>
-                    </motion.div>
+                    </m.div>
                 ))}
 
                 {/* Global Connection Lines (Decorative Migration Trails) */}
@@ -80,7 +80,7 @@ export const MarketDemandHeatmap: React.FC = () => {
                     </defs>
 
                     {/* Migration Trail 1: NYC -> Paris */}
-                    <motion.path
+                    <m.path
                         d="M 25% 38% Q 35% 30% 45% 35%"
                         stroke="url(#lineGrad)"
                         strokeWidth="1.5"
@@ -91,7 +91,7 @@ export const MarketDemandHeatmap: React.FC = () => {
                     />
 
                     {/* Migration Trail 2: Tokyo -> Mumbai */}
-                    <motion.path
+                    <m.path
                         d="M 85% 40% Q 78% 52% 70% 65%"
                         stroke="#FFD700"
                         strokeWidth="0.5"
@@ -102,7 +102,7 @@ export const MarketDemandHeatmap: React.FC = () => {
                     />
 
                     {/* Migration Trail 3: Milan -> NYC */}
-                    <motion.path
+                    <m.path
                         d="M 48% 42% Q 36% 45% 25% 38%"
                         stroke="#EC4899"
                         strokeWidth="0.5"

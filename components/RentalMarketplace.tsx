@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { RentalListing, RentalCategory } from '../types';
 import { MOCK_RENTAL_LISTINGS, MOCK_TALENT_POOL } from '../constants';
 import {
@@ -25,7 +25,7 @@ const ListingCard: React.FC<{ listing: RentalListing; onClick: () => void }> = (
     const owner = MOCK_TALENT_POOL.find(u => u.id === listing.ownerId);
 
     return (
-        <motion.div
+        <m.div
             layout
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -96,7 +96,7 @@ const ListingCard: React.FC<{ listing: RentalListing; onClick: () => void }> = (
                     </div>
                 </div>
             </div>
-        </motion.div>
+        </m.div>
     );
 };
 
@@ -115,7 +115,7 @@ const ListingDetail: React.FC<{ listing: RentalListing; onClose: () => void }> =
 
     return (
         <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm">
-            <motion.div
+            <m.div
                 initial={{ x: '100%' }}
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
@@ -311,7 +311,7 @@ const ListingDetail: React.FC<{ listing: RentalListing; onClose: () => void }> =
                         )}
                     </div>
                 )}
-            </motion.div>
+            </m.div>
         </div>
     );
 };
@@ -408,7 +408,7 @@ export const RentalMarketplace: React.FC<RentalMarketplaceProps> = ({ onListItem
 
                 <AnimatePresence mode="popLayout">
                     {filtered.length > 0 ? (
-                        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <m.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {filtered.map(listing => (
                                 <ListingCard
                                     key={listing.id}
@@ -416,9 +416,9 @@ export const RentalMarketplace: React.FC<RentalMarketplaceProps> = ({ onListItem
                                     onClick={() => setSelectedListingId(listing.id)}
                                 />
                             ))}
-                        </motion.div>
+                        </m.div>
                     ) : (
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             className="text-center py-32 bg-white rounded-[3rem] border border-gray-100"
@@ -426,7 +426,7 @@ export const RentalMarketplace: React.FC<RentalMarketplaceProps> = ({ onListItem
                             <Camera className="w-16 h-16 text-gray-200 mx-auto mb-6" />
                             <h3 className="text-2xl font-serif italic text-gray-400">No listings found</h3>
                             <p className="text-sm text-gray-400 mt-2">Try a different category or search term.</p>
-                        </motion.div>
+                        </m.div>
                     )}
                 </AnimatePresence>
             </div>

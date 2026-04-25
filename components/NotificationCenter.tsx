@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { AppNotification, NotificationType } from '../types';
 import {
     Bell, X, Check, CheckCheck, Briefcase, MessageCircle,
@@ -57,7 +57,7 @@ const NotifRow: React.FC<{
     const Icon = cfg.icon;
 
     return (
-        <motion.div
+        <m.div
             layout
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -97,7 +97,7 @@ const NotifRow: React.FC<{
             </div>
 
             <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-gray-500 shrink-0 mt-1 transition-colors" />
-        </motion.div>
+        </m.div>
     );
 };
 
@@ -166,7 +166,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                 <div className="relative shrink-0">
                     <Bell className="w-4 h-4" />
                     {unreadCount > 0 && (
-                        <motion.div
+                        <m.div
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                             className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-ffn-primary rounded-full flex items-center justify-center"
@@ -174,7 +174,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                             <span className="text-[8px] font-black text-white leading-none">
                                 {unreadCount > 9 ? '9+' : unreadCount}
                             </span>
-                        </motion.div>
+                        </m.div>
                     )}
                 </div>
                 {!isSidebarCollapsed && (
@@ -187,7 +187,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                 {isOpen && (
                     <>
                         {/* Backdrop */}
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
@@ -196,7 +196,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                         />
 
                         {/* Panel — appears to the right of the sidebar on desktop, bottom sheet on mobile */}
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, x: -20, scale: 0.96 }}
                             animate={{ opacity: 1, x: 0, scale: 1 }}
                             exit={{ opacity: 0, x: -20, scale: 0.96 }}
@@ -272,7 +272,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                                             />
                                         ))
                                     ) : (
-                                        <motion.div
+                                        <m.div
                                             initial={{ opacity: 0 }}
                                             animate={{ opacity: 1 }}
                                             className="flex flex-col items-center justify-center py-16 text-center"
@@ -282,7 +282,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                                             </div>
                                             <p className="font-serif italic text-gray-400 text-lg">All quiet here</p>
                                             <p className="text-xs text-gray-300 mt-1">New activity will appear here instantly</p>
-                                        </motion.div>
+                                        </m.div>
                                     )}
                                 </AnimatePresence>
                             </div>
@@ -293,7 +293,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                                     Real-time · Updating automatically
                                 </p>
                             </div>
-                        </motion.div>
+                        </m.div>
                     </>
                 )}
             </AnimatePresence>
@@ -306,13 +306,13 @@ export const NotificationBellBadge: React.FC<{ count: number; onClick: () => voi
     <button onClick={onClick} className="relative" title="Notifications">
         <Bell className="w-5 h-5 text-gray-400" />
         {count > 0 && (
-            <motion.div
+            <m.div
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
                 className="absolute -top-1 -right-1 w-4 h-4 bg-ffn-primary rounded-full flex items-center justify-center"
             >
                 <span className="text-[7px] font-black text-white">{count > 9 ? '9+' : count}</span>
-            </motion.div>
+            </m.div>
         )}
     </button>
 );

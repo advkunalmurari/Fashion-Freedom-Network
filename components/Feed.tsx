@@ -1,6 +1,6 @@
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { m, AnimatePresence } from 'framer-motion';
 import { PlusSquare, Loader2, Sparkles } from 'lucide-react';
 import { Post, User } from '../types';
 import { MOCK_POSTS, MOCK_TALENT_POOL } from '../constants';
@@ -11,6 +11,7 @@ import { EditorialFeedFeature } from './EditorialFeedFeature';
 import { DiscoveryPulseCard } from './DiscoveryPulseCard';
 import { TalentInjectionCard } from './TalentInjectionCard';
 import { supabase } from '../supabase';
+import { optimizeUnsplashUrl } from '../utils/mediaUtils';
 
 interface FeedProps {
   onSelectPost?: (id: string) => void;
@@ -140,7 +141,7 @@ export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
       {/* Stories Tray */}
       <div className="flex space-x-6 md:space-x-10 overflow-x-auto pb-10 no-scrollbar border-b border-white/5 px-4">
 
-        <motion.div
+        <m.div
           whileHover={{ scale: 1.05 }}
           className="flex flex-col items-center space-y-4 flex-none cursor-pointer group"
         >
@@ -148,9 +149,9 @@ export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
             <PlusSquare className="w-8 h-8 text-gray-300 group-hover:text-ffn-primary" />
           </div>
           <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold group-hover:text-ffn-black">Your Story</span>
-        </motion.div>
+        </m.div>
         {MOCK_TALENT_POOL.slice(0, 8).map((talent, idx) => (
-          <motion.div
+          <m.div
             key={talent.id}
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -162,10 +163,11 @@ export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
             <div className={`w-24 h-24 rounded-[2.5rem] p-[4px] transition-all duration-500 shadow-xl ${talent.isBoosted ? 'bg-gradient-to-tr from-ffn-primary via-ffn-accent to-ffn-secondary animate-gradient-xy' : 'bg-gray-200'}`}>
               <div className="w-full h-full rounded-[2.2rem] overflow-hidden border-4 border-white">
                 <img
-                  src={talent.avatarUrl}
+                  src={optimizeUnsplashUrl(talent.avatarUrl, 128)}
                   className="w-full h-full object-cover transition-all group-hover:scale-110"
                   alt=""
-                  loading="eager"
+                  loading="lazy"
+                  decoding="async"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.src = '/demo/ffn_logo_placeholder.png'; // Fallback to a placeholder if exists, or handled by CSS
@@ -174,7 +176,7 @@ export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
               </div>
             </div>
             <span className="text-[10px] uppercase tracking-widest text-gray-500 font-bold group-hover:text-ffn-black truncate max-w-[80px]">{talent.username}</span>
-          </motion.div>
+          </m.div>
         ))}
       </div>
 
@@ -216,7 +218,7 @@ export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
               ))}
             </div>
           ) : posts.length === 0 ? (
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className="py-24 text-center flex flex-col items-center justify-center space-y-6 rounded-[2.5rem] border border-dashed border-white/10"
@@ -229,7 +231,7 @@ export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
               <p className="text-gray-400 text-sm max-w-sm">
                 No posts yet — start building your professional portfolio or follow other fashion industry talents to discover their latest work.
               </p>
-            </motion.div>
+            </m.div>
           ) : (
             posts.map((post, idx) => (
               <React.Fragment key={post.id}>
@@ -260,7 +262,7 @@ export const Feed: React.FC<FeedProps> = ({ onSelectPost }) => {
         <div ref={observerTarget} className="py-20 flex flex-col items-center justify-center space-y-6">
           {isRefreshing ? null : isLoadingMore ? (
             <div className="flex flex-col items-center space-y-4">
-              <motion.div
+              <m.div
                 animate={{ rotate: 360 }}
                 transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
                 className="w-12 h-12 border-t-2 border-ffn-primary rounded-full"

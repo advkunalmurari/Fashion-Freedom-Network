@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Activity, Zap, TrendingUp, Target } from 'lucide-react';
 
 export const NeuralForecast: React.FC = () => {
@@ -32,7 +32,7 @@ export const NeuralForecast: React.FC = () => {
                     ))}
 
                     {/* Main Forecast Path */}
-                    <motion.path
+                    <m.path
                         d={`M ${path}`}
                         fill="none"
                         stroke="url(#gradient)"
@@ -51,7 +51,7 @@ export const NeuralForecast: React.FC = () => {
 
                     {/* Glowing Points */}
                     {points.map((p, i) => (
-                        <motion.circle
+                        <m.circle
                             key={i}
                             cx={(i / (points.length - 1)) * 100}
                             cy={100 - p}
@@ -64,7 +64,7 @@ export const NeuralForecast: React.FC = () => {
                             {i === points.length - 1 && (
                                 <animate attributeName="r" values="1.5;3;1.5" dur="2s" repeatCount="indefinite" />
                             )}
-                        </motion.circle>
+                        </m.circle>
                     ))}
                 </svg>
 

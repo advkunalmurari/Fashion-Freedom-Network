@@ -1,16 +1,12 @@
-
 import { supabase } from '../supabase';
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
 
 export const networkService = {
     // --- FOLLOWS ---
     async getFollowStatus(targetUserId: string) {
-        // We still use small read-only supabase check for speed, 
-        // but we should eventually move this to profile resolving if needed.
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return false;
 
-        const { count, error } = await supabase
+        const { count } = await supabase
             .from('follows')
             .select('*', { count: 'exact', head: true })
             .eq('follower_id', session.user.id)
@@ -24,17 +20,17 @@ export const networkService = {
             const { data: { session } } = await supabase.auth.getSession();
             if (!session) return { success: false, error: 'Unauthorized' };
 
-            const response = await fetch(`${API_URL}/social/follow`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${session.access_token}`
-                },
-                body: JSON.stringify({ following_id: targetUserId })
-            });
+            const { error } = await supabase
+                .from('follows')
+                .insert({
+                    follower_id: session.user.id,
+                    following_id: targetUserId
+                });
 
-            const res = await response.json();
-            if (!res.success) throw new Error(res.message);
+            if (error) {
+                // If it's a unique constraint violation, they already follow
+                if (error.code !== '23505') throw error;
+            }
 
             return { success: true };
         } catch (error: any) {
@@ -48,17 +44,13 @@ export const networkService = {
             const { data: { session } } = await supabase.auth.getSession();
             if (!session) return { success: false, error: 'Unauthorized' };
 
-            const response = await fetch(`${API_URL}/social/unfollow`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${session.access_token}`
-                },
-                body: JSON.stringify({ following_id: targetUserId })
-            });
+            const { error } = await supabase
+                .from('follows')
+                .delete()
+                .eq('follower_id', session.user.id)
+                .eq('following_id', targetUserId);
 
-            const res = await response.json();
-            if (!res.success) throw new Error(res.message);
+            if (error) throw error;
 
             return { success: true };
         } catch (error: any) {
@@ -77,9 +69,8 @@ export const networkService = {
             .select(`
                 id,
                 status,
-                pitch,
                 created_at,
-                sender:profiles!sender_id (id, full_name, avatar_url, role, location)
+                sender:profiles!sender_id (id, full_name, avatar_url, category, location)
             `)
             .eq('receiver_id', session.user.id)
             .eq('status', 'pending');
@@ -97,22 +88,61 @@ export const networkService = {
             .insert([{
                 sender_id: session.user.id,
                 receiver_id: targetUserId,
-                pitch,
                 status: 'pending'
             }]);
 
-        if (error) return { success: false, error: error.message };
+        if (error) {
+            if (error.code !== '23505') return { success: false, error: error.message };
+        }
         return { success: true };
     },
 
     async respondToConnectionRequest(requestId: string, status: 'accepted' | 'declined') {
-        const { error } = await supabase
-            .from('connection_requests')
-            .update({ status })
-            .eq('id', requestId);
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) return { success: false, error: 'Unauthorized' };
 
-        if (error) return { success: false, error: error.message };
-        return { success: true };
+            // Start by getting the request to know who sent it
+            const { data: request, error: fetchError } = await supabase
+                .from('connection_requests')
+                .select('sender_id, receiver_id')
+                .eq('id', requestId)
+                .single();
+
+            if (fetchError) throw fetchError;
+
+            // Only the receiver can accept/decline
+            if (request.receiver_id !== session.user.id) {
+                throw new Error("Unauthorized to respond to this request");
+            }
+
+            const { error: updateError } = await supabase
+                .from('connection_requests')
+                .update({ status })
+                .eq('id', requestId);
+
+            if (updateError) throw updateError;
+
+            // If accepted, add to connections table
+            if (status === 'accepted') {
+                const { error: insertError } = await supabase
+                    .from('connections')
+                    .insert({
+                        user1_id: request.sender_id,
+                        user2_id: request.receiver_id
+                    });
+                
+                // Ignore unique constraint errors
+                if (insertError && insertError.code !== '23505') {
+                    throw insertError;
+                }
+            }
+
+            return { success: true };
+        } catch (error: any) {
+            console.error('Error responding to request:', error);
+            return { success: false, error: error.message };
+        }
     },
 
     async getConnectionStatus(targetUserId: string) {
@@ -125,7 +155,7 @@ export const networkService = {
         const { data: connected } = await supabase
             .from('connections')
             .select('*')
-            .or(`and(user_id_1.eq.${myId},user_id_2.eq.${targetUserId}),and(user_id_1.eq.${targetUserId},user_id_2.eq.${myId})`)
+            .or(`and(user1_id.eq.${myId},user2_id.eq.${targetUserId}),and(user1_id.eq.${targetUserId},user2_id.eq.${myId})`)
             .maybeSingle();
 
         if (connected) return 'connected';

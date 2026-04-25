@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Camera, MapPin, Sparkles, CheckCircle, ArrowRight, Zap, Loader2, DollarSign } from 'lucide-react';
 import { MOCK_SHOOTS, PRICING } from '../constants';
 import { PayPalButton } from './PayPalButton';
@@ -44,7 +44,7 @@ export const Photoshoots: React.FC = () => {
 
       <AnimatePresence mode="wait">
         {bookingStep === 1 && (
-          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="bg-white p-12 md:p-16 rounded-[4rem] border border-gray-100 shadow-2xl space-y-12 overflow-hidden">
+          <m.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="bg-white p-12 md:p-16 rounded-[4rem] border border-gray-100 shadow-2xl space-y-12 overflow-hidden">
             <div className="flex justify-between items-center pb-8 border-b border-gray-100">
               <h2 className="text-4xl font-serif italic text-ffn-black">Configure Production</h2>
               <button onClick={() => setBookingStep(0)} className="text-[10px] uppercase font-bold tracking-widest text-gray-400 hover:text-ffn-primary">Cancel</button>
@@ -84,7 +84,7 @@ export const Photoshoots: React.FC = () => {
             </div>
 
             {selectedPackage && (
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="pt-8 border-t border-gray-100 space-y-8">
+              <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="pt-8 border-t border-gray-100 space-y-8">
                 <div className="bg-gray-50 p-8 rounded-[3rem] text-center space-y-6">
                   <p className="text-[10px] font-black uppercase tracking-widest text-emerald-600">Secure Your Production Date</p>
                   <p className="text-sm text-gray-500 max-w-md mx-auto">A 50% deposit is required to secure the production crew. The remainder is released upon delivery.</p>
@@ -97,9 +97,9 @@ export const Photoshoots: React.FC = () => {
                     />
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
             )}
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 
@@ -107,7 +107,7 @@ export const Photoshoots: React.FC = () => {
         <h2 className="text-5xl font-serif italic text-ffn-black">Recent Editorials</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
           {MOCK_SHOOTS.map((shoot, idx) => (
-            <motion.div
+            <m.div
               key={shoot.id}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -136,7 +136,7 @@ export const Photoshoots: React.FC = () => {
                   <ArrowRight className="w-6 h-6" />
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>

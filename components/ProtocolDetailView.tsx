@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
     Send, Paperclip, MoreVertical, X,
     ArrowUpRight, Info, CheckCircle2,
@@ -97,7 +97,7 @@ export const ProtocolDetailView: React.FC<ProtocolDetailViewProps> = ({ protocol
                     </div>
 
                     {messages.map((m) => (
-                        <motion.div
+                        <m.div
                             key={m.id}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -113,7 +113,7 @@ export const ProtocolDetailView: React.FC<ProtocolDetailViewProps> = ({ protocol
                                     {new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </div>
                             </div>
-                        </motion.div>
+                        </m.div>
                     ))}
                     <div ref={messagesEndRef} />
                 </div>

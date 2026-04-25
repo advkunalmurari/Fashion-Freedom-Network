@@ -1,6 +1,6 @@
 
 import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
   Sparkles, Play, Search, Camera, ArrowRight, Eye,
   Heart, MessageCircle, ShieldCheck, TrendingUp, Zap, Star,
@@ -301,7 +301,7 @@ export const Explore: React.FC = () => {
           {/* Category Pills */}
           <div className="flex overflow-x-auto no-scrollbar space-x-3 items-center">
             {CATEGORIES.map(cat => (
-              <motion.button
+              <m.button
                 key={cat}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
@@ -312,7 +312,7 @@ export const Explore: React.FC = () => {
                   }`}
               >
                 {cat}
-              </motion.button>
+              </m.button>
             ))}
           </div>
         </div>
@@ -331,7 +331,7 @@ export const Explore: React.FC = () => {
         </div>
         <div className="flex overflow-x-auto no-scrollbar space-x-4 pb-2">
           {TRENDING_HASHTAGS.map(({ tag, count }) => (
-            <motion.button
+            <m.button
               key={tag}
               whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.98 }}
@@ -340,7 +340,7 @@ export const Explore: React.FC = () => {
             >
               <span className="text-[9px] font-black uppercase tracking-widest text-ffn-primary">{tag}</span>
               <span className="ml-2 text-[8px] font-bold text-gray-400">{count}</span>
-            </motion.button>
+            </m.button>
           ))}
         </div>
       </section>
@@ -354,14 +354,14 @@ export const Explore: React.FC = () => {
       <section>
         <AnimatePresence mode="popLayout">
           {filtered.length === 0 ? (
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="py-32 text-center space-y-6"
             >
               <p className="text-4xl font-serif italic text-gray-200">No Results Found</p>
               <p className="text-xs uppercase tracking-widest text-gray-400">Try a different category or search term</p>
-            </motion.div>
+            </m.div>
           ) : (
             <div className="columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-4 space-y-4">
               {filtered.map((item, idx) => {
@@ -375,7 +375,7 @@ export const Explore: React.FC = () => {
                       : 'aspect-square';
 
                 return (
-                  <motion.div
+                  <m.div
                     key={item.id}
                     layout
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -407,13 +407,13 @@ export const Explore: React.FC = () => {
                     </div>
 
                     {/* Save button (top right) */}
-                    <motion.button
+                    <m.button
                       className={`absolute top-4 right-4 p-2 rounded-full backdrop-blur-md border transition-all ${isSaved ? 'bg-ffn-primary border-ffn-primary text-white shadow-xl' : 'bg-white/20 border-white/30 text-white hover:bg-white/40'}`}
                       onClick={e => toggleSave(item.id, e)}
                       whileTap={{ scale: 0.85 }}
                     >
                       <Bookmark className="w-3.5 h-3.5" fill={isSaved ? 'currentColor' : 'none'} />
-                    </motion.button>
+                    </m.button>
 
                     {/* Bottom Glass Overlay */}
                     <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
@@ -444,7 +444,7 @@ export const Explore: React.FC = () => {
                       {/* Engagement Row */}
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4">
-                          <motion.button
+                          <m.button
                             onClick={e => toggleLike(item.id, e)}
                             className="flex items-center space-x-1.5 group/like"
                             whileTap={{ scale: 0.8 }}
@@ -456,7 +456,7 @@ export const Explore: React.FC = () => {
                             <span className="text-[8px] font-black text-white/80">
                               {(item.likes + (isLiked ? 1 : 0)).toLocaleString()}
                             </span>
-                          </motion.button>
+                          </m.button>
                           <button className="flex items-center space-x-1.5">
                             <MessageCircle className="w-4 h-4 text-white/70" />
                             <span className="text-[8px] font-black text-white/80">{item.comments}</span>
@@ -467,7 +467,7 @@ export const Explore: React.FC = () => {
                         </button>
                       </div>
                     </div>
-                  </motion.div>
+                  </m.div>
                 );
               })}
             </div>
@@ -493,7 +493,7 @@ export const Explore: React.FC = () => {
 
         <div className="flex overflow-x-auto no-scrollbar space-x-6 pb-4">
           {EXPLORE_ARTISTS.map((artist, i) => (
-            <motion.div
+            <m.div
               key={artist.id}
               whileHover={{ y: -8 }}
               className="flex-none w-52 bg-white rounded-[3rem] border border-gray-100 shadow-lg hover:shadow-2xl transition-all overflow-hidden group cursor-pointer"
@@ -534,7 +534,7 @@ export const Explore: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </section>
@@ -542,7 +542,7 @@ export const Explore: React.FC = () => {
       {/* ─── Trending Editorial Preview ─── */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {EXPLORE_GRID.filter(g => g.isLarge).map((item, i) => (
-          <motion.div
+          <m.div
             key={item.id}
             whileHover={{ y: -10 }}
             className={`relative rounded-[4rem] overflow-hidden shadow-2xl cursor-pointer ${i === 0 ? 'md:col-span-2' : ''}`}
@@ -577,7 +577,7 @@ export const Explore: React.FC = () => {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         ))}
       </section>
 
@@ -590,7 +590,7 @@ export const Explore: React.FC = () => {
         <div className="absolute inset-0 bg-ffn-primary/20 mix-blend-overlay opacity-30" />
         <div className="relative z-10 space-y-8">
           <div className="flex justify-center">
-            <motion.div
+            <m.div
               animate={{ rotate: 360 }}
               transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
               className="w-24 h-24 border border-ffn-primary/30 rounded-full flex items-center justify-center"
@@ -598,7 +598,7 @@ export const Explore: React.FC = () => {
               <div className="w-16 h-16 bg-ffn-primary/10 backdrop-blur-3xl rounded-full flex items-center justify-center text-ffn-primary">
                 <Eye className="w-8 h-8" />
               </div>
-            </motion.div>
+            </m.div>
           </div>
           <div className="space-y-4">
             <h2 className="text-5xl md:text-7xl font-serif italic text-white tracking-tighter">Enter the Graph.</h2>

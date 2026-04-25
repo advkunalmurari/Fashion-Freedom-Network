@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { TrendingUp, User, ArrowUpRight, Zap } from 'lucide-react';
 import { MOCK_TALENT_POOL } from '../constants';
 
@@ -25,7 +25,7 @@ export const GrowthLeaderboard: React.FC = () => {
 
             <div className="space-y-4">
                 {risingTalent.map((talent, idx) => (
-                    <motion.div
+                    <m.div
                         key={talent.id}
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -61,7 +61,7 @@ export const GrowthLeaderboard: React.FC = () => {
                                 <p className="text-[6px] font-black uppercase tracking-widest text-gray-600">Sync Rate</p>
                             </div>
                         </div>
-                    </motion.div>
+                    </m.div>
                 ))}
             </div>
 

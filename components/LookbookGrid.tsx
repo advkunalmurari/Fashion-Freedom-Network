@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Lookbook } from '../types';
 import { X, Folder, Calendar, Tag, ChevronRight } from 'lucide-react';
 
@@ -19,7 +19,7 @@ export const LookbookGrid: React.FC<{ lookbooks: Lookbook[] }> = ({ lookbooks })
         <div className="space-y-12">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {lookbooks.map((lb) => (
-                    <motion.div
+                    <m.div
                         key={lb.id}
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -52,13 +52,13 @@ export const LookbookGrid: React.FC<{ lookbooks: Lookbook[] }> = ({ lookbooks })
                                 </div>
                             </div>
                         </div>
-                    </motion.div>
+                    </m.div>
                 ))}
             </div>
 
             <AnimatePresence>
                 {selectedLookbook && (
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -93,7 +93,7 @@ export const LookbookGrid: React.FC<{ lookbooks: Lookbook[] }> = ({ lookbooks })
                             <div className="flex-1 overflow-y-auto pr-4 no-scrollbar">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                     {selectedLookbook.images.map((img, idx) => (
-                                        <motion.div
+                                        <m.div
                                             key={idx}
                                             initial={{ opacity: 0, scale: 0.95 }}
                                             animate={{ opacity: 1, scale: 1 }}
@@ -101,12 +101,12 @@ export const LookbookGrid: React.FC<{ lookbooks: Lookbook[] }> = ({ lookbooks })
                                             className="rounded-[3rem] overflow-hidden shadow-2xl border border-gray-100"
                                         >
                                             <img src={img} alt="" className="w-full h-auto" />
-                                        </motion.div>
+                                        </m.div>
                                     ))}
                                 </div>
                             </div>
                         </div>
-                    </motion.div>
+                    </m.div>
                 )}
             </AnimatePresence>
         </div>

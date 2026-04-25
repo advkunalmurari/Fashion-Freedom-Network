@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { User } from '../types';
 import { Users, ExternalLink } from 'lucide-react';
 
@@ -20,7 +20,7 @@ export const CollaboratorNetwork: React.FC<{ collaborators: User[] }> = ({ colla
 
             <div className="flex flex-wrap gap-6">
                 {collaborators.map((peer, idx) => (
-                    <motion.div
+                    <m.div
                         key={peer.id}
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -43,16 +43,16 @@ export const CollaboratorNetwork: React.FC<{ collaborators: User[] }> = ({ colla
                                 {peer.displayName} • {peer.role}
                             </div>
                         </div>
-                    </motion.div>
+                    </m.div>
                 ))}
 
-                <motion.button
+                <m.button
                     whileHover={{ scale: 1.05 }}
                     className="w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-dashed border-gray-100 flex flex-col items-center justify-center text-gray-300 hover:border-ffn-primary/30 hover:text-ffn-primary transition-all group"
                 >
                     <span className="text-xl font-bold">+</span>
                     <span className="text-[8px] font-black uppercase tracking-widest">Connect</span>
-                </motion.button>
+                </m.button>
             </div>
         </div>
     );

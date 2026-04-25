@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import {
     Zap,
     Circle,
@@ -48,7 +48,7 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
                     const Icon = Config.icon;
 
                     return (
-                        <motion.div
+                        <m.div
                             key={activity.id}
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
@@ -81,7 +81,7 @@ export const ActivityFeed: React.FC<ActivityFeedProps> = ({
 
                             {/* Hover effect indicator */}
                             <div className="absolute -inset-x-2 -inset-y-2 rounded-xl bg-gray-50 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                        </motion.div>
+                        </m.div>
                     );
                 })}
             </div>

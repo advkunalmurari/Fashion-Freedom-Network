@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { ShoppingBag, Star, ArrowRight, Zap, Target } from 'lucide-react';
 
 interface MarketplaceCardProps {
@@ -32,7 +32,7 @@ export const MarketplaceCard: React.FC<MarketplaceCardProps> = ({
     const badge = getBadge();
 
     return (
-        <motion.div
+        <m.div
             layout
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -76,6 +76,6 @@ export const MarketplaceCard: React.FC<MarketplaceCardProps> = ({
                     </div>
                 </div>
             </div>
-        </motion.div>
+        </m.div>
     );
 };

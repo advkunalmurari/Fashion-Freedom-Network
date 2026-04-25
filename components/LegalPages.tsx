@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { ShieldCheck, Lock, FileText, Info } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 
 const LegalContainer: React.FC<{ title: string; subtitle: string; icon: React.ReactNode; children: React.ReactNode }> = ({ title, subtitle, icon, children }) => (
   <div className="max-w-4xl mx-auto py-20 space-y-16 animate-in fade-in duration-700">

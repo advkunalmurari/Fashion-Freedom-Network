@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence, Reorder } from 'framer-motion';
+import { m, AnimatePresence, Reorder } from 'framer-motion';
 import {
     Users,
     Search,
@@ -93,7 +93,7 @@ export const BrandRecruitingCRM: React.FC = () => {
                                         if (!talent) return null;
 
                                         return (
-                                            <motion.div
+                                            <m.div
                                                 layout
                                                 key={lead.id}
                                                 initial={{ opacity: 0, scale: 0.95 }}
@@ -151,7 +151,7 @@ export const BrandRecruitingCRM: React.FC = () => {
                                                         </div>
                                                     </div>
                                                 )}
-                                            </motion.div>
+                                            </m.div>
                                         );
                                     })}
                                 </AnimatePresence>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Lock, ArrowRight, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabase';
@@ -72,50 +72,50 @@ const ResetPasswordPage: React.FC = () => {
                 <div className="left-panel">
                     <div className="max-w-xl space-y-12 w-full text-left pl-12 lg:pl-24">
                         <div className="space-y-6">
-                            <motion.div
+                            <m.div
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.8 }}
                                 className="w-16 h-16 text-white mb-6 drop-shadow-2xl"
                             >
                                 {LOGO_SVG}
-                            </motion.div>
-                            <motion.h1
+                            </m.div>
+                            <m.h1
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.1 }}
                                 className="text-5xl lg:text-7xl font-bold tracking-tight text-white font-serif max-w-2xl leading-[1.1]"
                             >
                                 New Password
-                            </motion.h1>
-                            <motion.p
+                            </m.h1>
+                            <m.p
                                 initial={{ opacity: 0, y: 15 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.2 }}
                                 className="text-xl lg:text-2xl text-white/60 font-light"
                             >
                                 Secure your Fashion Freedom Network identity.
-                            </motion.p>
+                            </m.p>
                         </div>
                     </div>
                 </div>
 
                 {/* Right Panel */}
                 <div className="right-panel">
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="w-full max-w-md p-10 lg:p-14 rounded-[3.5rem] bg-white/5 backdrop-blur-3xl border border-white/10 shadow-3xl text-center space-y-10"
                     >
                         {success ? (
                             <div className="space-y-8 py-10">
-                                <motion.div
+                                <m.div
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
                                     className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto"
                                 >
                                     <CheckCircle2 className="text-emerald-400" size={40} />
-                                </motion.div>
+                                </m.div>
                                 <div className="space-y-4">
                                     <h2 className="text-3xl font-serif italic text-white">Password Updated!</h2>
                                     <p className="text-white/40 text-sm leading-relaxed">
@@ -197,7 +197,7 @@ const ResetPasswordPage: React.FC = () => {
                                 </form>
                             </>
                         )}
-                    </motion.div>
+                    </m.div>
                 </div>
             </div>
         </div>

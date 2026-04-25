@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
     User, Camera, Mail, FileText, LogOut, Save, Shield, Globe,
     Lock, Bell, Eye, Database, Terminal, Loader2, Instagram,
@@ -158,7 +158,7 @@ export const Settings: React.FC<SettingsProps> = ({ user, onLogout }) => {
                 <div className="flex-1 p-8 lg:p-16 overflow-y-auto">
                     <AnimatePresence mode="wait">
                         {activeSection === 'identity' && (
-                            <motion.div
+                            <m.div
                                 key="identity"
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -224,11 +224,11 @@ export const Settings: React.FC<SettingsProps> = ({ user, onLogout }) => {
                                         />
                                     </div>
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )}
 
                         {activeSection === 'social' && (
-                            <motion.div
+                            <m.div
                                 key="social"
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -263,11 +263,11 @@ export const Settings: React.FC<SettingsProps> = ({ user, onLogout }) => {
                                         </div>
                                     ))}
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )}
 
                         {activeSection === 'security' && (
-                            <motion.div
+                            <m.div
                                 key="security"
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -301,7 +301,7 @@ export const Settings: React.FC<SettingsProps> = ({ user, onLogout }) => {
                                         <ChevronRightIcon className="w-4 h-4 text-white/10" />
                                     </button>
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )}
                     </AnimatePresence>
                 </div>

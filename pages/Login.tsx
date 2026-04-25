@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
 import { supabase } from '../supabase';
 import { LOGO_SVG } from '../constants';
@@ -40,35 +40,35 @@ const LoginPage: React.FC<LoginProps> = ({ onLogin }) => {
                 <div className="left-panel">
                     <div className="max-w-xl space-y-12 w-full text-left pl-12 lg:pl-24">
                         <div className="space-y-6">
-                            <motion.div
+                            <m.div
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.8 }}
                                 className="w-16 h-16 text-white mb-6 drop-shadow-2xl"
                             >
                                 {LOGO_SVG}
-                            </motion.div>
-                            <motion.h1
+                            </m.div>
+                            <m.h1
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.1 }}
                                 className="text-5xl lg:text-7xl font-bold tracking-tight text-white font-serif max-w-2xl leading-[1.1]"
                             >
                                 Fashion Freedom Network
-                            </motion.h1>
-                            <motion.p
+                            </m.h1>
+                            <m.p
                                 initial={{ opacity: 0, y: 15 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.2 }}
                                 className="text-xl lg:text-2xl text-white/60 font-light"
                             >
                                 India’s Emerging Fashion Talent Discovery Platform
-                            </motion.p>
+                            </m.p>
                         </div>
 
                         <div className="space-y-4 text-left inline-block">
                             {characteristics.map((item, idx) => (
-                                <motion.div
+                                <m.div
                                     key={idx}
                                     initial={{ opacity: 0, x: -15 }}
                                     animate={{ opacity: 1, x: 0 }}
@@ -77,18 +77,18 @@ const LoginPage: React.FC<LoginProps> = ({ onLogin }) => {
                                 >
                                     <CheckCircle2 size={18} className="text-white/20" />
                                     <span>{item}</span>
-                                </motion.div>
+                                </m.div>
                             ))}
                         </div>
 
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 0.2 }}
                             transition={{ delay: 1.5 }}
                             className="pt-12"
                         >
                             <p className="text-[10px] uppercase tracking-[0.5em] font-medium">Professional Portfolios. Verified Talent. Real Opportunities.</p>
-                        </motion.div>
+                        </m.div>
                     </div>
                 </div>
 

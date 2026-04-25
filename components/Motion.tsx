@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Play, Heart, MessageCircle, Share2, Music, Sparkles, Loader2, Volume2, VolumeX, Briefcase, Plus } from 'lucide-react';
 import { postService } from '../services/postService';
 import { Post } from '../types';
@@ -121,7 +121,7 @@ const ReelCard: React.FC<{ reel: Post, muted: boolean, setMuted: (muted: boolean
         {/* Play State Overlay */}
         <AnimatePresence>
           {!isPlaying && reel.mediaUrls?.[0] && (
-            <motion.div
+            <m.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
@@ -130,7 +130,7 @@ const ReelCard: React.FC<{ reel: Post, muted: boolean, setMuted: (muted: boolean
               <div className="w-24 h-24 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/20">
                 <Play className="w-10 h-10 ml-2" />
               </div>
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>
       </div>
@@ -208,34 +208,34 @@ const ReelCard: React.FC<{ reel: Post, muted: boolean, setMuted: (muted: boolean
         {/* Side Actions */}
         <div className="flex flex-col items-center space-y-6 md:space-y-8">
           <div className="flex flex-col items-center space-y-2">
-            <motion.button
+            <m.button
               whileTap={{ scale: 0.8 }}
               onClick={(e) => { e.stopPropagation(); toggleLike(); }}
               className={`p-4 md:p-5 rounded-full backdrop-blur-xl border border-white/20 transition-all shadow-2xl ${isLiked ? 'bg-ffn-accent text-white border-ffn-accent shadow-[0_0_30px_rgba(244,63,94,0.4)]' : 'bg-black/40 text-white hover:bg-white/10'}`}
             >
               <Heart className={`w-6 h-6 md:w-7 md:h-7 ${isLiked ? 'fill-current' : ''}`} />
-            </motion.button>
+            </m.button>
             <span className="text-white text-[11px] font-bold drop-shadow-md">{likesCount}</span>
           </div>
 
           <div className="flex flex-col items-center space-y-2">
-            <motion.button
+            <m.button
               whileTap={{ scale: 0.8 }}
               onClick={(e) => e.stopPropagation()}
               className="p-4 md:p-5 rounded-full bg-black/40 backdrop-blur-xl border border-white/20 text-white hover:bg-white/10 transition-all shadow-2xl"
             >
               <MessageCircle className="w-6 h-6 md:w-7 md:h-7" />
-            </motion.button>
+            </m.button>
             <span className="text-white text-[11px] font-bold drop-shadow-md">{reel.comments}</span>
           </div>
 
-          <motion.button
+          <m.button
             whileTap={{ scale: 0.8 }}
             onClick={(e) => e.stopPropagation()}
             className="p-4 md:p-5 rounded-full bg-black/40 backdrop-blur-xl border border-white/20 text-white hover:bg-white/10 transition-all shadow-2xl"
           >
             <Share2 className="w-6 h-6 md:w-7 md:h-7" />
-          </motion.button>
+          </m.button>
         </div>
       </div>
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Search, X, User, Briefcase, Camera, ArrowRight, Sparkles, TrendingUp, History } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { MOCK_TALENT_POOL, MOCK_CASTING_CALLS, MOCK_EDITORIALS } from '../constants';
@@ -72,14 +72,14 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ isDarkMode }) => {
 
             <AnimatePresence>
                 {isOpen && (
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className="fixed inset-0 z-[1000] flex items-start justify-center pt-[15vh] px-6 bg-black/60 backdrop-blur-xl"
                         onClick={() => setIsOpen(false)}
                     >
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, y: -20, scale: 0.98 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: -20, scale: 0.98 }}
@@ -201,8 +201,8 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ isDarkMode }) => {
                                     System Protocol Active
                                 </div>
                             </div>
-                        </motion.div>
-                    </motion.div>
+                        </m.div>
+                    </m.div>
                 )}
             </AnimatePresence>
         </>

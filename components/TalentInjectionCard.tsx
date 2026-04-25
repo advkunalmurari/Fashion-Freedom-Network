@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { UserPlus, Star, MapPin, Briefcase, ChevronRight } from 'lucide-react';
 import { User } from '../types';
 
@@ -10,7 +10,7 @@ interface TalentInjectionCardProps {
 
 export const TalentInjectionCard: React.FC<TalentInjectionCardProps> = ({ talent }) => {
     return (
-        <motion.div
+        <m.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -75,6 +75,6 @@ export const TalentInjectionCard: React.FC<TalentInjectionCardProps> = ({ talent
                     </div>
                 </div>
             </div>
-        </motion.div>
+        </m.div>
     );
 };

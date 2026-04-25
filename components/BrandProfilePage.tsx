@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { useParams, useNavigate } from 'react-router-dom';
 import { BrandProfile, BrandReview } from '../types';
 import { MOCK_BRAND_PROFILES, MOCK_BRAND_REVIEWS } from '../constants';
@@ -60,7 +60,7 @@ const ScoreBar: React.FC<{ label: string; score: number; icon: React.FC<any> }> 
                 <span className="text-sm font-black font-mono text-ffn-black">{score.toFixed(1)}</span>
             </div>
             <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }}
+                <m.div initial={{ width: 0 }} animate={{ width: `${pct}%` }}
                     transition={{ duration: 0.8, ease: 'easeOut' }}
                     className={`h-full rounded-full ${color}`} />
             </div>
@@ -78,7 +78,7 @@ const BrandReviewCard: React.FC<{
     const isLong = review.body.length > 220;
 
     return (
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+        <m.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
             className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm p-7 space-y-5">
             {/* Header */}
             <div className="flex items-start gap-4 justify-between">
@@ -154,7 +154,7 @@ const BrandReviewCard: React.FC<{
                     {helpfulSet.has(review.id) ? 'Helpful ✓' : `Helpful (${review.helpfulCount})`}
                 </button>
             </div>
-        </motion.div>
+        </m.div>
     );
 };
 
@@ -173,9 +173,9 @@ const LeaveBrandReviewModal: React.FC<{ brandName: string; onClose: () => void }
     const canNext = overall > 0 && (Object.values(categories) as number[]).every(v => v > 0) && wouldWorkAgain !== null;
 
     return (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-end sm:items-center justify-center p-4">
-            <motion.div initial={{ y: 80 }} animate={{ y: 0 }} exit={{ y: 80 }}
+            <m.div initial={{ y: 80 }} animate={{ y: 0 }} exit={{ y: 80 }}
                 className="bg-white rounded-[2.5rem] w-full max-w-lg shadow-2xl overflow-hidden">
                 <div className="flex items-center justify-between px-7 pt-7 pb-4">
                     <div>
@@ -193,7 +193,7 @@ const LeaveBrandReviewModal: React.FC<{ brandName: string; onClose: () => void }
 
                 <div className="px-7 pb-7">
                     {step === 'done' ? (
-                        <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} className="text-center py-8 space-y-4">
+                        <m.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} className="text-center py-8 space-y-4">
                             <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto">
                                 <CheckCircle2 className="w-9 h-9 text-emerald-500" />
                             </div>
@@ -202,7 +202,7 @@ const LeaveBrandReviewModal: React.FC<{ brandName: string; onClose: () => void }
                             <button onClick={onClose} className="mt-2 px-8 py-3 bg-ffn-black text-white rounded-2xl text-[9px] uppercase tracking-widest font-black hover:bg-ffn-primary transition-all">
                                 Done
                             </button>
-                        </motion.div>
+                        </m.div>
                     ) : step === 'rate' ? (
                         <div className="space-y-6">
                             <div className="text-center py-3 space-y-2">
@@ -274,8 +274,8 @@ const LeaveBrandReviewModal: React.FC<{ brandName: string; onClose: () => void }
                         </div>
                     )}
                 </div>
-            </motion.div>
-        </motion.div>
+            </m.div>
+        </m.div>
     );
 };
 
@@ -427,7 +427,7 @@ export const BrandProfilePage: React.FC = () => {
                 {/* Tab content */}
                 <AnimatePresence mode="wait">
                     {activeTab === 'overview' ? (
-                        <motion.div key="overview" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                        <m.div key="overview" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                             className="space-y-6">
                             {/* About */}
                             <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm p-8 space-y-4">
@@ -461,9 +461,9 @@ export const BrandProfilePage: React.FC = () => {
                                     </button>
                                 </div>
                             )}
-                        </motion.div>
+                        </m.div>
                     ) : (
-                        <motion.div key="reviews" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                        <m.div key="reviews" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                             className="space-y-6">
                             {/* Sort + leave review */}
                             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -500,7 +500,7 @@ export const BrandProfilePage: React.FC = () => {
                                     <p className="text-sm mt-2">Be the first to review this brand after your booking.</p>
                                 </div>
                             )}
-                        </motion.div>
+                        </m.div>
                     )}
                 </AnimatePresence>
             </div>

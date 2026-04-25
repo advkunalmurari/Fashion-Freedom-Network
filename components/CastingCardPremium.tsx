@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { MapPin, DollarSign, ArrowRight, Building2, Zap, BrainCircuit, Star, Play } from 'lucide-react';
 import { UserRole } from '../types';
 import { AntigravityMatchPulse } from './AntigravityMatchPulse';
@@ -26,7 +26,7 @@ interface CastingCardPremiumProps {
 
 export const CastingCardPremium: React.FC<CastingCardPremiumProps> = ({ job, user, onClick, onApply, index }) => {
     return (
-        <motion.div
+        <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
@@ -80,7 +80,7 @@ export const CastingCardPremium: React.FC<CastingCardPremiumProps> = ({ job, use
                     />
 
                     <div className="flex space-x-3 w-full md:w-auto">
-                        <motion.button
+                        <m.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={onApply}
@@ -88,7 +88,7 @@ export const CastingCardPremium: React.FC<CastingCardPremiumProps> = ({ job, use
                         >
                             <Zap className="w-4 h-4 text-ffn-accent group-hover/btn:text-white transition-colors" />
                             <span>Express Apply</span>
-                        </motion.button>
+                        </m.button>
                         <button title="View Visual Brief" className="w-16 h-16 rounded-2xl bg-gray-50 flex items-center justify-center text-ffn-black hover:bg-ffn-black hover:text-white transition-all">
                             <Play className="w-5 h-5 fill-current" />
                         </button>
@@ -98,6 +98,6 @@ export const CastingCardPremium: React.FC<CastingCardPremiumProps> = ({ job, use
 
             {/* Hover Background Hint */}
             <div className="absolute inset-0 bg-gradient-to-r from-ffn-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-        </motion.div>
+        </m.div>
     );
 };

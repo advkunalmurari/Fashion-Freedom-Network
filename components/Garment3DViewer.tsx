@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, useMotionValue, useTransform, animate, AnimatePresence } from 'framer-motion';
+import { m, useMotionValue, useTransform, animate, AnimatePresence } from 'framer-motion';
 import { Maximize2, RotateCcw, ZoomIn, ZoomOut, ShoppingBag, X, Info } from 'lucide-react';
 
 interface Garment3DViewerProps {
@@ -103,7 +103,7 @@ export const Garment3DViewer: React.FC<Garment3DViewerProps> = ({
                         handleReset();
                     }}
                 >
-                    <motion.div
+                    <m.div
                         style={{
                             rotateX,
                             rotateY,
@@ -134,7 +134,7 @@ export const Garment3DViewer: React.FC<Garment3DViewerProps> = ({
                                 style={{ transform: 'translateZ(50px)' }} // Pop out effect
                             />
                         </div>
-                    </motion.div>
+                    </m.div>
                 </div>
 
                 {/* Bottom Controls & Interaction Hints */}
@@ -163,7 +163,7 @@ export const Garment3DViewer: React.FC<Garment3DViewerProps> = ({
                 {/* Details Side Panel overlay */}
                 <AnimatePresence>
                     {showInfo && (
-                        <motion.div
+                        <m.div
                             initial={{ x: 400, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
                             exit={{ x: 400, opacity: 0 }}
@@ -190,7 +190,7 @@ export const Garment3DViewer: React.FC<Garment3DViewerProps> = ({
                                     </div>
                                 </div>
                             </div>
-                        </motion.div>
+                        </m.div>
                     )}
                 </AnimatePresence>
 

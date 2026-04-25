@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { X, MapPin, CheckCircle, ArrowRight, Star, ShieldCheck, Zap, Award } from 'lucide-react';
 import { User } from '../types';
 
@@ -11,7 +11,7 @@ interface TalentQuickLookProps {
 
 export const TalentQuickLook: React.FC<TalentQuickLookProps> = ({ talent, onClose, onViewFullProfile }) => {
     return (
-        <motion.div
+        <m.div
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
@@ -122,6 +122,6 @@ export const TalentQuickLook: React.FC<TalentQuickLookProps> = ({ talent, onClos
                     <p className="text-center text-[8px] text-gray-400 uppercase tracking-widest">Encrypted Identity • Verified via FFN Protocol v2.4</p>
                 </div>
             </div>
-        </motion.div>
+        </m.div>
     );
 };

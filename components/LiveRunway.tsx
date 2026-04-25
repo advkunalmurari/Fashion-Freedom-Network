@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { X, MessageCircle, Heart, Share2, ShoppingBag, Eye, Star, ChevronRight, Zap, PlayCircle, Maximize2 } from 'lucide-react';
 import { MOCK_TALENT_POOL, MOCK_BRANDS } from '../constants';
 
@@ -73,7 +73,7 @@ export const LiveRunway: React.FC<LiveRunwayProps> = ({ eventId, onClose }) => {
 
     return (
         <AnimatePresence>
-            <motion.div
+            <m.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -143,7 +143,7 @@ export const LiveRunway: React.FC<LiveRunwayProps> = ({ eventId, onClose }) => {
                             <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Welcome to the Front Row</p>
                         </div>
                         {messages.map((msg) => (
-                            <motion.div
+                            <m.div
                                 key={msg.id}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -157,7 +157,7 @@ export const LiveRunway: React.FC<LiveRunwayProps> = ({ eventId, onClose }) => {
                                     </div>
                                     <p className="text-sm text-zinc-300 mt-1 leading-snug">{msg.text}</p>
                                 </div>
-                            </motion.div>
+                            </m.div>
                         ))}
                         <div ref={chatEndRef} />
                     </div>
@@ -206,14 +206,14 @@ export const LiveRunway: React.FC<LiveRunwayProps> = ({ eventId, onClose }) => {
                 <AnimatePresence>
                     {showShop && (
                         <>
-                            <motion.div
+                            <m.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
                                 className="absolute inset-0 bg-black/60 backdrop-blur-sm z-30"
                                 onClick={() => setShowShop(false)}
                             />
-                            <motion.div
+                            <m.div
                                 initial={{ x: '100%' }}
                                 animate={{ x: 0 }}
                                 exit={{ x: '100%' }}
@@ -274,12 +274,12 @@ export const LiveRunway: React.FC<LiveRunwayProps> = ({ eventId, onClose }) => {
                                     </div>
 
                                 </div>
-                            </motion.div>
+                            </m.div>
                         </>
                     )}
                 </AnimatePresence>
 
-            </motion.div>
+            </m.div>
         </AnimatePresence>
     );
 };

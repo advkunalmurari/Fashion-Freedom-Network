@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Users, MoreHorizontal, UserCheck, Calendar, Briefcase, ChevronRight } from 'lucide-react';
 import { ManagedTalent } from '../types';
 
@@ -28,7 +28,7 @@ export const ManagedTalentGrid: React.FC<ManagedTalentGridProps> = ({ talents })
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {talents.map((talent, idx) => (
-                    <motion.div
+                    <m.div
                         key={talent.id}
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -100,7 +100,7 @@ export const ManagedTalentGrid: React.FC<ManagedTalentGridProps> = ({ talents })
                                 </button>
                             </div>
                         </div>
-                    </motion.div>
+                    </m.div>
                 ))}
             </div>
         </div>

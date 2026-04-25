@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Home, Compass, PlusSquare, MessageCircle, User } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 
 interface MobileBottomNavProps {
     activeTab: string;
@@ -43,7 +43,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ activeTab, isD
     return (
         <AnimatePresence>
             {isVisible && (
-                <motion.nav
+                <m.nav
                     initial={{ y: 100 }}
                     animate={{ y: 0 }}
                     exit={{ y: 100 }}
@@ -64,7 +64,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ activeTab, isD
                             >
 
                                 {isActive && item.id !== 'create' && (
-                                    <motion.div
+                                    <m.div
                                         layoutId="mobileNavActiveBase"
                                         className="absolute top-1 w-8 h-1 bg-ffn-primary rounded-full"
                                         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
@@ -86,7 +86,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ activeTab, isD
                             </button>
                         );
                     })}
-                </motion.nav>
+                </m.nav>
             )}
         </AnimatePresence>
     );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Plus, Users, Image as ImageIcon, Search, CheckCircle, X } from 'lucide-react';
 import { MOCK_MOOD_BOARDS, MOCK_TALENT_POOL } from '../constants';
 import { MoodBoard, User } from '../types';
@@ -141,7 +141,7 @@ export const MoodBoards: React.FC<MoodBoardsProps> = ({ currentUser, onSelectBoa
             <AnimatePresence>
                 {showCreateModal && (
                     <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm">
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, scale: 0.95, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -217,12 +217,12 @@ export const MoodBoards: React.FC<MoodBoardsProps> = ({ currentUser, onSelectBoa
                                     Initialize Board
                                 </button>
                             </div>
-                        </motion.div>
+                        </m.div>
                     </div>
                 )}
                 {showInviteModal.show && (
                     <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm">
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, scale: 0.95, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -281,7 +281,7 @@ export const MoodBoards: React.FC<MoodBoardsProps> = ({ currentUser, onSelectBoa
                                     ))}
                                 </div>
                             </div>
-                        </motion.div>
+                        </m.div>
                     </div>
                 )}
             </AnimatePresence>

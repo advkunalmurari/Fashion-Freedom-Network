@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { TrendingUp, Users, Briefcase, DollarSign, Activity, Zap } from 'lucide-react';
 import { PRICING } from '../constants';
 
@@ -63,7 +63,7 @@ export const PublicStats: React.FC = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {statItems.map((item, index) => (
-                        <motion.div
+                        <m.div
                             key={index}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -78,7 +78,7 @@ export const PublicStats: React.FC = () => {
                                 <h3 className="text-4xl lg:text-5xl font-serif italic text-white">{item.value}</h3>
                                 <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400">{item.label}</p>
                             </div>
-                        </motion.div>
+                        </m.div>
                     ))}
                 </div>
             </div>

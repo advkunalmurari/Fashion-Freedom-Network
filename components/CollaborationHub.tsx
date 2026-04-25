@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
     Users, Plus, Search, Filter, MapPin, Calendar,
     ArrowRight, MessageSquarePlus, Share2, Sparkles
@@ -35,14 +35,14 @@ export const CollaborationHub: React.FC = () => {
                     </p>
                 </div>
 
-                <motion.button
+                <m.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="bg-ffn-black text-white px-10 py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] flex items-center space-x-3 shadow-xl hover:shadow-ffn-primary/20 transition-all"
                 >
                     <Plus className="w-4 h-4" />
                     <span>Post Project</span>
-                </motion.button>
+                </m.button>
             </header>
 
             {/* toolbar */}
@@ -78,7 +78,7 @@ export const CollaborationHub: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <AnimatePresence mode="popLayout">
                     {filteredProjects.map((project, idx) => (
-                        <motion.div
+                        <m.div
                             key={project.id}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -138,7 +138,7 @@ export const CollaborationHub: React.FC = () => {
                                     </div>
                                 </div>
                             </div>
-                        </motion.div>
+                        </m.div>
                     ))}
                 </AnimatePresence>
             </div>

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { X, Camera, MapPin, ArrowRight, Loader2, Sparkles, Briefcase, Tag, Target, SwitchCamera, Film } from 'lucide-react';
 import { UserRole } from '../types';
 
@@ -69,7 +69,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({ onClose, onPos
 
   return (
     <div className="fixed inset-0 z-[800] flex items-center justify-center p-4 md:p-6 bg-ffn-black/80 backdrop-blur-xl">
-      <motion.div
+      <m.div
         initial={{ scale: 0.9, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         className="bg-white w-full max-w-5xl h-[90vh] md:h-[80vh] rounded-[3rem] md:rounded-[4rem] overflow-hidden relative shadow-2xl flex flex-col md:flex-row border border-white/20"
@@ -134,7 +134,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({ onClose, onPos
         <div className="md:w-1/2 p-6 md:p-12 flex flex-col h-full overflow-y-auto no-scrollbar">
           <AnimatePresence mode="wait">
             {step === 1 ? (
-              <motion.div key="step1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-8 md:space-y-12 my-auto">
+              <m.div key="step1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-8 md:space-y-12 my-auto">
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3 text-ffn-primary">
                     <Sparkles className="w-5 h-5" />
@@ -143,9 +143,9 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({ onClose, onPos
                   <h2 className="text-3xl md:text-4xl font-serif italic text-ffn-black tracking-tight">Content Studio</h2>
                 </div>
                 <p className="text-xs md:text-sm text-gray-400 font-light leading-relaxed">Select media to begin the publishing sequence. FFN automatically optimizes assets for editorial standards, enabling multi-image carousels and 4K video.</p>
-              </motion.div>
+              </m.div>
             ) : (
-              <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8 pb-10">
+              <m.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8 pb-10">
                 <div className="space-y-2">
                   <label className="text-[9px] uppercase tracking-[0.4em] font-black text-gray-400">Editorial Narrative</label>
                   <textarea
@@ -241,7 +241,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({ onClose, onPos
                     </div>
                   </div>
                   <div className={`w-12 h-6 rounded-full p-1 transition-colors ${isOpenForHire ? 'bg-ffn-accent' : 'bg-gray-300'}`}>
-                    <motion.div
+                    <m.div
                       className="w-4 h-4 bg-white rounded-full shadow-md"
                       animate={{ x: isOpenForHire ? 24 : 0 }}
                       transition={{ type: "spring", stiffness: 500, damping: 30 }}
@@ -268,11 +268,11 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({ onClose, onPos
                     )}
                   </button>
                 </div>
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
         </div>
-      </motion.div>
+      </m.div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
   Search, Filter, ShoppingBag, TrendingUp, Star, ArrowRight, X,
   CheckCircle, ShieldCheck, Zap, MessageCircle, DollarSign, Clock,
@@ -73,7 +73,7 @@ const BoutiqueSpotlightCarousel: React.FC = () => {
     <div className="relative h-[400px] md:h-[600px] rounded-[2.5rem] md:rounded-[4rem] overflow-hidden group shadow-3xl">
 
       <AnimatePresence mode="wait">
-        <motion.div
+        <m.div
           key={boutique.id}
           initial={{ opacity: 0, scale: 1.1 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -84,11 +84,11 @@ const BoutiqueSpotlightCarousel: React.FC = () => {
           <img src={boutique.imageUrl} className="w-full h-full object-cover" alt="" />
           <div className="absolute inset-0 bg-gradient-to-t from-ffn-black via-ffn-black/20 to-transparent" />
           <div className="scan-line" />
-        </motion.div>
+        </m.div>
       </AnimatePresence>
 
       <div className="absolute bottom-16 left-16 right-16 flex flex-col md:flex-row md:items-end justify-between gap-10">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
@@ -109,9 +109,9 @@ const BoutiqueSpotlightCarousel: React.FC = () => {
               <span key={s} className="px-5 py-2 rounded-full bg-white/5 border border-white/10 text-[9px] font-black text-white/60 uppercase tracking-widest">{s}</span>
             ))}
           </div>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.8 }}
@@ -138,7 +138,7 @@ const BoutiqueSpotlightCarousel: React.FC = () => {
               />
             ))}
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </div>
   );
@@ -236,7 +236,7 @@ export const Marketplace: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-12">
           {MOCK_MARKETPLACE_ITEMS.map((item) => (
-            <motion.div
+            <m.div
               key={item.id}
               layoutId={`service-${item.id}`}
               whileHover={{ y: -15 }}
@@ -271,7 +271,7 @@ export const Marketplace: React.FC = () => {
                       <span className="text-[10px] font-black text-emerald-400">{item.trustScore}%</span>
                     </div>
                     <div className="demand-bar">
-                      <motion.div
+                      <m.div
                         initial={{ width: 0 }}
                         whileInView={{ width: `${item.velocity}%` }}
                         className="demand-bar-fill"
@@ -303,7 +303,7 @@ export const Marketplace: React.FC = () => {
                   </button>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </section>
@@ -312,7 +312,7 @@ export const Marketplace: React.FC = () => {
       <AnimatePresence>
         {selectedService && (
           <div className="fixed inset-0 z-[1000] flex items-center justify-center p-6 bg-ffn-black/95 backdrop-blur-3xl">
-            <motion.div
+            <m.div
               layoutId={`service-${selectedService.id}`}
               className="bg-white w-full max-w-6xl h-[90vh] rounded-[5rem] overflow-hidden relative shadow-3xl flex flex-col lg:flex-row border border-white/10"
             >
@@ -437,7 +437,7 @@ export const Marketplace: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         )}
       </AnimatePresence>

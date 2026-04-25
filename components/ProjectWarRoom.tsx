@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
     ChevronLeft, Send, Paperclip, Download, CheckCircle2,
@@ -179,7 +179,7 @@ export const ProjectWarRoom: React.FC = () => {
                 <div className="lg:col-span-9 bg-white rounded-[3.5rem] border border-gray-100 shadow-sm overflow-hidden flex flex-col min-h-[700px]">
                     <AnimatePresence mode="wait">
                         {activeTab === 'overview' && (
-                            <motion.div
+                            <m.div
                                 key="overview"
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
@@ -233,11 +233,11 @@ export const ProjectWarRoom: React.FC = () => {
                                         ))}
                                     </div>
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )}
 
                         {activeTab === 'messages' && (
-                            <motion.div
+                            <m.div
                                 key="chat"
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
@@ -288,11 +288,11 @@ export const ProjectWarRoom: React.FC = () => {
                                         </button>
                                     </div>
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )}
 
                         {activeTab === 'files' && (
-                            <motion.div
+                            <m.div
                                 key="files"
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
@@ -348,11 +348,11 @@ export const ProjectWarRoom: React.FC = () => {
                                         <button className="text-[10px] font-black uppercase tracking-widest text-ffn-primary hover:underline pt-4">Learn about Secure Handoff</button>
                                     </div>
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )}
 
                         {activeTab === 'finance' && warRoom.financials && (
-                            <motion.div
+                            <m.div
                                 key="finance"
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
@@ -360,7 +360,7 @@ export const ProjectWarRoom: React.FC = () => {
                                 className="p-12 space-y-12"
                             >
                                 <PerformanceLedger financials={warRoom.financials} />
-                            </motion.div>
+                            </m.div>
                         )}
                     </AnimatePresence>
                 </div>

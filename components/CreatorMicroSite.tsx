@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
     ExternalLink, ArrowRight, Instagram, Twitter,
     Globe, ShieldCheck, Star, Calendar,
@@ -62,16 +62,16 @@ export const CreatorMicroSite: React.FC<CreatorMicroSiteProps> = ({ creator, onC
                 </div>
 
                 <div className="relative z-20 max-w-5xl space-y-8">
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="inline-flex items-center space-x-3 px-4 py-2 bg-ffn-black/5 backdrop-blur-xl rounded-full border border-white/20"
                     >
                         <div className="w-2 h-2 rounded-full bg-ffn-primary animate-pulse" />
                         <span className="text-[10px] font-bold text-ffn-black uppercase tracking-widest">Verified Creator Protocol</span>
-                    </motion.div>
+                    </m.div>
 
-                    <motion.h1
+                    <m.h1
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
@@ -79,9 +79,9 @@ export const CreatorMicroSite: React.FC<CreatorMicroSiteProps> = ({ creator, onC
                     >
                         {(creator.displayName || 'Creator').split(' ')[0]} <br />
                         <span className="ml-24">{(creator.displayName || '').split(' ')[1] || ''}</span>
-                    </motion.h1>
+                    </m.h1>
 
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
@@ -98,7 +98,7 @@ export const CreatorMicroSite: React.FC<CreatorMicroSiteProps> = ({ creator, onC
                                 <p className="text-xl font-medium text-ffn-black">{creator.avgRating || 0}</p>
                             </div>
                         </div>
-                    </motion.div>
+                    </m.div>
                 </div>
             </section>
 
@@ -120,7 +120,7 @@ export const CreatorMicroSite: React.FC<CreatorMicroSiteProps> = ({ creator, onC
                         >
                             {tab.label}
                             {activeTab === tab.id && (
-                                <motion.div
+                                <m.div
                                     layoutId="activeTab"
                                     className="absolute -bottom-8 left-0 right-0 h-1 bg-ffn-black"
                                 />
@@ -131,7 +131,7 @@ export const CreatorMicroSite: React.FC<CreatorMicroSiteProps> = ({ creator, onC
 
                 <AnimatePresence mode="wait">
                     {activeTab === 'works' && (
-                        <motion.div
+                        <m.div
                             key="works"
                             initial={{ opacity: 0, scale: 0.98 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -155,11 +155,11 @@ export const CreatorMicroSite: React.FC<CreatorMicroSiteProps> = ({ creator, onC
                                     </div>
                                 </div>
                             ))}
-                        </motion.div>
+                        </m.div>
                     )}
 
                     {activeTab === 'services' && (
-                        <motion.div
+                        <m.div
                             key="services"
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
@@ -185,11 +185,11 @@ export const CreatorMicroSite: React.FC<CreatorMicroSiteProps> = ({ creator, onC
                                     </div>
                                 </div>
                             ))}
-                        </motion.div>
+                        </m.div>
                     )}
 
                     {activeTab === 'about' && (
-                        <motion.div
+                        <m.div
                             key="about"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -231,7 +231,7 @@ export const CreatorMicroSite: React.FC<CreatorMicroSiteProps> = ({ creator, onC
                                     </button>
                                 </div>
                             </div>
-                        </motion.div>
+                        </m.div>
                     )}
                 </AnimatePresence>
             </section>

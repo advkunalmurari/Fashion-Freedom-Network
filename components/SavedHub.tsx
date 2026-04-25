@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Bookmark, Grid, Sparkles } from 'lucide-react';
 
 export const SavedHub: React.FC = () => {
@@ -17,7 +17,7 @@ export const SavedHub: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {[1, 2, 3].map((i) => (
-          <motion.div 
+          <m.div 
             key={i}
             whileHover={{ y: -10 }}
             className="group bg-white rounded-[3rem] overflow-hidden shadow-xl border border-gray-50 cursor-pointer"
@@ -33,7 +33,7 @@ export const SavedHub: React.FC = () => {
               <h3 className="text-2xl font-serif italic text-ffn-black">Editorial Moods {i}</h3>
               <p className="text-[10px] uppercase tracking-widest font-black text-gray-400">24 Items &bull; Milan Project</p>
             </div>
-          </motion.div>
+          </m.div>
         ))}
       </div>
       

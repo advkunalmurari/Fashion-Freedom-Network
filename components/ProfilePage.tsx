@@ -8,7 +8,7 @@ import {
   UserPlus, UserCheck, UserMinus, MessageSquarePlus, Zap, Bookmark, Play, ScrollText, TrendingUp, FolderPlus,
   Activity, Users, Calendar, Lock, ShieldCheck as ShieldIcon, Wallet, Instagram as InstaIcon, Twitter, Linkedin, Globe
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { networkService } from '../services/networkService';
 import { messageService } from '../services/messageService';
 import { supabase } from '../supabase';
@@ -295,7 +295,7 @@ export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ use
                   { icon: Linkedin, url: user.linkedinUrl, label: 'LinkedIn' },
                   { icon: Globe, url: user.websiteUrl, label: 'Website' }
                 ].map((social, idx) => (
-                  <motion.a
+                  <m.a
                     key={idx}
                     href={social.url || '#'}
                     target="_blank"
@@ -305,7 +305,7 @@ export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ use
                     title={social.label}
                   >
                     <social.icon className="w-4 h-4" />
-                  </motion.a>
+                  </m.a>
                 ))}
               </div>
             </div>
@@ -497,7 +497,7 @@ export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ use
 
           <AnimatePresence mode="wait">
             {activeView === 'portfolio' ? (
-              <motion.div
+              <m.div
                 key="portfolio"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -550,9 +550,9 @@ export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ use
                     )}
                   </div>
                 )}
-              </motion.div>
+              </m.div>
             ) : activeView === 'reels' ? (
-              <motion.div
+              <m.div
                 key="reels"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -588,18 +588,18 @@ export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ use
                     </div>
                   )}
                 </div>
-              </motion.div>
+              </m.div>
             ) : activeView === 'saved' ? (
-              <motion.div
+              <m.div
                 key="saved"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
               >
                 <SavedPosts onBack={() => setActiveView('portfolio')} />
-              </motion.div>
+              </m.div>
             ) : activeView === 'contracts' && isOwnProfile ? (
-              <motion.div
+              <m.div
                 key="contracts"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -634,9 +634,9 @@ export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ use
                     <p className="text-gray-400 font-serif italic text-xl">No active contracts</p>
                   </div>
                 )}
-              </motion.div>
+              </m.div>
             ) : activeView === 'measurements' ? (
-              <motion.div
+              <m.div
                 key="measurements"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -655,10 +655,10 @@ export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ use
                     </div>
                   );
                 })()}
-              </motion.div>
+              </m.div>
             ) : activeView === 'moodboards' ? (
 
-              <motion.div
+              <m.div
                 key="moodboards"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -676,9 +676,9 @@ export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ use
                     onSelectBoard={(id) => setSelectedMoodBoardId(id)}
                   />
                 )}
-              </motion.div>
+              </m.div>
             ) : activeView === 'collaborations' ? (
-              <motion.div
+              <m.div
                 key="collaborations"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -696,9 +696,9 @@ export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ use
                     </div>
                   ))}
                 </div>
-              </motion.div>
+              </m.div>
             ) : activeView === 'workspaces' && isOwnProfile ? (
-              <motion.div
+              <m.div
                 key="workspaces"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -783,9 +783,9 @@ export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ use
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
             ) : activeView === 'insights' && isOwnProfile ? (
-              <motion.div
+              <m.div
                 key="insights"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -795,9 +795,9 @@ export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ use
                   <CreatorInsights insights={MOCK_CREATOR_INSIGHTS} />
                   <AestheticPulse />
                 </div>
-              </motion.div>
+              </m.div>
             ) : activeView === 'availability' ? (
-              <motion.div
+              <m.div
                 key="availability"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -830,9 +830,9 @@ export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ use
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
             ) : activeView === 'team_notes' ? (
-              <motion.div
+              <m.div
                 key="team_notes"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -867,25 +867,25 @@ export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ use
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
             ) : activeView === 'ledger' && isOwnProfile ? (
-              <motion.div
+              <m.div
                 key="ledger"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
               >
                 <PerformanceLedger talentId={user.id} />
-              </motion.div>
+              </m.div>
             ) : (
-              <motion.div
+              <m.div
                 key="reviews"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
               >
                 <ReviewSystem talentId={user.id || 't1'} canLeaveReview={currentUserId !== user.id} />
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
         </section>
@@ -905,7 +905,7 @@ export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ use
       <AnimatePresence>
         {showModelCard && (
           <div className="fixed inset-0 z-[1200] flex items-center justify-center p-6 bg-ffn-black/90 backdrop-blur-xl">
-            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white w-full max-w-4xl h-[90vh] rounded-[4rem] overflow-hidden relative flex flex-col md:flex-row shadow-2xl">
+            <m.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white w-full max-w-4xl h-[90vh] rounded-[4rem] overflow-hidden relative flex flex-col md:flex-row shadow-2xl">
               <button title="Close Model Card" onClick={() => setShowModelCard(false)} className="absolute top-10 right-10 z-50 p-4 bg-gray-100 rounded-2xl hover:bg-ffn-black hover:text-white transition-all"><X className="w-6 h-6" /></button>
 
               <div className="md:w-1/2 bg-gray-100 p-0 relative h-1/2 md:h-full group">
@@ -945,13 +945,13 @@ export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ use
                   </button>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         )}
 
         {showConnectModal && (
           <div className="fixed inset-0 z-[1300] flex items-center justify-center p-6 bg-ffn-black/60 backdrop-blur-md">
-            <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="bg-white w-full max-w-lg rounded-[3.5rem] p-12 space-y-8 shadow-2xl">
+            <m.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="bg-white w-full max-w-lg rounded-[3.5rem] p-12 space-y-8 shadow-2xl">
               <div className="flex items-center justify-between">
                 <div className="space-y-1"><h3 className="text-3xl font-serif italic text-ffn-black">Identity Pitch</h3><p className="text-[9px] uppercase tracking-[0.3em] font-black text-gray-400">Networking Protocol</p></div>
                 <button title="Close Connect Modal" onClick={() => setShowConnectModal(false)} className="p-4 bg-gray-50 rounded-2xl hover:bg-red-50 hover:text-red-500 transition-all"><X className="w-6 h-6" /></button>
@@ -973,13 +973,13 @@ export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ use
                   <span>Activate Connection</span>
                 </button>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         )}
 
         {showHireModal && (
           <div className="fixed inset-0 z-[1100] flex items-center justify-center p-6 bg-ffn-black/60 backdrop-blur-md">
-            <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="bg-white w-full max-w-xl rounded-[3.5rem] p-12 md:p-16 space-y-12 shadow-2xl">
+            <m.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="bg-white w-full max-w-xl rounded-[3.5rem] p-12 md:p-16 space-y-12 shadow-2xl">
               <div className="flex items-center justify-between">
                 <div className="space-y-1"><h3 className="text-3xl font-serif italic text-ffn-black">Secure Hiring Escrow</h3><p className="text-[9px] uppercase tracking-[0.3em] font-black text-gray-400">AUTHORITY DISCOVERY PROTOCOL</p></div>
                 <button title="Close Hire Modal" onClick={() => setShowHireModal(false)} className="p-4 bg-gray-50 rounded-2xl"><X className="w-6 h-6" /></button>
@@ -1003,7 +1003,7 @@ export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ use
                   />
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         )}
 
@@ -1021,7 +1021,7 @@ export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ use
 
         {showAddToBoardModal && (
           <div className="fixed inset-0 z-[1400] flex items-center justify-center p-6 bg-ffn-black/60 backdrop-blur-md">
-            <motion.div
+            <m.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 20, opacity: 0 }}
@@ -1065,7 +1065,7 @@ export const ProfilePage: React.FC<{ user?: User; onBack: () => void }> = ({ use
               <button className="w-full py-5 border-2 border-dashed border-gray-200 rounded-2xl text-[9px] font-black uppercase tracking-widest text-gray-400 hover:border-ffn-primary hover:text-ffn-primary transition-all">
                 + Create New Board
               </button>
-            </motion.div>
+            </m.div>
           </div>
         )}
 

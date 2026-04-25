@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
     Zap, Star, ShieldCheck, MapPin,
     ArrowRight, Brain, Sparkles, Loader2,
@@ -94,7 +94,7 @@ export const TalentRecommendations: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {recommendations.slice(0, 4).map((talent, idx) => (
-                    <motion.div
+                    <m.div
                         key={talent.user_id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -125,7 +125,7 @@ export const TalentRecommendations: React.FC = () => {
                                                     <span>{m.val}%</span>
                                                 </div>
                                                 <div className="h-0.5 bg-white/10 rounded-full overflow-hidden">
-                                                    <motion.div
+                                                    <m.div
                                                         initial={{ width: 0 }}
                                                         whileInView={{ width: `${m.val}%` }}
                                                         className="h-full bg-ffn-primary"
@@ -194,7 +194,7 @@ export const TalentRecommendations: React.FC = () => {
                                 </button>
                             </div>
                         </div>
-                    </motion.div>
+                    </m.div>
                 ))}
             </div>
 

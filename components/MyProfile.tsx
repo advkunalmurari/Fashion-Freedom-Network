@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
   Settings, Grid, Bookmark, Briefcase, Heart, MessageCircle,
   TrendingUp, ShieldCheck, DollarSign, Users, Award, Edit3, Camera, Plus, X, Upload, Globe, Zap, Sparkles,
@@ -93,13 +93,13 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
               <Award className="w-5 h-5" />
               <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Identity Infrastructure HUB</span>
             </div>
-            <motion.div
+            <m.div
               onClick={() => setIsLiveNode(!isLiveNode)}
               className={`flex items-center space-x-3 px-6 py-2 rounded-full cursor-pointer border transition-all ${isLiveNode ? 'bg-emerald-500/5 border-emerald-500/20 text-emerald-500 shadow-lg shadow-emerald-500/10' : 'bg-ffn-black/5 border-ffn-black/10 text-gray-400'}`}
             >
               <div className={`w-2 h-2 rounded-full ${isLiveNode ? 'bg-emerald-500 animate-pulse' : 'bg-gray-400'}`} />
               <span className="text-[9px] font-black uppercase tracking-[0.2em]">{isLiveNode ? 'Live Node' : 'Ghost Mode'}</span>
-            </motion.div>
+            </m.div>
           </div>
           <h1 className="text-7xl font-serif italic tracking-tighter text-ffn-black leading-none">Master Identity</h1>
         </div>
@@ -155,14 +155,14 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
           >
             <tab.icon className="w-4 h-4" />
             <span>{tab.label}</span>
-            {activeTab === tab.id && <motion.div layoutId="profileTabLine" className="absolute bottom-[-17px] left-0 right-0 h-0.5 bg-ffn-black" />}
+            {activeTab === tab.id && <m.div layoutId="profileTabLine" className="absolute bottom-[-17px] left-0 right-0 h-0.5 bg-ffn-black" />}
           </button>
         ))}
       </div>
 
       <AnimatePresence mode="wait">
         {activeTab === 'overview' && (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-16">
+          <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-16">
             <div className="bg-white rounded-[4rem] p-4 md:p-12 border border-gray-100 shadow-xl relative overflow-hidden">
               <ProfileHero user={{
                 ...user,
@@ -179,11 +179,11 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
                 isPremium: !!profile?.is_premium,
               } as any} />
             </div>
-          </motion.div>
+          </m.div>
         )}
 
         {activeTab === 'business' && (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-12">
+          <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-12">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               <div className="bg-white p-12 rounded-[3.5rem] border border-gray-100 shadow-xl space-y-8">
                 <div className="flex items-center space-x-4 mb-4">
@@ -258,7 +258,7 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
                   { title: "Harper's Bazaar", span: "col-span-1 row-span-1", img: "/placeholder.svg?height=400&width=600", badge: "Verified" },
                   { title: "Dior Global Campaign", span: "col-span-2 row-span-1", img: "/placeholder.svg?height=400&width=1200", badge: "Elite" }
                 ].map((item, i) => (
-                  <motion.div
+                  <m.div
                     key={i}
                     whileHover={{ y: -10 }}
                     className={`relative rounded-[2.5rem] overflow-hidden group border border-gray-100 bg-gray-50 ${item.span}`}
@@ -269,18 +269,18 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
                       <h4 className="text-xl font-serif italic text-white">{item.title}</h4>
                     </div>
                     {item.badge === "Verified" && <div className="absolute top-6 right-6 p-2 bg-white/20 backdrop-blur-md rounded-full border border-white/30"><CheckCircle className="w-4 h-4 text-white" /></div>}
-                  </motion.div>
+                  </m.div>
                 ))}
               </div>
             </div>
-          </motion.div>
+          </m.div>
         )}
 
         {activeTab === 'analytics' && (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-12">
+          <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-12">
             <div className="bg-ffn-black text-white p-16 rounded-[4rem] shadow-3xl relative overflow-hidden">
               {/* Scanning Overlay Animation */}
-              <motion.div
+              <m.div
                 animate={{ y: [0, 400, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
                 className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-ffn-primary to-transparent opacity-20 z-20"
@@ -312,18 +312,18 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
 
                 <div className="bg-white/5 backdrop-blur-3xl rounded-[3rem] p-12 border border-white/10 flex flex-col items-center justify-center space-y-8">
                   <div className="relative">
-                    <motion.div
+                    <m.div
                       animate={{ rotate: 360 }}
                       transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                       className="w-48 h-48 border border-ffn-primary/20 rounded-full border-dashed"
                     />
-                    <motion.div
+                    <m.div
                       animate={{ rotate: -360 }}
                       transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
                       className="absolute inset-4 border border-white/10 rounded-full border-dashed"
                     />
                     <PieChart className="w-24 h-24 text-white absolute inset-0 m-auto opacity-20" />
-                    <motion.div
+                    <m.div
                       animate={{ scale: [1, 1.2, 1] }}
                       transition={{ duration: 2, repeat: Infinity }}
                       className="absolute inset-0 m-auto w-4 h-4 bg-ffn-primary rounded-full shadow-[0_0_20px_rgba(255,107,0,0.8)]"
@@ -336,11 +336,11 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
                 </div>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         )}
 
         {activeTab === 'marketing' && (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-16">
+          <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-16">
             {/* Subscriptions Grid (SECTION 4) */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
@@ -442,7 +442,7 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
                 )}
               </div>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 
@@ -450,14 +450,14 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
       <AnimatePresence>
         {showSettings && (
           <>
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowSettings(false)}
               className="fixed inset-0 bg-ffn-black/60 backdrop-blur-xl z-[200]"
             />
-            <motion.div
+            <m.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
@@ -493,7 +493,7 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
                           className={`w-14 h-8 rounded-full relative transition-all ${isLiveNode ? 'bg-ffn-primary' : 'bg-gray-200'}`}
                           title="Toggle Stealth Mode"
                         >
-                          <motion.div
+                          <m.div
                             animate={{ x: isLiveNode ? 24 : 4 }}
                             className="absolute top-1 w-6 h-6 bg-white rounded-full shadow-lg"
                           />
@@ -554,7 +554,7 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
                   </button>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </>
         )}
       </AnimatePresence>
@@ -562,20 +562,20 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
       {/* Protocol Exit Confirmation */}
       <AnimatePresence>
         {showExitConfirm && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[300] flex items-center justify-center p-8 bg-ffn-black/95 backdrop-blur-3xl"
           >
-            <motion.div
+            <m.div
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               className="max-w-xl w-full text-center space-y-16"
             >
               <div className="space-y-8">
-                <motion.div
+                <m.div
                   animate={{
                     rotate: isExiting ? 360 : 0,
                     scale: isExiting ? 0 : 1
@@ -584,7 +584,7 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
                   className="w-32 h-32 bg-ffn-primary/20 rounded-[3rem] border border-ffn-primary/30 flex items-center justify-center mx-auto"
                 >
                   <LogOut className="w-12 h-12 text-ffn-primary" />
-                </motion.div>
+                </m.div>
                 <div className="space-y-4">
                   <h2 className="text-6xl font-serif italic text-white">System <span className="text-ffn-primary">Teardown</span></h2>
                   <p className="text-white/40 text-[10px] font-black uppercase tracking-[0.6em]">Are you sure you want to decouple from the FFN Graph?</p>
@@ -602,7 +602,7 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
                 >
                   <span className="relative z-10">{isExiting ? 'TERMINATING...' : 'CONFIRM DECOUPLING'}</span>
                   {isExiting && (
-                    <motion.div
+                    <m.div
                       initial={{ x: '-100%' }}
                       animate={{ x: '100%' }}
                       transition={{ duration: 1.5, ease: "linear" }}
@@ -618,8 +618,8 @@ export const MyProfile: React.FC<{ user: any; onLogout: () => void }> = ({ user,
                   ABORT EXIT
                 </button>
               </div>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         )}
       </AnimatePresence>
     </div>

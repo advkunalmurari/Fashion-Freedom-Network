@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { ShieldCheck, Download, Share2, Award, QrCode, Calendar, User as UserIcon, CheckCircle } from 'lucide-react';
 import { User } from '../types';
 
@@ -19,7 +19,7 @@ export const VerifiedCertificate: React.FC<VerifiedCertificateProps> = ({ user, 
 
     return (
         <div className="flex flex-col items-center space-y-10 p-8">
-            <motion.div
+            <m.div
                 ref={certificateRef}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -92,7 +92,7 @@ export const VerifiedCertificate: React.FC<VerifiedCertificateProps> = ({ user, 
                 {/* Seal */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30rem] h-[30rem] border border-ffn-primary/5 rounded-full pointer-events-none" />
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[25rem] h-[25rem] border border-ffn-primary/5 rounded-full pointer-events-none" />
-            </motion.div>
+            </m.div>
 
             {/* Actions */}
             <div className="flex items-center space-x-6">

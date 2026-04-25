@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
     Plus, Search, Filter, MoreHorizontal,
     Users, Target, BarChart3, Clock,
@@ -97,7 +97,7 @@ export const CampaignCommandCenter: React.FC = () => {
             {/* Campaign List */}
             <section className={view === 'grid' ? "grid grid-cols-1 md:grid-cols-2 gap-8" : "space-y-6"}>
                 {campaigns.map((camp) => (
-                    <motion.div
+                    <m.div
                         key={camp.id}
                         layout
                         initial={{ opacity: 0, y: 20 }}
@@ -153,7 +153,7 @@ export const CampaignCommandCenter: React.FC = () => {
                                         <span className="text-ffn-black">{Math.round((camp.spent / camp.budget) * 100)}%</span>
                                     </div>
                                     <div className="h-1.5 w-full bg-gray-50 rounded-full overflow-hidden border border-gray-100">
-                                        <motion.div
+                                        <m.div
                                             initial={{ width: 0 }}
                                             animate={{ width: `${(camp.spent / camp.budget) * 100}%` }}
                                             className="h-full bg-gradient-to-r from-ffn-primary to-ffn-accent"
@@ -176,7 +176,7 @@ export const CampaignCommandCenter: React.FC = () => {
                                 </button>
                             </div>
                         </div>
-                    </motion.div>
+                    </m.div>
                 ))}
             </section>
 
@@ -195,7 +195,7 @@ export const CampaignCommandCenter: React.FC = () => {
             <AnimatePresence>
                 {simulatingCampaignId && (
                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-8 bg-ffn-black/80 backdrop-blur-xl">
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, scale: 0.9, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -205,7 +205,7 @@ export const CampaignCommandCenter: React.FC = () => {
                                 selectedTalentIds={MOCK_TALENT_POOL.slice(0, 4).map(t => t.id)}
                                 onClose={() => setSimulatingCampaignId(null)}
                             />
-                        </motion.div>
+                        </m.div>
                     </div>
                 )}
             </AnimatePresence>

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { UserCircle, Plus, CheckCircle, ShieldCheck } from 'lucide-react';
 
 export const AccountSwitcher: React.FC = () => {
@@ -21,7 +21,7 @@ export const AccountSwitcher: React.FC = () => {
 
       <div className="space-y-6">
         {accounts.map((acc) => (
-          <motion.div 
+          <m.div 
             key={acc.id}
             whileHover={{ scale: 1.02 }}
             className={`p-8 rounded-[3rem] border transition-all cursor-pointer flex items-center justify-between ${acc.active ? 'bg-ffn-black text-white border-ffn-black shadow-2xl' : 'bg-white text-ffn-black border-gray-100 hover:border-ffn-primary/20'}`}
@@ -43,7 +43,7 @@ export const AccountSwitcher: React.FC = () => {
             ) : (
               <button className="text-[8px] font-black uppercase tracking-widest text-ffn-primary hover:text-ffn-accent transition-colors">Select Identity</button>
             )}
-          </motion.div>
+          </m.div>
         ))}
 
         <button className="w-full p-8 border-2 border-dashed border-gray-200 rounded-[3rem] text-gray-400 hover:text-ffn-black hover:border-ffn-black transition-all flex items-center justify-center space-x-4 group">

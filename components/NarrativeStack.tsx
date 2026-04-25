@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface NarrativeStackProps {
@@ -27,7 +27,7 @@ export const NarrativeStack: React.FC<NarrativeStackProps> = ({ mediaUrls, type,
     return (
         <div className="relative w-full h-full group/narrative overflow-hidden">
             <AnimatePresence mode="wait">
-                <motion.div
+                <m.div
                     key={currentIndex}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -53,14 +53,14 @@ export const NarrativeStack: React.FC<NarrativeStackProps> = ({ mediaUrls, type,
                             onLoad={onLoad}
                         />
                     )}
-                </motion.div>
+                </m.div>
             </AnimatePresence>
 
             {/* Progress Bars */}
             <div className="absolute top-6 inset-x-6 flex space-x-2 z-20">
                 {mediaUrls.map((_, idx) => (
                     <div key={idx} className="h-0.5 flex-1 bg-white/20 rounded-full overflow-hidden">
-                        <motion.div
+                        <m.div
                             initial={false}
                             animate={{ width: idx <= currentIndex ? '100%' : '0%' }}
                             className="h-full bg-ffn-primary"

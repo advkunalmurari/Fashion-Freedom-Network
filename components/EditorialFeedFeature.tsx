@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Sparkles, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 
 interface EditorialFeedFeatureProps {
@@ -21,7 +21,7 @@ export const EditorialFeedFeature: React.FC<EditorialFeedFeatureProps> = ({
     onCtaClick
 }) => {
     return (
-        <motion.div
+        <m.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
@@ -30,7 +30,7 @@ export const EditorialFeedFeature: React.FC<EditorialFeedFeatureProps> = ({
             {/* Background with animated gradient and grain */}
             <div className="absolute inset-0 bg-[#0A0A0A]">
                 <div className="absolute inset-0 opacity-30 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] brightness-50 contrast-150" />
-                <motion.div
+                <m.div
                     animate={{
                         scale: [1, 1.2, 1],
                         rotate: [0, 90, 0],
@@ -39,7 +39,7 @@ export const EditorialFeedFeature: React.FC<EditorialFeedFeatureProps> = ({
                     transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
                     className="absolute -top-1/2 -left-1/2 w-full h-full bg-ffn-primary/20 blur-[120px] rounded-full"
                 />
-                <motion.div
+                <m.div
                     animate={{
                         scale: [1, 1.3, 1],
                         rotate: [0, -45, 0],
@@ -56,7 +56,7 @@ export const EditorialFeedFeature: React.FC<EditorialFeedFeatureProps> = ({
             {/* Content */}
             <div className="absolute inset-0 p-8 md:p-16 flex flex-col justify-end">
                 <div className="max-w-2xl space-y-4 md:space-y-6">
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.2 }}
@@ -74,37 +74,37 @@ export const EditorialFeedFeature: React.FC<EditorialFeedFeatureProps> = ({
                         <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.4em] text-ffn-primary/80 drop-shadow-sm">
                             Global Identity Feature
                         </span>
-                    </motion.div>
+                    </m.div>
 
                     <div className="space-y-1 md:space-y-2">
-                        <motion.p
+                        <m.p
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3 }}
                             className="text-[10px] md:text-xs font-black uppercase tracking-[0.5em] text-white/40"
                         >
                             {subtitle}
-                        </motion.p>
-                        <motion.h2
+                        </m.p>
+                        <m.h2
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4 }}
                             className="text-4xl md:text-6xl font-serif italic text-white drop-shadow-2xl"
                         >
                             {title}
-                        </motion.h2>
+                        </m.h2>
                     </div>
 
-                    <motion.p
+                    <m.p
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         transition={{ delay: 0.5 }}
                         className="text-sm md:text-lg text-white/60 font-light leading-relaxed max-w-lg"
                     >
                         {description}
-                    </motion.p>
+                    </m.p>
 
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.6 }}
@@ -126,18 +126,18 @@ export const EditorialFeedFeature: React.FC<EditorialFeedFeatureProps> = ({
                             <div className="h-8 w-px bg-white/10" />
                             <ShieldCheck className="w-6 h-6 text-ffn-primary" />
                         </div>
-                    </motion.div>
+                    </m.div>
                 </div>
             </div>
 
             {/* Floating Elements */}
-            <motion.div
+            <m.div
                 animate={{ y: [0, -20, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 className="absolute top-10 right-10 w-24 h-24 md:w-32 md:h-32 border border-white/5 rounded-full flex items-center justify-center backdrop-blur-3xl"
             >
                 <Zap className="w-8 h-8 md:w-12 md:h-12 text-ffn-primary opacity-20" />
-            </motion.div>
-        </motion.div>
+            </m.div>
+        </m.div>
     );
 };

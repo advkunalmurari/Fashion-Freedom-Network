@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Heart, MessageCircle, Share2, Bookmark, Send, Smile, MoreHorizontal, CheckCircle, MapPin, Loader2 } from 'lucide-react';
 import { Post } from '../types';
 import { postService } from '../services/postService';
@@ -67,7 +67,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({ post, onBack }) => {
   };
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -168,7 +168,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({ post, onBack }) => {
               {isLoading ? (
                 <div className="flex justify-center p-8"><Loader2 className="w-6 h-6 animate-spin text-gray-300" /></div>
               ) : comments.map(c => (
-                <motion.div
+                <m.div
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   key={c.id}
@@ -188,7 +188,7 @@ export const PostDetail: React.FC<PostDetailProps> = ({ post, onBack }) => {
                       <button className="text-[9px] font-bold text-gray-400 uppercase tracking-widest hover:text-ffn-black transition-colors"><Heart className="w-3 h-3" /></button>
                     </div>
                   </div>
-                </motion.div>
+                </m.div>
               ))}
               {comments.length === 0 && !isLoading && (
                 <p className="text-xs text-gray-400 italic font-serif">Be the first to share your aesthetic perspective.</p>
@@ -252,16 +252,16 @@ export const PostDetail: React.FC<PostDetailProps> = ({ post, onBack }) => {
         <h3 className="text-3xl font-serif italic text-ffn-black border-b border-gray-50 pb-8">Visual Synergy</h3>
         <div className="editorial-grid">
           {[1, 2, 3].map(i => (
-            <motion.div
+            <m.div
               key={i}
               whileHover={{ y: -5 }}
               className="aspect-[4/5] bg-gray-50 rounded-[3rem] overflow-hidden border border-gray-100 shadow-xl group cursor-pointer"
             >
               <img src={`https://picsum.photos/id/${150 + i}/600/800`} loading="lazy" decoding="async" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="" />
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>
-    </motion.div>
+    </m.div>
   );
 };

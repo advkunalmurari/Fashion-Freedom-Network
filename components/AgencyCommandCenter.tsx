@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import {
     Briefcase, Users, TrendingUp, ShieldCheck,
     Search, Bell, MoreVertical, LayoutGrid,
@@ -66,7 +66,7 @@ export const AgencyCommandCenter: React.FC = () => {
                     { label: 'Agency Revenue', value: `₹${(MOCK_AGENCY.totalRevenue / 1000000).toFixed(1)}M`, icon: TrendingUp, color: 'text-green-500' },
                     { label: 'Network Growth', value: `${MOCK_AGENCY.monthlyGrowth}%`, icon: Zap, color: 'text-blue-500' },
                 ].map((stat, i) => (
-                    <motion.div
+                    <m.div
                         key={i}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -86,7 +86,7 @@ export const AgencyCommandCenter: React.FC = () => {
                             <span className="text-[9px] font-black uppercase tracking-widest text-gray-400">{stat.label}</span>
                             <div className="text-3xl font-serif italic text-white">{stat.value}</div>
                         </div>
-                    </motion.div>
+                    </m.div>
                 ))}
             </div>
 

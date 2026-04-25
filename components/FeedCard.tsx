@@ -1,15 +1,33 @@
-
-import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useRef } from 'react';
+import { m, AnimatePresence } from 'framer-motion';
 import {
   Heart, MessageCircle, Share2, Bookmark, MoreHorizontal,
   CheckCircle, Sparkles, X, Link, Twitter, Facebook, Copy,
-  Check, Send, Play, Pause, Volume2, VolumeX, Maximize, PlayCircle,
-  ExternalLink, MessageSquare, ShieldCheck, Zap
+  Check, Send, Volume2, VolumeX, Zap, MessageSquare, ShieldCheck
 } from 'lucide-react';
 import { Post } from '../types';
 import { postService } from '../services/postService';
 import { NarrativeStack } from './NarrativeStack';
+import { optimizeUnsplashUrl } from '../utils/mediaUtils';
+
+const HELLO_GRADIENT = (
+  <svg width="0" height="0" className="absolute pointer-events-none">
+    <defs>
+      <linearGradient id="heart-pride-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#E40303" />
+        <stop offset="20%" stopColor="#FF8C00" />
+        <stop offset="40%" stopColor="#FFED00" />
+        <stop offset="60%" stopColor="#008026" />
+        <stop offset="80%" stopColor="#24408E" />
+        <stop offset="100%" stopColor="#732982" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
+const HEART_SVG = (
+  <Heart className="w-32 h-32 text-white fill-white drop-shadow-[0_0_30px_rgba(255,255,255,0.6)]" />
+);
 
 interface FeedCardProps {
   post: Post;
@@ -26,37 +44,25 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  // Video State
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
-  const [volume, setVolume] = useState(1);
-  const [progress, setProgress] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
   const [showControls, setShowControls] = useState(false);
   const controlsTimeoutRef = useRef<number | null>(null);
 
   const handleLike = async (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
-
-    // Optimistic Update
     const newLikedState = !isLiked;
     setIsLiked(newLikedState);
     setLikes(prev => newLikedState ? prev + 1 : prev - 1);
-
     if (newLikedState) {
       setShowHeart(true);
       setTimeout(() => setShowHeart(false), 800);
     }
-
-    // Background API Sync
     const res = await postService.toggleLike(post.id);
     if (!res.success) {
-      // Revert if failed
       setIsLiked(!newLikedState);
       setLikes(prev => newLikedState ? prev - 1 : prev + 1);
-      console.error('Failed to sync like:', res.error);
     }
   };
 
@@ -64,18 +70,10 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
     if (e) e.stopPropagation();
     const newSavedState = !isSaved;
     setIsSaved(newSavedState);
-
     const res = await postService.toggleSave(post.id);
     if (!res.success) {
       setIsSaved(!newSavedState);
-      console.error('Failed to sync save:', res.error);
     }
-  };
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
   const togglePlay = (e: React.MouseEvent | React.TouchEvent) => {
@@ -85,22 +83,9 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
         videoRef.current.pause();
       } else {
         videoRef.current.play();
-        triggerAutoHide();
       }
       setIsPlaying(!isPlaying);
     }
-  };
-
-  const triggerAutoHide = () => {
-    if (controlsTimeoutRef.current) window.clearTimeout(controlsTimeoutRef.current);
-    controlsTimeoutRef.current = window.setTimeout(() => {
-      if (isPlaying) setShowControls(false);
-    }, 3000);
-  };
-
-  const handleMouseMove = () => {
-    if (!showControls) setShowControls(true);
-    triggerAutoHide();
   };
 
   const toggleMute = (e: React.MouseEvent) => {
@@ -112,28 +97,6 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
     }
   };
 
-  const handleTimeUpdate = () => {
-    if (videoRef.current) {
-      const current = videoRef.current.currentTime;
-      const p = (current / videoRef.current.duration) * 100;
-      setCurrentTime(current);
-      setProgress(p);
-    }
-  };
-
-  const handleLoadedMetadata = () => {
-    if (videoRef.current) setDuration(videoRef.current.duration);
-  };
-
-  const handleScrub = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (videoRef.current) {
-      const time = (parseFloat(e.target.value) / 100) * videoRef.current.duration;
-      videoRef.current.currentTime = time;
-      setProgress(parseFloat(e.target.value));
-    }
-  };
-
-  // SHARE HANDLERS
   const handleCopyLink = () => {
     const shareUrl = `${window.location.origin}/post/${post.id}`;
     navigator.clipboard.writeText(shareUrl);
@@ -177,7 +140,6 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
   const isVideoPost = post.type === 'VIDEO' || post.type === 'REEL';
   const focusRing = "focus:outline-none focus-visible:ring-2 focus-visible:ring-ffn-primary focus-visible:ring-offset-2 transition-shadow";
 
-  // Refined hover styles as per user request
   const hoverBtnStyles = {
     scale: 1.05,
     borderColor: '#f0f5f9',
@@ -186,20 +148,9 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
 
   return (
     <>
-      <svg width="0" height="0" className="absolute pointer-events-none">
-        <defs>
-          <linearGradient id="heart-pride-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#E40303" />
-            <stop offset="20%" stopColor="#FF8C00" />
-            <stop offset="40%" stopColor="#FFED00" />
-            <stop offset="60%" stopColor="#008026" />
-            <stop offset="80%" stopColor="#24408E" />
-            <stop offset="100%" stopColor="#732982" />
-          </linearGradient>
-        </defs>
-      </svg>
+      {HELLO_GRADIENT}
 
-      <motion.article
+      <m.article
         initial={{ opacity: 0, y: 100, scale: 0.9 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
         viewport={{ once: true, margin: "-150px" }}
@@ -212,17 +163,16 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
         }}
         className="bg-white rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden shadow-xl group border border-gray-100 transition-all hover:shadow-2xl hover:-translate-y-2 mb-12 md:mb-24"
       >
-        {/* Header */}
         <div className="flex items-center justify-between p-5 md:p-7">
           <div className="flex items-center space-x-4 md:space-x-5">
-            <motion.button
+            <m.button
               whileHover={{ scale: 1.1 }}
               onClick={() => onSelectPost?.(post.id)}
               className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl overflow-hidden shadow-lg border-2 border-white p-[2px] bg-gradient-to-tr from-ffn-ig-purple via-ffn-ig-red to-ffn-ig-orange ${focusRing}`}
               aria-label={`View ${post.author.username}'s profile`}
             >
               <img
-                src={post.author.avatarUrl}
+                src={optimizeUnsplashUrl(post.author.avatarUrl, 112)}
                 className="w-full h-full object-cover rounded-[0.8rem]"
                 alt=""
                 loading="lazy"
@@ -233,7 +183,7 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
                   target.src = '/demo/ffn_logo_placeholder.png';
                 }}
               />
-            </motion.button>
+            </m.button>
             <button
               className={`text-left rounded-lg p-1 -m-1 ${focusRing}`}
               onClick={() => onSelectPost?.(post.id)}
@@ -249,41 +199,36 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
                     )}
                   </div>
                 )}
-                {/* Social Gravity Metric */}
                 {post.likes > 1000 && (
-                  <motion.div
+                  <m.div
                     animate={{ scale: [1, 1.2, 1] }}
                     transition={{ repeat: Infinity, duration: 2 }}
                     className="flex items-center space-x-1 px-2 py-0.5 bg-ffn-primary/10 rounded-full border border-ffn-primary/20"
                   >
                     <Zap className="w-2.5 h-2.5 text-ffn-primary" />
                     <span className="text-[7px] font-black text-ffn-primary uppercase tracking-tighter">Gravity</span>
-                  </motion.div>
+                  </m.div>
                 )}
               </div>
               <p className="text-[8px] md:text-[10px] uppercase tracking-[0.4em] text-gray-400 font-black mt-0.5">{post.author.role} &bull; {post.author.location}</p>
             </button>
           </div>
-          <motion.button
+          <m.button
             whileHover={hoverBtnStyles}
             className={`p-3 bg-gray-50 rounded-2xl text-gray-400 hover:text-ffn-black border border-transparent transition-all ${focusRing}`}
             aria-label="Post options"
           >
             <MoreHorizontal className="w-5 h-5 md:w-6 md:h-6" />
-          </motion.button>
+          </m.button>
         </div>
 
-        {/* Visual Content Container */}
         <div
           className="aspect-[4/5] bg-gray-100 relative overflow-hidden cursor-pointer group/media"
-          onMouseEnter={() => isVideoPost && setShowControls(true)}
-          onMouseMove={isVideoPost ? handleMouseMove : undefined}
-          onMouseLeave={() => isVideoPost && setShowControls(false)}
           onDoubleClick={handleLike}
           onClick={(e) => isVideoPost ? (window.matchMedia("(pointer: coarse)").matches ? setShowControls(!showControls) : togglePlay(e)) : onSelectPost?.(post.id)}
         >
           <AnimatePresence>
-            {isMediaLoading && <motion.div initial={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-10 bg-gray-200 animate-pulse" />}
+            {isMediaLoading && <m.div initial={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-10 bg-gray-200 animate-pulse" />}
           </AnimatePresence>
 
           {!isVideoPost ? (
@@ -294,13 +239,12 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
                 onLoad={() => setIsMediaLoading(false)}
               />
             ) : (
-              <motion.img
-                src={post.mediaUrls[0]}
+              <m.img
+                src={optimizeUnsplashUrl(post.mediaUrls[0], 800)}
                 onLoad={() => setIsMediaLoading(false)}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: isMediaLoading ? 0 : 1 }}
                 loading={index === 0 ? "eager" : "lazy"}
-                fetchpriority={index === 0 ? "high" : "auto"}
                 decoding="async"
                 width="800"
                 height="1000"
@@ -317,39 +261,37 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
               />
             ) : (
               <div className="relative w-full h-full">
-                <video ref={videoRef} src={post.mediaUrls[0]} onLoadedData={() => setIsMediaLoading(false)} onLoadedMetadata={handleLoadedMetadata} onTimeUpdate={handleTimeUpdate} loop muted={isMuted} playsInline className="w-full h-full object-cover" />
-                {/* ... existing video controls ... */}
+                <video ref={videoRef} src={post.mediaUrls[0]} onLoadedData={() => setIsMediaLoading(false)} loop muted={isMuted} playsInline preload="metadata" className="w-full h-full object-cover" />
               </div>
             )
           )}
 
           <AnimatePresence>
             {showHeart && (
-              <motion.div initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: [0.5, 1.4, 0.9, 1.1, 1], opacity: [0, 1, 1, 1, 0] }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
+              <m.div initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: [0.5, 1.4, 0.9, 1.1, 1], opacity: [0, 1, 1, 1, 0] }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
                 <div className="relative">
-                  <Heart className="w-32 h-32 text-white fill-white drop-shadow-[0_0_30px_rgba(255,255,255,0.6)]" />
-                  <motion.div
+                  {HEART_SVG}
+                  <m.div
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 2, opacity: 0 }}
                     transition={{ duration: 0.8 }}
                     className="absolute inset-0 bg-white rounded-full blur-2xl"
                   />
                 </div>
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
 
-          {/* Professional Breadcrumbs Overlay */}
           <div className="absolute top-6 left-6 flex flex-col space-y-3 z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <motion.div
+            <m.div
               initial={{ x: -20, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
               className="flex items-center space-x-2 bg-black/60 backdrop-blur-xl px-4 py-2 rounded-xl border border-white/10"
             >
               <Sparkles className="w-3 h-3 text-ffn-primary" />
               <span className="text-[8px] font-black uppercase tracking-widest text-white">Identity Match 94%</span>
-            </motion.div>
-            <motion.div
+            </m.div>
+            <m.div
               initial={{ x: -20, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.1 }}
@@ -357,15 +299,14 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
             >
               <ShieldCheck className="w-3 h-3 text-black" />
               <span className="text-[8px] font-black uppercase tracking-widest text-black">Verified Media Kit Internal</span>
-            </motion.div>
+            </m.div>
           </div>
         </div>
 
-        {/* Interaction Bar */}
         <div className="p-6 md:p-8 pt-5 md:pt-6 space-y-4 md:space-y-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-6 md:space-x-8">
-              <motion.button
+              <m.button
                 whileHover={hoverBtnStyles}
                 whileTap={{ scale: 0.8 }}
                 onClick={handleLike}
@@ -373,35 +314,35 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
                 aria-label={isLiked ? "Unlike post" : "Like post"}
               >
                 <Heart style={{ fill: isLiked ? 'url(#heart-pride-grad)' : 'transparent', stroke: isLiked ? 'none' : 'currentColor' }} className={`w-7 h-7 md:w-8 md:h-8 transition-all ${isLiked ? '' : 'text-ffn-black group-hover:text-ffn-accent'}`} />
-              </motion.button>
+              </m.button>
 
-              <motion.button
+              <m.button
                 whileHover={hoverBtnStyles}
                 onClick={() => onSelectPost?.(post.id)}
                 className={`rounded-full p-1.5 md:p-2 border border-transparent transition-all ${focusRing}`}
                 aria-label="Comment on post"
               >
                 <MessageCircle className="w-7 h-7 md:w-8 md:h-8 text-ffn-black hover:text-ffn-primary transition-colors" />
-              </motion.button>
+              </m.button>
 
-              <motion.button
+              <m.button
                 whileHover={{ ...hoverBtnStyles, rotate: -15 }}
                 onClick={() => setIsShareModalOpen(true)}
                 className={`rounded-full p-1.5 md:p-2 border border-transparent transition-all ${focusRing}`}
                 aria-label="Share post"
               >
                 <Share2 className="w-7 h-7 md:w-8 md:h-8 text-ffn-black hover:text-ffn-primary transition-all" />
-              </motion.button>
+              </m.button>
             </div>
 
-            <motion.button
+            <m.button
               whileHover={hoverBtnStyles}
               onClick={handleSave}
               className={`rounded-full p-1.5 md:p-2 border border-transparent transition-all ${focusRing}`}
               aria-label={isSaved ? "Unsave post" : "Save post"}
             >
               <Bookmark className={`w-7 h-7 md:w-8 md:h-8 transition-all ${isSaved ? 'text-ffn-primary fill-ffn-primary' : 'text-ffn-black hover:text-ffn-primary'}`} />
-            </motion.button>
+            </m.button>
           </div>
 
           <div className="space-y-2 md:space-y-3">
@@ -446,12 +387,11 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
           </div>
         </div>
 
-        {/* Reaction Burst Animation Layer */}
         <AnimatePresence>
           {showHeart && (
             <div className="absolute inset-0 pointer-events-none z-50 overflow-hidden">
               {[...Array(6)].map((_, i) => (
-                <motion.div
+                <m.div
                   key={i}
                   initial={{ opacity: 1, scale: 0, x: '50%', y: '50%' }}
                   animate={{
@@ -465,19 +405,18 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
                   className="absolute w-4 h-4 text-ffn-primary"
                 >
                   <Sparkles className="w-full h-full fill-current" />
-                </motion.div>
+                </m.div>
               ))}
             </div>
           )}
         </AnimatePresence>
-      </motion.article>
+      </m.article>
 
-      {/* Share Modal */}
       <AnimatePresence>
         {isShareModalOpen && (
           <div className="fixed inset-0 z-[1000] flex items-center justify-center p-6">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsShareModalOpen(false)} className="absolute inset-0 bg-black/60 backdrop-blur-md" />
-            <motion.div initial={{ opacity: 0, scale: 0.9, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 30 }} className="bg-white rounded-[3rem] md:rounded-[3.5rem] w-full max-w-md overflow-hidden relative shadow-2xl z-10 border border-white/20">
+            <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsShareModalOpen(false)} className="absolute inset-0 bg-black/60 backdrop-blur-md" />
+            <m.div initial={{ opacity: 0, scale: 0.9, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 30 }} className="bg-white rounded-[3rem] md:rounded-[3.5rem] w-full max-w-md overflow-hidden relative shadow-2xl z-10 border border-white/20">
               <div className="p-8 md:p-10 space-y-8">
                 <div className="flex items-center justify-between">
                   <div className="space-y-1">
@@ -526,14 +465,14 @@ export const FeedCard: React.FC<FeedCardProps> = ({ post, index = 0, onSelectPos
 
                 <AnimatePresence>
                   {copied && (
-                    <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 20, opacity: 0 }} className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-ffn-black text-white px-8 py-3 rounded-2xl text-[9px] font-black uppercase tracking-widest shadow-2xl flex items-center space-x-3">
+                    <m.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 20, opacity: 0 }} className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-ffn-black text-white px-8 py-3 rounded-2xl text-[9px] font-black uppercase tracking-widest shadow-2xl flex items-center space-x-3">
                       <CheckCircle className="w-4 h-4 text-emerald-500" />
                       <span>Protocol Link Copied</span>
-                    </motion.div>
+                    </m.div>
                   )}
                 </AnimatePresence>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         )}
       </AnimatePresence>

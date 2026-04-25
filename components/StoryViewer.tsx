@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
+import { m, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, MoreHorizontal, Send, Heart, Share2, Sparkles } from 'lucide-react';
 import { User, Story } from '../types';
 
@@ -92,14 +92,14 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({ initialUserIndex, user
   return (
     <div className="fixed inset-0 z-[1000] bg-[#050505] flex items-center justify-center overflow-hidden">
       {/* Background Ambient Glow */}
-      <motion.div
+      <m.div
         style={{ x: backgroundX }}
         className="absolute inset-0 z-0 opacity-20 blur-[100px]"
       >
         <img src={currentStory.media_url} className="w-full h-full object-cover scale-150" alt="" />
-      </motion.div>
+      </m.div>
 
-      <motion.div
+      <m.div
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
         style={{ x: dragX }}
@@ -111,7 +111,7 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({ initialUserIndex, user
       >
         {/* Story Content */}
         <AnimatePresence mode="wait">
-          <motion.div
+          <m.div
             key={`${userIndex}-${storyIndex}`}
             initial={{ opacity: 0, scale: 1.1 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -126,7 +126,7 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({ initialUserIndex, user
             />
             {/* Dark overlay for readability */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80" />
-          </motion.div>
+          </m.div>
         </AnimatePresence>
 
         {/* Top Progress Bars & User Info */}
@@ -134,7 +134,7 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({ initialUserIndex, user
           <div className="flex space-x-1.5">
             {stories.map((_, i) => (
               <div key={i} className="h-1 flex-1 bg-white/10 rounded-full overflow-hidden backdrop-blur-md">
-                <motion.div
+                <m.div
                   className="h-full bg-ffn-primary transition-all duration-75 shadow-[0_0_10px_rgba(var(--ffn-primary-rgb),0.5)]"
                   style={{ width: i < storyIndex ? '100%' : (i === storyIndex ? `${progress}%` : '0%') }}
                 />
@@ -213,7 +213,7 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({ initialUserIndex, user
             </button>
           </div>
         </div>
-      </motion.div>
+      </m.div>
     </div>
   );
 };

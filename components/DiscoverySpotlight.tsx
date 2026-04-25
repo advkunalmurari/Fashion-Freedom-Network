@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
     Zap, Brain, Sparkles, Loader2,
     ChevronRight, ShieldCheck
@@ -71,7 +71,7 @@ export const DiscoverySpotlight: React.FC = () => {
 
             <div className="flex overflow-x-auto pb-4 gap-4 no-scrollbar -mx-2 px-2">
                 {recommendations.map((talent, idx) => (
-                    <motion.div
+                    <m.div
                         key={talent.user_id}
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -121,7 +121,7 @@ export const DiscoverySpotlight: React.FC = () => {
                             </div>
                             <ChevronRight className="w-4 h-4 opacity-20 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                         </div>
-                    </motion.div>
+                    </m.div>
                 ))}
             </div>
         </div>

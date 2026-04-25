@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
     Download, Share2, Eye, Calendar, MapPin, Star,
     ShieldCheck, Instagram, Twitter, Globe, Phone,
@@ -17,13 +17,13 @@ export const MediaKit: React.FC<MediaKitProps> = ({ talent, isOpen, onClose }) =
     return (
         <AnimatePresence>
             {isOpen && (
-                <motion.div
+                <m.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     className="fixed inset-0 z-[300] flex items-center justify-center bg-ffn-black/90 backdrop-blur-xl p-4 md:p-12"
                 >
-                    <motion.div
+                    <m.div
                         initial={{ scale: 0.9, y: 20 }}
                         animate={{ scale: 1, y: 0 }}
                         exit={{ scale: 0.9, y: 20 }}
@@ -204,8 +204,8 @@ export const MediaKit: React.FC<MediaKitProps> = ({ talent, isOpen, onClose }) =
                                 </div>
                             </div>
                         </div>
-                    </motion.div>
-                </motion.div>
+                    </m.div>
+                </m.div>
             )}
         </AnimatePresence>
     );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Masterclass, MasterclassFormat } from '../types';
 import { MOCK_MASTERCLASSES, MOCK_TALENT_POOL } from '../constants';
 import { PayPalButton } from './PayPalButton';
@@ -31,7 +31,7 @@ const MasterclassCard: React.FC<{ mc: Masterclass; onClick: () => void }> = ({ m
     const discount = mc.originalPrice ? Math.round((1 - mc.price / mc.originalPrice) * 100) : null;
 
     return (
-        <motion.div
+        <m.div
             layout
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -131,7 +131,7 @@ const MasterclassCard: React.FC<{ mc: Masterclass; onClick: () => void }> = ({ m
                     </button>
                 </div>
             </div>
-        </motion.div>
+        </m.div>
     );
 };
 
@@ -146,7 +146,7 @@ const MasterclassDetail: React.FC<{ mc: Masterclass; onClose: () => void }> = ({
 
     return (
         <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm">
-            <motion.div
+            <m.div
                 initial={{ x: '100%' }}
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
@@ -272,7 +272,7 @@ const MasterclassDetail: React.FC<{ mc: Masterclass; onClose: () => void }> = ({
                                             </button>
                                             <AnimatePresence>
                                                 {expandedLesson === lesson.id && (
-                                                    <motion.div
+                                                    <m.div
                                                         initial={{ height: 0, opacity: 0 }}
                                                         animate={{ height: 'auto', opacity: 1 }}
                                                         exit={{ height: 0, opacity: 0 }}
@@ -283,7 +283,7 @@ const MasterclassDetail: React.FC<{ mc: Masterclass; onClose: () => void }> = ({
                                                                 ? 'This lesson is available as a free preview. Click to watch without enrollment.'
                                                                 : 'Enroll to unlock this lesson and the full course curriculum.'}
                                                         </p>
-                                                    </motion.div>
+                                                    </m.div>
                                                 )}
                                             </AnimatePresence>
                                         </div>
@@ -339,7 +339,7 @@ const MasterclassDetail: React.FC<{ mc: Masterclass; onClose: () => void }> = ({
                         Secure checkout via PayPal · 7-day money-back guarantee
                     </p>
                 </div>
-            </motion.div>
+            </m.div>
         </div>
     );
 };
@@ -459,7 +459,7 @@ export const MasterclassHub: React.FC = () => {
 
                 <AnimatePresence mode="popLayout">
                     {filtered.length > 0 ? (
-                        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <m.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {filtered.map(mc => (
                                 <MasterclassCard
                                     key={mc.id}
@@ -467,13 +467,13 @@ export const MasterclassHub: React.FC = () => {
                                     onClick={() => setSelectedId(mc.id)}
                                 />
                             ))}
-                        </motion.div>
+                        </m.div>
                     ) : (
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-32 bg-white rounded-[3rem] border border-gray-100">
+                        <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-32 bg-white rounded-[3rem] border border-gray-100">
                             <BookOpen className="w-16 h-16 text-gray-200 mx-auto mb-6" />
                             <h3 className="text-2xl font-serif italic text-gray-400">No classes found</h3>
                             <p className="text-sm text-gray-400 mt-2">Try a different category or search term.</p>
-                        </motion.div>
+                        </m.div>
                     )}
                 </AnimatePresence>
             </div>

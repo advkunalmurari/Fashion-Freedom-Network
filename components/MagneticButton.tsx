@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 
 interface MagneticButtonProps {
     children: React.ReactNode;
@@ -43,14 +43,14 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
             onMouseLeave={handleMouseLeave}
             className="inline-block"
         >
-            <motion.div
+            <m.div
                 animate={{ x: position.x, y: position.y }}
                 transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
                 onClick={onClick}
                 className={className}
             >
                 {children}
-            </motion.div>
+            </m.div>
         </div>
     );
 };

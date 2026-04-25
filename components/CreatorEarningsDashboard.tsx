@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { EarningsStream } from '../types';
 import { MOCK_EARNINGS_TRANSACTIONS, MOCK_EARNINGS_MONTHLY } from '../constants';
 import { paypalService } from '../services/paypalService';
@@ -44,7 +44,7 @@ const EarningsBarChart: React.FC = () => {
                     <div key={m.month} className="flex-1 flex flex-col items-center gap-2 group">
                         <div className="relative w-full h-32 flex flex-col justify-end">
                             <div className="relative w-full rounded-2xl overflow-hidden" style={{ height: `${pct}%` }}>
-                                <motion.div
+                                <m.div
                                     initial={{ height: 0 }}
                                     animate={{ height: '100%' }}
                                     transition={{ duration: 0.8, delay: i * 0.1, ease: 'easeOut' }}
@@ -93,7 +93,7 @@ const StreamBreakdown: React.FC<{ transactions: any[] }> = ({ transactions }) =>
                                 <span className="text-sm font-black text-white">{fmtINR(sum)}</span>
                             </div>
                             <div className="h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/5">
-                                <motion.div
+                                <m.div
                                     initial={{ width: 0 }}
                                     animate={{ width: `${pct}%` }}
                                     transition={{ duration: 0.9, ease: 'easeOut' }}
@@ -121,7 +121,7 @@ const TxnRow: React.FC<{ txn: any }> = ({ txn }) => {
     const StatusIcon = status.icon;
 
     return (
-        <motion.div
+        <m.div
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             className="flex items-start justify-between gap-4 py-6 border-b border-white/5 last:border-0 group hover:bg-white/[0.02] rounded-3xl px-4 -mx-4 transition-all"
@@ -148,7 +148,7 @@ const TxnRow: React.FC<{ txn: any }> = ({ txn }) => {
                     <span>{status.label}</span>
                 </div>
             </div>
-        </motion.div>
+        </m.div>
     );
 };
 
@@ -261,7 +261,7 @@ export const CreatorEarningsDashboard: React.FC<{ talentId?: string }> = ({ tale
                         accent: 'border-white/10 bg-white/[0.03]',
                     },
                 ].map((kpi, i) => (
-                    <motion.div
+                    <m.div
                         key={kpi.label}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -275,7 +275,7 @@ export const CreatorEarningsDashboard: React.FC<{ talentId?: string }> = ({ tale
                             {kpi.up ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
                             <span className="text-[10px] font-black uppercase tracking-widest">{kpi.trend}</span>
                         </div>
-                    </motion.div>
+                    </m.div>
                 ))}
             </div>
 
@@ -325,7 +325,7 @@ export const CreatorEarningsDashboard: React.FC<{ talentId?: string }> = ({ tale
                 </div>
 
                 <AnimatePresence mode="wait">
-                    <motion.div key={streamFilter as string} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-2">
+                    <m.div key={streamFilter as string} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-2">
                         {filteredTxns.length > 0 ? (
                             filteredTxns.sort((a, b) => new Date(b.date || b.created_at).getTime() - new Date(a.date || a.created_at).getTime()).map(txn => (
                                 <TxnRow key={txn.id} txn={txn} />
@@ -336,7 +336,7 @@ export const CreatorEarningsDashboard: React.FC<{ talentId?: string }> = ({ tale
                                 <p className="italic font-serif text-2xl">No data nodes available</p>
                             </div>
                         )}
-                    </motion.div>
+                    </m.div>
                 </AnimatePresence>
             </div>
 

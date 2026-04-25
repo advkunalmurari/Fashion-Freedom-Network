@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Activity, Globe, Zap, Users, ShieldCheck } from 'lucide-react';
 
 export const DiscoveryPulseCard: React.FC = () => {
@@ -11,14 +11,14 @@ export const DiscoveryPulseCard: React.FC = () => {
     ];
 
     return (
-        <motion.div
+        <m.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             className="bg-black/90 rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-12 mb-12 md:mb-24 overflow-hidden relative border border-white/5 shadow-2xl"
         >
             {/* Decorative Pulse Ring */}
-            <motion.div
+            <m.div
                 animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
                 transition={{ duration: 3, repeat: Infinity }}
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full aspect-square bg-ffn-primary/20 rounded-full blur-[100px] pointer-events-none"
@@ -31,7 +31,7 @@ export const DiscoveryPulseCard: React.FC = () => {
                         <p className="text-[9px] font-black uppercase tracking-[0.4em] text-ffn-primary">Real-Time Platform Intelligence</p>
                     </div>
                     <div className="flex items-center space-x-3 px-4 py-2 bg-ffn-primary/10 rounded-full border border-ffn-primary/20">
-                        <motion.div
+                        <m.div
                             animate={{ opacity: [0, 1, 0] }}
                             transition={{ duration: 1.5, repeat: Infinity }}
                             className="w-2 h-2 bg-ffn-primary rounded-full shadow-[0_0_10px_#FFD700]"
@@ -42,7 +42,7 @@ export const DiscoveryPulseCard: React.FC = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
                     {pulses.map((pulse, i) => (
-                        <motion.div
+                        <m.div
                             key={i}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -60,7 +60,7 @@ export const DiscoveryPulseCard: React.FC = () => {
                                 <span className="text-[10px] font-black uppercase tracking-widest text-ffn-primary">{pulse.trend}</span>
                             </div>
                             <div className="w-full h-px bg-white/5 group-hover:bg-ffn-primary/20 transition-all" />
-                        </motion.div>
+                        </m.div>
                     ))}
                 </div>
 
@@ -74,6 +74,6 @@ export const DiscoveryPulseCard: React.FC = () => {
                     </button>
                 </div>
             </div>
-        </motion.div>
+        </m.div>
     );
 };

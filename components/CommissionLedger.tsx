@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { DollarSign, ArrowUpRight, ArrowDownRight, Clock, CheckCircle2, AlertCircle } from 'lucide-react';
 import { AgencyCommission } from '../types';
 
@@ -43,7 +43,7 @@ export const CommissionLedger: React.FC<CommissionLedgerProps> = ({ commissions 
                     </thead>
                     <tbody className="divide-y divide-white/5">
                         {commissions.map((comm, idx) => (
-                            <motion.tr
+                            <m.tr
                                 key={comm.id}
                                 initial={{ opacity: 0, x: -10 }}
                                 animate={{ opacity: 1, x: 0 }}
@@ -85,7 +85,7 @@ export const CommissionLedger: React.FC<CommissionLedgerProps> = ({ commissions 
                                 <td className="px-6 py-4">
                                     <span className="text-[9px] font-black uppercase tracking-widest text-gray-500 font-mono italic">{comm.date}</span>
                                 </td>
-                            </motion.tr>
+                            </m.tr>
                         ))}
                     </tbody>
                 </table>
@@ -101,7 +101,7 @@ export const CommissionLedger: React.FC<CommissionLedgerProps> = ({ commissions 
                         </div>
                     </div>
                     <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                        <motion.div
+                        <m.div
                             initial={{ width: 0 }}
                             animate={{ width: '75%' }}
                             className="h-full bg-ffn-primary shadow-[0_0_10px_#FFD700]"

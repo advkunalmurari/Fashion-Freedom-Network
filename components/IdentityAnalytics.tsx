@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { TrendingUp, Globe, Eye, Zap, ShieldCheck } from 'lucide-react';
 
 const MetricCard: React.FC<{ label: string; value: string; sub: string; icon: any; color: string }> = ({ label, value, sub, icon: Icon, color }) => (
@@ -84,7 +84,7 @@ export const IdentityAnalytics: React.FC<{ analytics: any }> = ({ analytics }) =
                     <div className="flex items-end space-x-4 h-48">
                         {analytics.monthlyViews.map((point: any, idx: number) => (
                             <div key={idx} className="flex flex-col items-center space-y-4">
-                                <motion.div
+                                <m.div
                                     initial={{ height: 0 }}
                                     whileInView={{ height: `${(point.value / 250000) * 100}%` }}
                                     transition={{ duration: 2, ease: "easeOut" }}

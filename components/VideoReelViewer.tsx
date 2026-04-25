@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
     Play, Pause, Volume2, VolumeX, X, Heart, MessageCircle,
     Share2, Bookmark, UserPlus, Zap, MoreHorizontal, ShoppingBag
@@ -109,7 +109,7 @@ export const VideoReelViewer: React.FC<VideoReelViewerProps> = ({
                 {/* Play/Pause Large Indicator */}
                 <AnimatePresence>
                     {!isPlaying && (
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, scale: 0.5 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.5 }}
@@ -118,21 +118,21 @@ export const VideoReelViewer: React.FC<VideoReelViewerProps> = ({
                             <div className="p-8 bg-black/20 backdrop-blur-3xl rounded-full border border-white/20">
                                 <Play className="w-12 h-12 text-white fill-current" />
                             </div>
-                        </motion.div>
+                        </m.div>
                     )}
                 </AnimatePresence>
 
                 {/* Interaction Feedback (Like Heart) */}
                 <AnimatePresence>
                     {showInteractionFeedback === 'like' && (
-                        <motion.div
+                        <m.div
                             initial={{ scale: 0.5, opacity: 0 }}
                             animate={{ scale: 1.5, opacity: 1 }}
                             exit={{ scale: 2, opacity: 0 }}
                             className="absolute inset-0 flex items-center justify-center pointer-events-none z-30"
                         >
                             <Heart className="w-24 h-24 text-ffn-primary fill-current" />
-                        </motion.div>
+                        </m.div>
                     )}
                 </AnimatePresence>
 
@@ -164,7 +164,7 @@ export const VideoReelViewer: React.FC<VideoReelViewerProps> = ({
                 <div className="absolute bottom-8 left-8 right-8 space-y-6 z-20 pointer-events-auto">
                     {/* Progress Bar */}
                     <div className="h-1 bg-white/10 rounded-full overflow-hidden">
-                        <motion.div
+                        <m.div
                             initial={{ width: '0%' }}
                             animate={{ width: isPlaying ? '100%' : '0%' }}
                             transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}

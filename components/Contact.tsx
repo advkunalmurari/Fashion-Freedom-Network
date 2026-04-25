@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Mail, Send, MapPin, Globe, Loader2, CheckCircle, ArrowRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 
 export const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -40,7 +40,7 @@ export const ContactPage: React.FC = () => {
         <div className="lg:col-span-7">
           <AnimatePresence mode="wait">
             {!isSuccess ? (
-              <motion.form 
+              <m.form 
                 key="contact-form"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -97,9 +97,9 @@ export const ContactPage: React.FC = () => {
                     </>
                   )}
                 </button>
-              </motion.form>
+              </m.form>
             ) : (
-              <motion.div 
+              <m.div 
                 key="success-message"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -114,7 +114,7 @@ export const ContactPage: React.FC = () => {
                 >
                   New Message
                 </button>
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
         </div>

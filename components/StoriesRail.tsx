@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { MOCK_TALENT_POOL, MOCK_POSTS } from '../constants'; // For demo data
 
 export interface Story {
@@ -70,7 +70,7 @@ export const StoriesRail: React.FC<StoriesRailProps> = ({ onStoryClick }) => {
 
                 {/* Story Rings */}
                 {stories.map((story, index) => (
-                    <motion.div
+                    <m.div
                         key={story.id}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => onStoryClick(story, index, stories)}
@@ -84,7 +84,7 @@ export const StoriesRail: React.FC<StoriesRailProps> = ({ onStoryClick }) => {
                         <span className="text-[9px] font-black uppercase tracking-widest text-ffn-black truncate max-w-[50px]">
                             {(story.user?.displayName || 'User').split(' ')[0]}
                         </span>
-                    </motion.div>
+                    </m.div>
                 ))}
             </div>
         </div>

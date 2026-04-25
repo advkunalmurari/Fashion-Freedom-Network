@@ -1,6 +1,6 @@
 
 import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Briefcase, ArrowRight, Globe, MapPin, Building2, ExternalLink, Search, Filter, X } from 'lucide-react';
 import { MOCK_BRANDS } from '../constants';
@@ -95,7 +95,7 @@ export const Brands: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         <AnimatePresence mode="popLayout">
           {filteredBrands.map((brand) => (
-            <motion.div
+            <m.div
               key={brand.id}
               layout
               initial={{ opacity: 0, scale: 0.95 }}
@@ -142,12 +142,12 @@ export const Brands: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </AnimatePresence>
 
         {filteredBrands.length === 0 && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="col-span-full py-32 text-center space-y-4"
@@ -166,7 +166,7 @@ export const Brands: React.FC = () => {
             >
               Clear all filters
             </button>
-          </motion.div>
+          </m.div>
         )}
       </div>
 

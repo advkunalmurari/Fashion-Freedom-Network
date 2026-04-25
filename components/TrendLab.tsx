@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import {
   TrendingUp, Globe, Zap, Users,
   ArrowUpRight, ArrowDownRight,
@@ -39,14 +39,14 @@ export const TrendLab: React.FC = () => {
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80')] opacity-10 grayscale scale-110" />
         <div className="absolute inset-0 bg-gradient-to-br from-ffn-primary/20 via-transparent to-black/80" />
         <div className="relative z-10 max-w-5xl mx-auto text-center space-y-10">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="inline-flex items-center space-x-3 px-6 py-2 rounded-full border border-ffn-primary/20 bg-ffn-primary/5 backdrop-blur-3xl"
           >
             <Activity className="w-4 h-4 text-ffn-primary animate-pulse" />
             <span className="text-[10px] font-black uppercase tracking-[0.6em] text-ffn-primary">Protocol 045: Market Liquidity</span>
-          </motion.div>
+          </m.div>
           <h1 className="text-7xl md:text-9xl font-serif italic text-white leading-[0.85] tracking-tighter">
             The Style <br />
             <span className="text-ffn-primary">Quant 2025</span>
@@ -71,7 +71,7 @@ export const TrendLab: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {MOCK_EMERGING_AESTHETICS.map((aesthetic, i) => (
-            <motion.div
+            <m.div
               key={aesthetic.id}
               whileHover={{ y: -10 }}
               initial={{ opacity: 0, y: 30 }}
@@ -110,7 +110,7 @@ export const TrendLab: React.FC = () => {
                 <span className="text-[8px] font-black uppercase leading-none">Growth</span>
                 <span className="text-sm font-black text-black">+{aesthetic.demandGrowth}%</span>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>
@@ -128,7 +128,7 @@ export const TrendLab: React.FC = () => {
       {/* Trend Nodes Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {MOCK_TRENDS.map((trend, i) => (
-          <motion.div
+          <m.div
             key={trend.id}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -147,7 +147,7 @@ export const TrendLab: React.FC = () => {
               <span className="text-[9px] font-black uppercase tracking-widest text-gray-500">{trend.label}</span>
               <div className="text-3xl font-serif italic text-white">{trend.value}</div>
             </div>
-          </motion.div>
+          </m.div>
         ))}
       </div>
 
@@ -162,7 +162,7 @@ export const TrendLab: React.FC = () => {
           </div>
           <div className="space-y-6">
             {MOCK_STYLE_NODES.map((node, i) => (
-              <motion.div
+              <m.div
                 key={node.id}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -186,7 +186,7 @@ export const TrendLab: React.FC = () => {
                   <div className="text-sm font-black text-white">{node.demandScore}%</div>
                   <div className="text-[7px] font-black uppercase tracking-widest text-gray-500">Node Demand</div>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -194,7 +194,7 @@ export const TrendLab: React.FC = () => {
         {/* Global Opportunity Index */}
         <div className="p-10 rounded-[3rem] bg-ffn-primary text-black space-y-10 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-1 bg-black/20 overflow-hidden">
-            <motion.div
+            <m.div
               animate={{ x: ['-100%', '100%'] }}
               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
               className="w-1/3 h-full bg-black/40 shadow-[0_0_15px_rgba(0,0,0,0.5)]"
@@ -224,7 +224,7 @@ export const TrendLab: React.FC = () => {
                   <span className="text-xl font-serif italic">{item.value}%</span>
                 </div>
                 <div className="h-2 w-full bg-black/10 rounded-full overflow-hidden">
-                  <motion.div
+                  <m.div
                     initial={{ width: 0 }}
                     animate={{ width: `${item.value}%` }}
                     transition={{ duration: 1, delay: i * 0.2 }}
@@ -235,7 +235,7 @@ export const TrendLab: React.FC = () => {
             ))}
           </div>
 
-          <motion.button
+          <m.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             className="group w-full py-6 bg-black text-white rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.4em] hover:brightness-110 transition-all relative overflow-hidden"
@@ -245,7 +245,7 @@ export const TrendLab: React.FC = () => {
               <span>Generate Predictive Brief</span>
               <Target className="w-5 h-5 group-hover:rotate-45 transition-transform duration-500" />
             </div>
-          </motion.button>
+          </m.button>
         </div>
       </div>
     </div>

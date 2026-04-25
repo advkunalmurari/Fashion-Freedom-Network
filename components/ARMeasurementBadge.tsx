@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { ARBodyMeasurements } from '../types';
 import {
     ShieldCheck, Scan, Clock, X, Lock, ChevronDown, ChevronUp,
@@ -25,7 +25,7 @@ const ConfidenceRing: React.FC<{ confidence: number }> = ({ confidence }) => {
         <div className="relative w-14 h-14 flex items-center justify-center shrink-0">
             <svg width="56" height="56" className="-rotate-90">
                 <circle cx="28" cy="28" r={r} fill="none" stroke="#e5e7eb" strokeWidth="4" />
-                <motion.circle
+                <m.circle
                     cx="28" cy="28" r={r} fill="none"
                     stroke="#10b981" strokeWidth="4"
                     strokeDasharray={`${circ}`}
@@ -123,7 +123,7 @@ export const ARMeasurementBadge: React.FC<ARMeasurementBadgeProps> = ({
                         <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 relative overflow-hidden ${isARVerified ? 'bg-emerald-100' : isExpired ? 'bg-red-100' : 'bg-amber-100'}`}>
                             <Scan className={`w-6 h-6 ${isARVerified ? 'text-emerald-600' : isExpired ? 'text-red-500' : 'text-amber-500'}`} />
                             {isARVerified && (
-                                <motion.div
+                                <m.div
                                     animate={{ y: ['-100%', '100%'] }}
                                     transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
                                     className="absolute inset-x-0 h-0.5 bg-emerald-400/60 top-0"
@@ -208,7 +208,7 @@ export const ARMeasurementBadge: React.FC<ARMeasurementBadgeProps> = ({
 
                     <AnimatePresence>
                         {showDetail && (
-                            <motion.div
+                            <m.div
                                 initial={{ height: 0, opacity: 0 }}
                                 animate={{ height: 'auto', opacity: 1 }}
                                 exit={{ height: 0, opacity: 0 }}
@@ -271,7 +271,7 @@ export const ARMeasurementBadge: React.FC<ARMeasurementBadgeProps> = ({
                                         </p>
                                     </div>
                                 </div>
-                            </motion.div>
+                            </m.div>
                         )}
                     </AnimatePresence>
                 </>

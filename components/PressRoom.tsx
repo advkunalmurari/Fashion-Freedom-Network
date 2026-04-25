@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import {
     Newspaper, Download, ExternalLink, ArrowRight,
     Image as ImageIcon, FileText, Share2, Globe, Sparkles, Users
@@ -47,7 +47,7 @@ export const PressRoom: React.FC = () => {
                     >
                         {tab}
                         {activeTab === tab && (
-                            <motion.div
+                            <m.div
                                 layoutId="nav-underline"
                                 className="absolute bottom-0 left-0 right-0 h-1 bg-ffn-black rounded-full"
                             />
@@ -61,7 +61,7 @@ export const PressRoom: React.FC = () => {
                 {activeTab === 'RELEASES' && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                         {MOCK_PRESS_RELEASES.map((release, idx) => (
-                            <motion.article
+                            <m.article
                                 key={release.id}
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
@@ -96,7 +96,7 @@ export const PressRoom: React.FC = () => {
                                         <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                                     </button>
                                 </div>
-                            </motion.article>
+                            </m.article>
                         ))}
                     </div>
                 )}
@@ -109,7 +109,7 @@ export const PressRoom: React.FC = () => {
                             { name: 'Executive Headshots', type: 'JPG/RAW', size: '142 MB', icon: Users },
                             { name: 'Office Lifestyle', type: 'JPG/RAW', size: '84 MB', icon: ImageIcon },
                         ].map((asset, idx) => (
-                            <motion.div
+                            <m.div
                                 key={asset.name}
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 whileInView={{ opacity: 1, scale: 1 }}
@@ -126,7 +126,7 @@ export const PressRoom: React.FC = () => {
                                 <button title="Download Asset" className="p-3 bg-gray-50 rounded-xl hover:bg-ffn-primary hover:text-white transition-all mx-auto shadow-sm">
                                     <Download className="w-4 h-4" />
                                 </button>
-                            </motion.div>
+                            </m.div>
                         ))}
                     </div>
                 )}

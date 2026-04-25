@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { BookOpen, ArrowRight, Bookmark, Share2, Clock, Sparkles } from 'lucide-react';
 import { MagneticButton } from './MagneticButton';
 
@@ -71,7 +71,7 @@ export const Journal: React.FC = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24">
                {articles.map((article, idx) => (
-                  <motion.article
+                  <m.article
                      key={idx}
                      initial={{ opacity: 0, y: 30 }}
                      whileInView={{ opacity: 1, y: 0 }}
@@ -102,7 +102,7 @@ export const Journal: React.FC = () => {
                            <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">{article.date}</span>
                         </div>
                      </div>
-                  </motion.article>
+                  </m.article>
                ))}
             </div>
          </section>

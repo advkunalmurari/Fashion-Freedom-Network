@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Camera, ArrowRight, Sparkles, Award, Globe, ExternalLink, Play } from 'lucide-react';
 import { MOCK_EDITORIALS } from '../constants';
 
@@ -20,7 +20,7 @@ export const Editorial: React.FC = () => {
 
          <div className="editorial-grid gap-y-32">
             {MOCK_EDITORIALS.map((item, idx) => (
-               <motion.article
+               <m.article
                   key={item.id}
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -64,7 +64,7 @@ export const Editorial: React.FC = () => {
                         </button>
                      </div>
                   </div>
-               </motion.article>
+               </m.article>
             ))}
          </div>
 

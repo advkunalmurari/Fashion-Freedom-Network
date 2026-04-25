@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { EscrowTransaction, EscrowStatus } from '../types';
 import { MOCK_ESCROW_TRANSACTIONS } from '../constants';
 import {
@@ -55,7 +55,7 @@ const MilestoneStep: React.FC<{ milestone: { id: string; label: string; complete
     return (
         <div className="flex gap-4">
             <div className="flex flex-col items-center">
-                <motion.div
+                <m.div
                     initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
                     className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 border-2 transition-all
                         ${done ? 'bg-emerald-50 border-emerald-400'
@@ -73,7 +73,7 @@ const MilestoneStep: React.FC<{ milestone: { id: string; label: string; complete
                                     ? <AlertTriangle className="w-5 h-5 text-amber-500" />
                                     : <div className="w-2.5 h-2.5 rounded-full bg-gray-200" />
                     }
-                </motion.div>
+                </m.div>
                 {!isLast && <div className={`w-0.5 flex-1 mt-1 min-h-[2.5rem] ${done ? 'bg-emerald-200' : 'bg-gray-100'}`} />}
             </div>
             <div className="pb-8 pt-1">
@@ -97,9 +97,9 @@ const DisputeModal: React.FC<{ onClose: () => void; txn: EscrowTransaction }> = 
     const [reason, setReason] = useState('');
     const [submitted, setSubmitted] = useState(false);
     return (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-4">
-            <motion.div initial={{ y: 80 }} animate={{ y: 0 }} exit={{ y: 80 }}
+            <m.div initial={{ y: 80 }} animate={{ y: 0 }} exit={{ y: 80 }}
                 className="bg-white rounded-[2.5rem] w-full max-w-lg shadow-2xl overflow-hidden">
                 <div className="flex items-center justify-between px-7 pt-7 pb-4">
                     <div>
@@ -141,8 +141,8 @@ const DisputeModal: React.FC<{ onClose: () => void; txn: EscrowTransaction }> = 
                         </>
                     )}
                 </div>
-            </motion.div>
-        </motion.div>
+            </m.div>
+        </m.div>
     );
 };
 
@@ -151,7 +151,7 @@ const EscrowCard: React.FC<{ txn: EscrowTransaction; onSelect: (id: string) => v
     const cfg = STATUS_CONFIG[txn.status];
     const Icon = cfg.icon;
     return (
-        <motion.button
+        <m.button
             onClick={() => onSelect(txn.id)}
             whileHover={{ y: -2 }}
             className={`w-full text-left bg-white rounded-[2rem] border shadow-sm p-6 transition-all
@@ -173,7 +173,7 @@ const EscrowCard: React.FC<{ txn: EscrowTransaction; onSelect: (id: string) => v
                     <p className="text-[8px] text-gray-400 mt-0.5">net payout</p>
                 </div>
             </div>
-        </motion.button>
+        </m.button>
     );
 };
 
@@ -423,9 +423,9 @@ export const EscrowTracker: React.FC = () => {
                     <div className="space-y-3">
                         <AnimatePresence mode="popLayout">
                             {filtered.map(txn => (
-                                <motion.div key={txn.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }}>
+                                <m.div key={txn.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }}>
                                     <EscrowCard txn={txn} onSelect={setSelectedId} isSelected={selectedId === txn.id} />
-                                </motion.div>
+                                </m.div>
                             ))}
                         </AnimatePresence>
                         {filtered.length === 0 && (
@@ -441,10 +441,10 @@ export const EscrowTracker: React.FC = () => {
                 {selected && (
                     <div className="sticky top-6">
                         <AnimatePresence mode="wait">
-                            <motion.div key={selected.id}
+                            <m.div key={selected.id}
                                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
                                 <TransactionDetail txn={selected} />
-                            </motion.div>
+                            </m.div>
                         </AnimatePresence>
                     </div>
                 )}
