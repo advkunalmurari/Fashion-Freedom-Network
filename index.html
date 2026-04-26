@@ -11,83 +11,61 @@
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://fashion-freedom-network.vercel.app/">
+  <meta property="og:url" content="https://fashionfreedomnetwork.vercel.app/">
   <meta property="og:title" content="Fashion Freedom Network - Global Identity Hub">
   <meta property="og:description"
     content="The definitive global talent infrastructure for the modern fashion professional. Discover casting calls, networks, and booking management.">
   <meta property="og:image"
     content="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format,compress&fm=webp&fit=crop&w=1200&h=630&q=80">
-  <link rel="canonical" href="https://fashion-freedom-network.vercel.app/">
+  <link rel="canonical" href="https://fashionfreedomnetwork.vercel.app/">
   <meta name="robots" content="index, follow">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://fashion-freedom-network.vercel.app/">
+  <meta name="twitter:url" content="https://fashionfreedomnetwork.vercel.app/">
   <meta name="twitter:title" content="Fashion Freedom Network - Global Identity Hub">
   <meta name="twitter:description"
     content="The definitive global talent infrastructure for the modern fashion professional. Discover casting calls, networks, and booking management.">
   <meta name="twitter:image"
     content="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format,compress&fm=webp&fit=crop&w=1200&h=630&q=80">
 
-  <!-- Performance optimization: Preconnect & DNS-prefetch for external resources -->
+  <!-- Critical resource hints -->
+  <link rel="preconnect" href="https://lwhtzpvfcvimwrplduyf.supabase.co">
+  <link rel="dns-prefetch" href="https://lwhtzpvfcvimwrplduyf.supabase.co">
   <link rel="preconnect" href="https://images.unsplash.com">
   <link rel="dns-prefetch" href="https://images.unsplash.com">
 
-  <!-- Preconnect to Google Fonts to accelerate loading -->
+  <!-- Google Fonts: async non-blocking load -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    rel="preload"
-    as="style"
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-  >
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap"
     rel="stylesheet"
     media="print"
     onload="this.media='all'"
   >
   <noscript>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap"
       rel="stylesheet"
     >
   </noscript>
 
-  <link rel="stylesheet" href="/index.css">
+  <!-- Inline critical CSS: only what is needed before JS loads -->
+  <style>
+    *,::before,::after{box-sizing:border-box}
+    html{line-height:1.5;-webkit-text-size-adjust:100%}
+    html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+    body{margin:0;background:#0a0a0a;color:#fff;-webkit-font-smoothing:antialiased;font-family:Inter,system-ui,sans-serif;overflow-x:hidden}
+    #root{min-height:100vh}
+    .ffn-initial-loader{position:fixed;inset:0;background:#0a0a0a;display:flex;justify-content:center;align-items:center;z-index:9999}
+    .ffn-spinner{width:36px;height:36px;border:2px solid rgba(255,255,255,.12);border-top-color:#fff;border-radius:50%;animation:_spin .8s linear infinite}
+    @keyframes _spin{to{transform:rotate(360deg)}}
+  </style>
 </head>
 
 <body>
   <div class="mesh-bg"></div>
-  <style>
-    .ffn-initial-loader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: #0a0a0a;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
-
-    .ffn-spinner {
-      width: 40px;
-      height: 40px;
-      border: 3px solid rgba(255, 255, 255, 0.1);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      100% {
-        transform: rotate(360deg);
-      }
-    }
-  </style>
   <div id="root">
     <div class="ffn-initial-loader">
       <div class="ffn-spinner"></div>
